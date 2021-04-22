@@ -5,6 +5,7 @@ html {
     height: 100%;
     background: #ffffff !important;
 }
+
 .user_card {
     height: 500px;
     width: 380px;
@@ -67,3 +68,4 @@ html {
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
     background-color: #0a5c6d !important;
 }
+

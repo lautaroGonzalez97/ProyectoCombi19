@@ -25,16 +25,16 @@ app.add_url_rule("/iniciar_sesion","login", usuario.login)
 
 @app.route("/")
 def home ():
-    return render_template("registrar.html")
+    return render_template("reg.html")
 
-@app.route("/registrar")
+@app.route("/registrar" , methods=["POST"])
 def registrar():
     if (request.method == "POST"):
         datos = request.form
         email = datos["email"]
         password = datos["password"]
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO usuarios (email, password) VALUES (%s, %s)", (email, password))
+        cur.execute("INSERT INTO usuario (email, password) VALUES (%s, %s)", (email, password))
         mysql.connection.commit()
         return redirect(url_for("login"))
 

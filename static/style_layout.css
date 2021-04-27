@@ -9,6 +9,12 @@ body {
   font-size: 28px;
 }
 
+.homeLetra{
+
+  color: white;
+  font-size: x-large;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -58,7 +64,7 @@ div{
 }
 
 .header {
-  background: url(fondo1.png) no-repeat center;
+  background: url(static\fondoHome.png) no-repeat center;
   background-size: cover;
   min-height: 100vh;
   

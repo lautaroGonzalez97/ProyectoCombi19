@@ -55,5 +55,13 @@ def autenticar ():
         flash ("Correo o clave incorrecta") #no muestra mensaje flash, porque?
         return redirect(url_for("login"))
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/Contacto')
+def contacto():
+    return render_template('contacto.html')
+
 if __name__ == '__main__':
     app.run(port= 8080, debug=True)

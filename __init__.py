@@ -1,7 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, session, request, flash
-from resources import usuario
+#para trabajar fechas
+from datetime import datetime
+from dateutil.relativedelta import relativedelta #pip install python-dateutil
+#base de datos
 from flask_mysqldb import MySQL
+#funcionalidades
+from resources import usuario
 from helpers.auth import authenticated 
+
 
 app = Flask (__name__)
 app.config["MYSQL_HOST"] = "localhost"
@@ -27,14 +33,27 @@ def index():
 
 @app.route("/registrar" , methods=["POST"])
 def registrar():
-    if (request.method == "POST"):
-        datos = request.form
-        email = datos["email"]
-        password = datos["password"]
+    datos = request.form
+    nombre = datos["nombre"]
+    apellido = datos["apellido"]
+    username = ["username"]
+    email = datos["email"]
+    nacimiento = datos["fechaNacimiento"]
+    password = datos["password"]
+    fechaNac = datetime.strptime(nacimiento, "%Y-%m-%d")
+    fecha = fechaNac + relativedelta(years=+18)
+    hoy = datetime.today()
+    print (type(fecha))
+    if (fecha <= hoy):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO usuario (email, password) VALUES (%s, %s)", (email, password))
+        cur.execute("INSERT INTO usuario (nombre, apellido, username, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, apellido, username, email, fechaNac, password))
         mysql.connection.commit()
+        flash("Registrado correctamente", "success")
         return redirect(url_for("login"))
+    else:
+        flash("Edad invalida para registrarse", "error")
+        return redirect(url_for("register"))
+    
 
 @app.route("/autenticar" , methods=["POST"])
 def autenticar ():
@@ -47,13 +66,13 @@ def autenticar ():
         session["id"] = idUser
         return redirect(url_for("home"))
     else:
-        flash("Correo o clave incorrecta", "error") #no muestra mensaje flash, porque?
+        flash("Correo o clave incorrecta", "error")
         return redirect(url_for("login"))
 
 @app.route ("/logOut")
 def logOut():
     if (authenticated(session)):
-        del session[id] 
+        del session['id'] 
     return redirect (url_for('login'))
 
 if __name__ == '__main__':

@@ -52,6 +52,12 @@ html {
     background: #0a5c6d !important;
     color: white !important;
 }
+
+.va_btn {
+    background: #0a5c6d !important;
+    color: white !important;
+}
+
 .login_btn:focus {
     box-shadow: none !important;
     outline: 0px !important;

@@ -5,7 +5,7 @@ def render_login():
     return render_template("login.html")
 
 def render_register():
-    return render_template("register.html")
+    return render_template('register.html')
 
 def render_home():
     if (authenticated(session)):
@@ -13,4 +13,6 @@ def render_home():
     return redirect(url_for('login'))
 
 def contacto():
-    return render_template('contacto.html')
+    if (authenticated(session)):
+        return render_template('contacto.html')
+    return redirect(url_for('login'))

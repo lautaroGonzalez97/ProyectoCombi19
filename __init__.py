@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, session, request, flash
 from resources import usuario
 from flask_mysqldb import MySQL
+from helpers.auth import authenticated 
 
 app = Flask (__name__)
 app.config["MYSQL_HOST"] = "localhost"
@@ -18,15 +19,11 @@ app.add_url_rule("/home","home", usuario.render_home)
 app.add_url_rule("/contacto","contacto", usuario.contacto)
 
 #Esto es para cuando ingresan a la pagina, si su id no esta en Session los tira al template login, sino entran a la pagina (#)
-'''@app.route('/')
+@app.route('/')
 def index():
     if (not 'id' in session):
         return redirect(url_for("login"))
-    return redirect(url_for('home'))'''
-
-@app.route("/")
-def index ():
-    return render_template("login.html")
+    return redirect(url_for('home'))
 
 @app.route("/registrar" , methods=["POST"])
 def registrar():
@@ -52,6 +49,12 @@ def autenticar ():
     else:
         flash("Correo o clave incorrecta", "error") #no muestra mensaje flash, porque?
         return redirect(url_for("login"))
+
+@app.route ("/logOut")
+def logOut():
+    if (authenticated(session)):
+        del session[id] 
+    return redirect (url_for('login'))
 
 if __name__ == '__main__':
     app.run(port= 8080, debug=True)

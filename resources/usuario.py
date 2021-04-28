@@ -8,7 +8,9 @@ def render_register():
     return render_template("register.html")
 
 def render_home():
-    return render_template('home.html')
+    if (authenticated(session)):
+        return render_template('home.html')
+    return redirect(url_for('login'))
 
 def contacto():
     return render_template('contacto.html')

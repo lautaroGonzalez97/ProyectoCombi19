@@ -12,21 +12,20 @@ mysql = MySQL(app)
 app.secret_key = 'esto-es-una-clave-muy-secreta'
 
 #Rutas Usuarios
-app.add_url_rule("/iniciar_sesion","login", usuario.login)
-#app.add_url_rule("/autenticacion", "autenticar_login", usuario.autenticar, methods=["POST"])
-#app.add_url_rule("/cerrar_sesion", "logout", usuario.logout)
-#app.add_url_rule("/registrar", "registrar", usuario.registrar, methods=["POST"])
-
+app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
+app.add_url_rule("/registrar_usuario","register", usuario.render_register)
+app.add_url_rule("/home","home", usuario.render_home)
+app.add_url_rule("/contacto","contacto", usuario.contacto)
 
 #Esto es para cuando ingresan a la pagina, si su id no esta en Session los tira al template login, sino entran a la pagina (#)
 '''@app.route('/')
-def home():
+def index():
     if (not 'id' in session):
         return redirect(url_for("login"))
-    return redirect(url_for('#')) #redirije a home'''
+    return redirect(url_for('home'))'''
 
 @app.route("/")
-def home ():
+def index ():
     return render_template("login.html")
 
 @app.route("/registrar" , methods=["POST"])
@@ -49,19 +48,10 @@ def autenticar ():
     idUser = cur.execute("SELECT id FROM usuario WHERE (email = %s) and (password = %s)", (email, password))
     if (idUser != 0):
         session["id"] = idUser
-        return render_template("home.html")
+        return redirect(url_for("home"))
     else:
-        print("entro mal los datos")
         flash("Correo o clave incorrecta", "error") #no muestra mensaje flash, porque?
         return redirect(url_for("login"))
-
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
-@app.route('/Contacto')
-def contacto():
-    return render_template('contacto.html')
 
 if __name__ == '__main__':
     app.run(port= 8080, debug=True)

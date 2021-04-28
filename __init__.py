@@ -52,7 +52,7 @@ def autenticar ():
         return render_template("home.html")
     else:
         print("entro mal los datos")
-        flash ("Correo o clave incorrecta") #no muestra mensaje flash, porque?
+        flash("Correo o clave incorrecta", "error") #no muestra mensaje flash, porque?
         return redirect(url_for("login"))
 
 if __name__ == '__main__':

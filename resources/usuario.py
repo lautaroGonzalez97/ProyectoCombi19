@@ -16,3 +16,13 @@ def render_contacto():
     if (authenticated(session)):
         return render_template('contacto.html')
     return redirect(url_for('login'))
+
+def render_altaChofer():
+    if (authenticated(session)):
+        return render_template('addChofer.html')
+    return redirect(url_for('login'))
+
+'''def render_editarChofer():
+    if (authenticated(session)):
+        return render_template('editChofer.html')
+    return redirect(url_for('login'))'''

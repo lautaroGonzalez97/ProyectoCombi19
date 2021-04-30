@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='style_addChofer.css')}}">
+
+<div >
+    <form action="/altaChofer" , method="POST">
+        <div style="width:100%;">
+            <p>Nombre</p>
+            <input type="text" name="nombre" value="">
+        </div>
+        <br>
+        <div style="width:100%;">
+            <p>Apellido</p>
+            <input type="text" name="apellido" value="">
+        </div>
+        <br>
+        <div style="width:100%;">
+            <p>Email</p>
+            <input type="email" name="email" value="">
+        </div>
+        <br>
+        <div style="width:100%">
+            <p>Documento</p>
+            <input type="text" name="documento" value="">
+        </div>
+        <br>
+        <div style="width:100%">
+            <p>Contraseña</p>
+            <input type="password" name="password" value="">
+        </div>
+        <br>
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="submit" name="button" class="btn login_btn">Continuar</button>
+        </div>
+    </form> 
+</div>
+
+{% endblock %}

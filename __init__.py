@@ -53,7 +53,7 @@ def autenticar ():
 @app.route ("/logOut")
 def logOut():
     if (authenticated(session)):
-        del session[id] 
+        del session["id"] 
     return redirect (url_for('login'))
 
 if __name__ == '__main__':

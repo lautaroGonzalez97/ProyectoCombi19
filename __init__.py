@@ -50,8 +50,8 @@ def registrar():
         hoy = datetime.today()
         if (fecha <= hoy):
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO usuario (nombre, apellido, username, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s, %s)", 
-                (nombre, apellido, username, email, fechaNac, password))
+            cur.execute("INSERT INTO usuario (nombre, apellido, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s)", 
+                (nombre, apellido, email, fechaNac, password))
             mysql.connection.commit()
             flash("Registro exitoso", "success")
             return redirect(url_for("login"))

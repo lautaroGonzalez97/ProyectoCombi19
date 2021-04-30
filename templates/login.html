@@ -15,20 +15,29 @@
 </head>
 
 <body>
-	<div style="width: 100%; display: flex; justify-content: center; margin-top: 1%;">
-		<div class="col-4" style="text-align: center;">	
-			{% with messages= get_flashed_messages(category_filter=["error"])%}
-			{% if messages %}
-			{% for messages in messages%}
-				<div class="alert alert-danger" role="alert">
-				{{ messages }}
-				</div>
-			{% endfor %}
-			{% endif %}
-		{% endwith %}
+	<div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with errors= get_flashed_messages(category_filter=["error"])%}
+				{% if errros %}
+					{% for messages in errors%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with success= get_flashed_messages(category_filter=["success"])%}
+				{% if success %}
+					{% for messages in success%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
 		</div>
 	</div>
-	<div class="container h-100" style="margin-top: 5%;">
+	<div class="container h-100" style="margin-top: 10%;">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
 				<div class="d-flex justify-content-center">
@@ -42,17 +51,19 @@
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" name="email" class="form-control input_user" value="" placeholder="nombre de usuario" required>
+							<input type="text" name="email" class="form-control input_user" value=""
+								placeholder="nombre de usuario" required>
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
-							<input type="password" name="password" class="form-control input_pass" value="" placeholder="contraseña" required>
+							<input type="password" name="password" class="form-control input_pass" value=""
+								placeholder="contraseña" required>
 						</div>
-							<div class="d-flex justify-content-center mt-3 login_container">
-				 	<button type="submit" name="button" class="btn login_btn">Iniciar Sesion</button>
-				   </div>
+						<div class="d-flex justify-content-center mt-3 login_container">
+							<button type="submit" name="button" class="btn login_btn">Iniciar Sesion</button>
+						</div>
 					</form>
 				</div>
 				<div class="mt-4">

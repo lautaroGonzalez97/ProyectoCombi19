@@ -22,7 +22,7 @@ app.secret_key = 'esto-es-una-clave-muy-secreta'
 app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
 app.add_url_rule("/registrar_usuario","register", usuario.render_register)
 app.add_url_rule("/home","home", usuario.render_home)
-app.add_url_rule("/contacto","contacto", usuario.contacto)
+app.add_url_rule("/contacto","contacto", usuario.render_contacto)
 
 #Esto es para cuando ingresan a la pagina, si su id no esta en Session los tira al template login, sino entran a la pagina (#)
 @app.route('/')
@@ -43,7 +43,6 @@ def registrar():
     fechaNac = datetime.strptime(nacimiento, "%Y-%m-%d")
     fecha = fechaNac + relativedelta(years=+18)
     hoy = datetime.today()
-    print (type(fecha))
     if (fecha <= hoy):
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO usuario (nombre, apellido, username, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, apellido, username, email, fechaNac, password))

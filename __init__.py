@@ -111,7 +111,7 @@ def autenticarCliente():
             flash("Correo o clave incorrecta", "error")
             return redirect(url_for("login_client"))
 
-#--------------- ABM CHOFER ---------------
+#--------------- ABM CHOFER --------------- CHOFER = PERSONAL_EMPRESA HAY QUE CAMBIAR LOS NOMBRES DE LOS METODOS Y SUS LLAMADOS
 @app.route("/altaChofer" , methods=["POST"])
 def altaChofer():
     if (request.method == "POST"):

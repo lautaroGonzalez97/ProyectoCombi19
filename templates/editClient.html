@@ -35,55 +35,42 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center form_container">
-                    <form action="/altaUsuario" method="POST">
+                    <form action="/actualizarCliente/{{cliente.0}}" method="POST">
                         <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text" name="nombre" class="form-control input_user" value=""
+                            <input type="text" name="nombre" class="form-control input_user" value="{{cliente.1}}"
                                 placeholder="nombre completo" required>
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text" name="apellido" class="form-control input_user" value=""
+                            <input type="text" name="apellido" class="form-control input_user" value="{{cliente.2}}"
                                 placeholder="apellido" required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text" name="email" class="form-control input_user" value=""
+                            <input type="text" name="email" class="form-control input_user" value="{{cliente.3}}"
                                 placeholder="email" required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="Date" name="fechaNacimiento" class="form-control input_user" value=""
+                            <input type="Date" name="fechaNacimiento" class="form-control input_user" value="{{cliente.4}}"
                                 placeholder="fecha nacimiento" required>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" name="password" class="form-control input_pass" value=""
+                            <input type="password" name="password" class="form-control input_pass" value="{{cliente.5}}"
                                 placeholder="contraseña" required>
                         </div>
-                        <!-- <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
-                            </div>
-                            <input type="password" name="passwordrep" class="form-control input_pass" value=""
-                                placeholder="repetir contraseña" required>
-                        </div> -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="tipo" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Quiero ser Usuario Gold
-                            </label>
-                        </div>
                         <div class="d-flex justify-content-center mt-3 login_container">
-                            <button type="submit" name="button" class="btn login_btn">Registrarme</button>
+                            <button type="submit" name="button" class="btn login_btn">Guardar cambios</button>
                         </div>
                     </form>
                 </div>
@@ -91,7 +78,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%;">
-        <a href= "{{url_for('login')}}" class="btn va_btn">Volver Atras</a>
+        <a href= "{{url_for('home')}}" class="btn va_btn">Volver Atras</a> <!-- ver a donde tiene que regresar cuando vuelve para atras -->
     </div>
 </body>
 

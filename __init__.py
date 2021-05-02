@@ -21,12 +21,11 @@ app.secret_key = 'esto-es-una-clave-muy-secreta'
 #Rutas Usuarios
 #app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
 # app.add_url_rule("/registrar_usuario","register", usuario.render_register)
-app.add_url_rule("/home","home", usuario.render_home)
+app.add_url_rule("/home","home", usuario.render_home) #Hay que mandarle un identificador para tipo y ese identificador despues es evaluado en el html para ver que home muestra
 app.add_url_rule("/contacto","contacto", usuario.render_contacto)
 #Rutas de para renderizar templates
 app.add_url_rule("/iniciar_sesion","login_client", usuario.render_login_client)
 app.add_url_rule("/registrar_usuario","add_client", usuario.render_register_client)
-app.add_url_rule("/home","home", usuario.render_home)
 app.add_url_rule("/contacto","contact", usuario.render_contacto)
 app.add_url_rule("/alta_chofer","add_chofer", usuario.render_altaChofer)
 app.add_url_rule("/iniciar_sesion_personalEmpresa","login_personal_empresa", usuario.render_login_personal_empresa)
@@ -51,6 +50,8 @@ def altaUsuario():
         fechaNac = datetime.strptime(nacimiento, "%Y-%m-%d")
         fecha = fechaNac + relativedelta(years=+18)
         hoy = datetime.today()
+        if datos['tipo'] == 'isTrue':
+            return render_template("datosTarjeta.html")
         if (fecha <= hoy):
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO cliente (nombre, apellido, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s)", 
@@ -179,7 +180,10 @@ def autenticarChofer ():
         idUser = cur.execute("SELECT id FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
         if (idUser != 0):
             session["id"] = idUser
-            return redirect(url_for("home"))
+            if datos['tipo'] == 'isTrue':
+                return redirect(url_for("home"))
+            else:   
+                return redirect(url_for("home"))
         else:
             flash("Correo o clave incorrecta", "error")
             return redirect(url_for("login_personal_empresa"))

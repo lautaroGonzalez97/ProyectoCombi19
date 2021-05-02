@@ -19,17 +19,17 @@ mysql = MySQL(app)
 app.secret_key = 'esto-es-una-clave-muy-secreta'
 
 #Rutas Usuarios
-app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
-app.add_url_rule("/registrar_usuario","register", usuario.render_register)
+#app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
+# app.add_url_rule("/registrar_usuario","register", usuario.render_register)
 app.add_url_rule("/home","home", usuario.render_home)
 app.add_url_rule("/contacto","contacto", usuario.render_contacto)
 #Rutas de para renderizar templates
 app.add_url_rule("/iniciar_sesion","login_client", usuario.render_login_client)
-app.add_url_rule("/registrar_usuario","add_user", usuario.render_register)
+app.add_url_rule("/registrar_usuario","add_client", usuario.render_register_client)
 app.add_url_rule("/home","home", usuario.render_home)
 app.add_url_rule("/contacto","contact", usuario.render_contacto)
 app.add_url_rule("/alta_chofer","add_chofer", usuario.render_altaChofer)
-app.add_url_rule("/iniciar_sesion_personalEmpresa","login_chofer", usuario.render_login_chofer)
+app.add_url_rule("/iniciar_sesion_personalEmpresa","login_personal_empresa", usuario.render_login_personal_empresa)
 
 #Esto es para cuando ingresan a la pagina, si su id no esta en Session los tira al template login, sino entran a la pagina (#)
 @app.route('/')
@@ -60,7 +60,7 @@ def altaUsuario():
             return redirect(url_for("login_client"))
         else:
             flash("Edad invalida para registrarse", "error")
-            return redirect(url_for("add_user"))
+            return redirect(url_for("add_client"))
 
 @app.route("/bajaCliente/<id>")
 def bajaCliente(id):
@@ -182,7 +182,7 @@ def autenticarChofer ():
             return redirect(url_for("home"))
         else:
             flash("Correo o clave incorrecta", "error")
-            return redirect(url_for("login_chofer"))
+            return redirect(url_for("login_personal_empresa"))
 
 @app.route ("/logOut")
 def logOut():

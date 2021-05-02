@@ -1,5 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 <p class = 'homeLetra'>COMBI-19 te ofrece los mejores servicios, velocidad y acceso facil a un viaje que te represente: por trabajo, por urgencia o simplemente para disfrutar de un fin de semana. ELEGINOS</p>
-
+    { % if es_chofer % }
+        <div>
+            muestra home chofer
+        </div>
+    { % else % }
+        <div>
+            muestra el admin
+        </div> 
+    { % endif % }
 {% endblock %}

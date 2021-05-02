@@ -16,8 +16,6 @@ def render_contacto():
     if (authenticated(session)):
         return render_template('contacto.html')
     return redirect(url_for('login'))
-<<<<<<< HEAD
-=======
 
 def render_altaChofer():
     if (authenticated(session)):
@@ -26,4 +24,3 @@ def render_altaChofer():
 
 def render_login_chofer():
     return render_template("login_personal.html")
->>>>>>> Develop

@@ -18,13 +18,11 @@ mysql = MySQL(app)
 
 app.secret_key = 'esto-es-una-clave-muy-secreta'
 
-<<<<<<< HEAD
 #Rutas Usuarios
 app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
 app.add_url_rule("/registrar_usuario","register", usuario.render_register)
 app.add_url_rule("/home","home", usuario.render_home)
 app.add_url_rule("/contacto","contacto", usuario.render_contacto)
-=======
 #Rutas de para renderizar templates
 app.add_url_rule("/iniciar_sesion","login_client", usuario.render_login_client)
 app.add_url_rule("/registrar_usuario","add_user", usuario.render_register)
@@ -32,7 +30,6 @@ app.add_url_rule("/home","home", usuario.render_home)
 app.add_url_rule("/contacto","contact", usuario.render_contacto)
 app.add_url_rule("/alta_chofer","add_chofer", usuario.render_altaChofer)
 app.add_url_rule("/iniciar_sesion_personalEmpresa","login_chofer", usuario.render_login_chofer)
->>>>>>> Develop
 
 #Esto es para cuando ingresan a la pagina, si su id no esta en Session los tira al template login, sino entran a la pagina (#)
 @app.route('/')
@@ -41,30 +38,6 @@ def index():
         return redirect(url_for("login_client"))
     return redirect(url_for('home'))
 
-<<<<<<< HEAD
-@app.route("/registrar" , methods=["POST"])
-def registrar():
-    datos = request.form
-    nombre = datos["nombre"]
-    apellido = datos["apellido"]
-    username = ["username"]
-    email = datos["email"]
-    nacimiento = datos["fechaNacimiento"]
-    password = datos["password"]
-    fechaNac = datetime.strptime(nacimiento, "%Y-%m-%d")
-    fecha = fechaNac + relativedelta(years=+18)
-    hoy = datetime.today()
-    if (fecha <= hoy):
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO usuario (nombre, apellido, username, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s, %s)", (nombre, apellido, username, email, fechaNac, password))
-        mysql.connection.commit()
-        flash("Registrado correctamente", "success")
-        return redirect(url_for("login"))
-    else:
-        flash("Edad invalida para registrarse", "error")
-        return redirect(url_for("register"))
-    
-=======
 #--------------- ABM CLIENTE ---------------
 @app.route("/altaUsuario" , methods=["POST"])
 def altaUsuario():
@@ -165,7 +138,6 @@ def bajaChofer(id):
     cur.execute("DELETE FROM personal_empresa WHERE id = {0}".format(id))
     mysql.connection.commit()
     return redirect(url_for("login_client")) #refresca la pagina y no esta mas el chofer que elimino
->>>>>>> Develop
 
 @app.route("/autenticar" , methods=["POST"])
 def autenticar ():
@@ -173,15 +145,6 @@ def autenticar ():
     email = datos["email"]
     password = datos["password"]
     cur = mysql.connection.cursor()
-<<<<<<< HEAD
-    idUser = cur.execute("SELECT id FROM usuario WHERE (email = %s) and (password = %s)", (email, password))
-    if (idUser != 0):
-        session["id"] = idUser
-        return redirect(url_for("home"))
-    else:
-        flash("Correo o clave incorrecta", "error")
-        return redirect(url_for("login"))
-=======
     cur.execute("SELECT * FROM personal_empresa WHERE id = %s", (id,))
     data = cur.fetchall()
     if (authenticated(session)): #ARREGLAR ESTO QUE QUEDA CHANCHO, TENDRIA QUE ESTAR EN USUARIO.RENDER_EDITARCHOFER
@@ -204,7 +167,6 @@ def actualizarChofer(id):
         mysql.connection.commit()
         flash("Actualizacion exitosa")
         return redirect(url_for("home")) #vuelvo a la lista de choferes (falta hacer) 
->>>>>>> Develop
 
 #------------------ login chofer ------------------
 @app.route("/autenticarChofer" , methods=["POST"])

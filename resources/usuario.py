@@ -24,3 +24,8 @@ def render_altaChofer():
 
 def render_login_chofer():
     return render_template("login_personal.html")
+
+def render_altaCombi():
+    if (authenticated(session)):
+        return render_template('addCombi.html')
+    return redirect(url_for('login'))    

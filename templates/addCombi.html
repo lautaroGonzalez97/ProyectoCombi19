@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='style_addChofer.css')}}">
+
+<div >
+    <form action="/altaCombi" , method="POST">
+        <div style="width:100%;">
+            <p>Patente</p>
+            <input type="text" name="Patente" value="">
+        </div>
+        <br>
+        <div style="width:100%;">
+            <p>Año</p>
+            <input type="text" name="Año" value="">
+        </div>
+        <br>
+        <div style="width:100%;">
+            <p>Modelo</p>
+            <input type="text" name="Modelo" value="">
+        </div>
+        <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="submit" name="button" class="btn login_btn">Continuar</button>
+        </div>
+    </form> 
+</div>
+
+{% endblock %}

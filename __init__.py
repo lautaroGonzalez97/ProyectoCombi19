@@ -166,9 +166,6 @@ def actualizarChofer(id):
 
 
 
-
-
-
 #------------------ login chofer ------------------
 @app.route("/autenticarChofer" , methods=["POST"])
 def autenticarChofer ():
@@ -231,7 +228,7 @@ def actualizarCombi(id):
         cur.execute("UPDATE combis SET patente = %s, año = %s, modelo = %s", (patente, año, modelo))
         mysql.connection.commit()
         flash("Actualizacion exitosa")
-        return redirect(url_for("listarCombis")) #vuelvo a la lista de choferes (falta hacer)     
+        return redirect(url_for("listarCombis")) #vuelvo a la lista de combis     
 
 
 #----------- LISTAR ------------------
@@ -246,7 +243,7 @@ def listarCombis():
 
 #---chofer---
 @app.route("/listarChoferes")
-def listarChofer():
+def listarChoferes():
     cur=  mysql.connection.cursor()
     cur.execute(" SELECT * FROM personal_empresa")
     data= cur.fetchall()

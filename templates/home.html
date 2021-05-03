@@ -1,20 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-<p class = 'homeLetra'>COMBI-19 te ofrece los mejores servicios, velocidad y acceso facil a un viaje que te represente: por trabajo, por urgencia o simplemente para disfrutar de un fin de semana. ELEGINOS</p>
-<a href="{{url_for('add_chofer')}}">Agregar Chofer</a> <br>
-<a href="/actualizarChofer">Editar Chofer</a>    
-    
-
-<!-- { % if tipo == cliente % }
-        <div>
-            muestra home cliente
-        </div>
-    { % else % }
-        muestra chofer
-        { % if tipo == admin % }
-            <div>
-                <a href="/editChofer">Editar Chofer</a>
-            </div> 
-        { % endif % }
-    { % endif % } -->
+    {% block panel%}
+        
+    {% endblock %}
+    <p class = 'homeLetra'>COMBI-19 te ofrece los mejores servicios, velocidad y acceso facil a un viaje que te represente: por trabajo, por urgencia o simplemente para disfrutar de un fin de semana. ELEGINOS</p>
 {% endblock %}

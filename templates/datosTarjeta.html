@@ -1,12 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+    <title>COMBI-19</title>
 </head>
+
 <body>
-    <h1>Aca va el formulario para cargar los datos de la tarjeta</h1>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 1%;">
+		<div class="col-4" style="text-align: center;">	
+			{% with messages= get_flashed_messages(category_filter=["error"])%}
+			{% if messages %}
+			{% for messages in messages%}
+				<div class="alert alert-danger" role="alert">
+				{{ messages }}
+				</div>
+			{% endfor %}
+			{% endif %}
+		{% endwith %}
+		</div>
+	</div>
+    <div class="container h-100" style="margin-top: 10%;">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <div class="brand_logo_container">
+                        <img src="{{ url_for ('static', filename='logo.png') }}" class="brand_logo" alt="Logo">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form action="/agregarTarjeta/{{id}}" method="POST">
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="nombre" class="form-control input_user" value=""
+                                placeholder="Nombre de la tarjeta" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="numero" class="form-control input_user" value=""
+                                placeholder="Numero de la tarjeta" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="date" name="fechaVencimiento" class="form-control input_user" value="" placeholder="Fecha de vencimiento" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="codSeguridad" class="form-control input_user" value=""
+                                placeholder="Codigo de seguridad" required>
+                        </div>
+                        <!-- <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="passwordrep" class="form-control input_pass" value=""
+                                placeholder="repetir contraseña" required>
+                        </div> -->
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="submit" name="button" class="btn login_btn">Agregar Tarjeta</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%;">
+        <a href= "{{url_for('login_client')}}" class="btn va_btn">Volver Atras</a>
+    </div>
 </body>
+
 </html>

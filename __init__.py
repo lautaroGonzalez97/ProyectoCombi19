@@ -37,6 +37,15 @@ def index():
         return redirect(url_for("login_client"))
     return redirect(url_for('home'))
 
+
+@app.route('/contactos')
+def contactos():
+    return redirect(url_for('contacto'))
+
+@app.route('/homePersonalEmpresa')
+def homePersonalEmpresa():
+    return render_template('homePersonalEmpresa.html')
+
 #--------------- ABM CLIENTE ---------------
 @app.route("/altaUsuario" , methods=["POST"])
 def altaUsuario():
@@ -50,13 +59,16 @@ def altaUsuario():
         fechaNac = datetime.strptime(nacimiento, "%Y-%m-%d")
         fecha = fechaNac + relativedelta(years=+18)
         hoy = datetime.today()
-        if datos['tipo'] == 'isTrue':
-            return render_template("datosTarjeta.html")
+        #Falta validar el tema de que la contrasenia tenga 6 caracteres y que el email no exista en la bd
         if (fecha <= hoy):
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO cliente (nombre, apellido, email, fechaNacimiento, password) VALUES (%s, %s, %s, %s, %s)", 
                 (nombre, apellido, email, fechaNac, password))
             mysql.connection.commit()
+            if request.form.get('tipo') == 'isTrue':
+                # recuperar id
+                idClient = cur.execute ("SELECT id FROM cliente WHERE email = %s", (email,))
+                return render_template("datosTarjeta.html", id = idClient)
             flash("Registro exitoso", "success")
             return redirect(url_for("login_client"))
         else:
@@ -99,6 +111,25 @@ def actualizarCliente(id):
             return redirect(url_for("home")) #vuelvo a la lista de usuarios (falta hacer)
         return redirect(url_for("home"))
 
+#------------------ Alta de Tarjeta para Cliente -------------------
+@app.route ("/agregarTarjeta/<id>", methods=["POST"])
+def agregarTarjeta(id):
+    if (request.method == "POST"):
+        datos = request.form
+        nombre = datos["nombre"]
+        numero = datos["numero"]
+        fechaVencimiento = datos["fechaVencimiento"]
+        codSeguridad = datos["codSeguridad"]
+        # if (numero.length() == 16):
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO tarjeta_credito (nombre,numero,codSeguridad,id_cliente,fechaVencimiento) VALUES (%s,%s,%s,%s,%s)", (nombre,numero,codSeguridad,id,fechaVencimiento))
+        cur.connection.commit()
+        flash("Registro exitoso", "success")
+        return redirect(url_for("login_client"))
+        # else:
+        #     flash("Numero de tarjeta incorrecto", "error")
+        #     return redirect(url_for("add_client"))
+
 #------------------ login cliente ------------------
 @app.route("/autenticarCliente" , methods=["POST"])
 def autenticarCliente():
@@ -115,7 +146,7 @@ def autenticarCliente():
             flash("Correo o clave incorrecta", "error")
             return redirect(url_for("login_client"))
 
-#--------------- ABM CHOFER --------------- CHOFER = PERSONAL_EMPRESA HAY QUE CAMBIAR LOS NOMBRES DE LOS METODOS Y SUS LLAMADOS
+#--------------- ABM PERSONAL DE LA EMPRESA --------------- CHOFER = PERSONAL_EMPRESA HAY QUE CAMBIAR LOS NOMBRES DE LOS METODOS Y SUS LLAMADOS
 @app.route("/altaChofer" , methods=["POST"])
 def altaChofer():
     if (request.method == "POST"):
@@ -181,9 +212,9 @@ def autenticarChofer ():
         if (idUser != 0):
             session["id"] = idUser
             if datos['tipo'] == 'isTrue':
-                return redirect(url_for("home"))
+                return redirect(url_for("home", tipo = administrado ))
             else:   
-                return redirect(url_for("home"))
+                return redirect(url_for("homePersonalEmpresa", tipo= chofer))
         else:
             flash("Correo o clave incorrecta", "error")
             return redirect(url_for("login_personal_empresa"))

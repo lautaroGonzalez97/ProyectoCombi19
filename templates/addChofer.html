@@ -3,12 +3,14 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
 <div class="container">
+    <div style="text-align: center;">
+        <h1>ALTA CHOFER</h1>
+    </div>
     <div class="main">
         <div class="main-center">
-        <h5>Alta de chofer</h5>
             <form class="" action="/altaChofer" method= "POST">
                 
                 <div class="form-group">
@@ -52,12 +54,12 @@
                 </div>
                 
                 <br>
-        <button type="submit">Aceptar</button>
-                
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button type="submit" name="button" class="btn login_btn">Agregar</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
-
 
 {% endblock %}

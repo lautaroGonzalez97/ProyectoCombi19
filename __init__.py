@@ -27,7 +27,7 @@ app.add_url_rule("/iniciar_sesion","login_client", usuario.render_login_client)
 app.add_url_rule("/registrar_usuario","add_client", usuario.render_register_client)
 app.add_url_rule("/contacto","contact", usuario.render_contacto)
 app.add_url_rule("/alta_chofer","add_chofer", usuario.render_altaChofer)
-app.add_url_rule("/iniciar_sesion_personalEmpresa","login_chofer", usuario.render_login_chofer)
+app.add_url_rule("/iniciar_sesion_personalEmpresa","login_personal", usuario.render_login_personal)
 app.add_url_rule("/alta_combi","add_combi", usuario.render_altaCombi)
 app.add_url_rule("/alta_insumo","add_insumo", usuario.render_altaInsumo)
 
@@ -52,6 +52,12 @@ def homeChofer():
 def homeAdmin():
     return render_template('homeAdmin.html') 
 
+
+#------valida que contraseña sea mayor que 6 e igual o menor que 16 --------
+def validarPassword(password):
+    if 6 < len(password) <= 16:
+        return True  
+    else: return False  
 #--------------- ABM CLIENTE ---------------
 @app.route("/altaUsuario" , methods=["POST"])
 def altaUsuario():
@@ -75,26 +81,13 @@ def altaUsuario():
                 idClient = cur.execute ("SELECT id FROM cliente WHERE email = %s", (email,))
                 return render_template("datosTarjeta.html", idC = idClient)
                 # Deberia ejecutarse y luego agregar el usuario. Si carga mal la tarjeta no tendria que cargarse el usuario 
-            flash("Registro exitoso", "success")
             return redirect(url_for("login_client"))
         else:
             if (fecha > hoy):
-                flash("Edad invalida para registrarse", "error")
                 return redirect(url_for("add_user"))
             else:
-                flash("La contraseña debe superar los 6 caracteres", "error")
                 return redirect(url_for("add_user"))
-
-
-#------valida que contraseña sea mayor que 6 e igual o menor que 16 --------
-def validarPassword(password):
-    if 6 < len(password) <= 16:
-        return True  
-    else: return False        
-
-
-
-
+      
 @app.route("/bajaCliente/<id>")
 def bajaCliente(id):
     cur = mysql.connection.cursor()
@@ -144,10 +137,8 @@ def agregarTarjeta(idC):
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO tarjeta_credito (nombre,numero,codSeguridad,id_cliente,fechaVencimiento) VALUES (%s,%s,%s,%s,%s)", (nombre,numero,codSeguridad,idC,fechaVencimiento))
             cur.connection.commit()
-            flash("Registro exitoso", "success")
             return redirect(url_for("login_client"))
         else:
-            flash("Numero de tarjeta incorrecto", "error")
             return redirect(url_for("add_client"))
 
 #------------------ login cliente ------------------
@@ -163,7 +154,6 @@ def autenticarCliente():
             session["id"] = idUser
             return redirect(url_for("home"))
         else:
-            flash("Correo o clave incorrecta", "error")
             return redirect(url_for("login_client"))
 
 #--------------- ABM PERSONAL DE LA EMPRESA --------------- CHOFER = PERSONAL_EMPRESA HAY QUE CAMBIAR LOS NOMBRES DE LOS METODOS Y SUS LLAMADOS
@@ -182,20 +172,15 @@ def altaChofer():
             cur.execute("INSERT INTO personal_empresa (nombre, apellido, email, telefono, password, tipo) VALUES (%s, %s, %s, %s, %s, %s)", 
                 (nombre, apellido, email, telefono, password, tipo))
             mysql.connection.commit()
-            flash("Alta de chofer exitosa", "success")
-            return redirect(url_for("home")) #vuelvo al template que me invoco
+            return redirect(url_for("listarChoferes")) #vuelvo al template que me invoco
         else: 
-            flash ("La Contraseña debe superar los 6 caracteres", "error")    # NO ESTA INFORMANDO EL ERROR DE LOS CARACTERES. PERO BIEN, NO HACE EL ALTA
             return redirect(url_for("add_chofer"))    
-       
-
 
 @app.route("/bajaChofer/<id>")    
 def bajaChofer(id):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM personal_empresa WHERE id = {0}".format(id))
     mysql.connection.commit()
-    flash ("Se elimino el chofer","success")
     return redirect(url_for("listarChoferes")) #refresca la pagina y no esta mas el chofer que elimino
 
 @app.route("/editarChofer/<id>")        
@@ -204,9 +189,7 @@ def getChofer(id):
     cur.execute("SELECT * FROM personal_empresa WHERE id = %s", (id,))
     data = cur.fetchall()
     if (authenticated(session)): #ARREGLAR ESTO QUE QUEDA CHANCHO, TENDRIA QUE ESTAR EN USUARIO.RENDER_EDITARCHOFER
-        flash ("Chofer editado exitosamente","success")
         return render_template('editChofer.html', chofer = data[0])
-    flash ("Chofer editado exitosamente","success")
     return redirect(url_for('listarChoferes'))
 
 @app.route("/actualizarChofer/<id>", methods=["POST"])          
@@ -222,35 +205,28 @@ def actualizarChofer(id):
         cur.execute("UPDATE personal_empresa SET nombre = %s, apellido = %s, email = %s, telefono = %s, password = %sWHERE id = %s ", 
             (nombre, apellido, email, telefono, password,id))
         mysql.connection.commit()
-        flash("Actualizacion exitosa")
-        return redirect(url_for("listarChoferes")) #vuelvo a la lista de choferes (falta hacer) 
+        data = choferes()
+        return render_template("listaChoferes.html", empleados = data) #vuelvo a la lista de choferes (falta hacer) 
 
-
-
-
-
-#------------------ login chofer ------------------
-@app.route("/autenticarChofer" , methods=["POST"])
-def autenticarChofer ():
+#------------------ login personal ------------------
+@app.route("/autenticarPersonal" , methods=["POST"])
+def autenticarPersonal ():
     if (request.method == "POST"):
         datos = request.form 
         email = datos["email"]
         password = datos["password"]
         cur = mysql.connection.cursor()
-        idUser = cur.execute("SELECT id FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
+        idUser = cur.execute("SELECT * FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
         tipo = cur.execute("SELECT tipo FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
         if (idUser != 0):
             session["id"] = idUser
             session["tipo"] = tipo
-            print (type(tipo))
-            print (tipo)
-            if tipo == 1:
+            if (tipo == 1):
                 return redirect(url_for("homeAdmin"))
             else:   
                 return redirect(url_for("homeChofer"))
         else:
-            flash("Correo o clave incorrecta", "error")
-            return redirect(url_for("login_personal_empresa"))
+            return redirect(url_for("login_personal"))
 
 
 
@@ -271,7 +247,6 @@ def altaCombi():
         cur.execute("INSERT INTO combi (modelo, patente, asiento, tipo, id_chofer) VALUES (%s, %s, %s, %s, %s)", 
             (modelo, patente, asientos_num, tipo, id_chofer))
         mysql.connection.commit()
-        flash("Alta de combi exitosa", "success")
         return redirect(url_for("home")) #vuelvo al template que me invoco
 
 @app.route("/editarCombi/<id>")      
@@ -305,7 +280,6 @@ def actualizarCombi(id):
         cur = mysql.connection.cursor()
         cur.execute("UPDATE combis SET modelo = %s, patente = %s, asientos = %s, tipo = %s, id_chofer = %s", (modelo, patente, asientos, tipo, id_chofer))
         mysql.connection.commit()
-        flash("Actualizacion exitosa")
         return redirect(url_for("listarCombis")) #vuelvo a la lista de combis     
 
 
@@ -351,7 +325,6 @@ def actualizarInsumo(id):
         cur = mysql.connection.cursor()
         cur.execute("UPDATE insumo SET nombre = %s, tipo = %s, precio = %s",( nombre, tipo, precio))
         mysql.connection.commit()
-        flash("Actualizacion exitosa")
         return redirect(url_for("listarInsumos")) #vuelvo a la lista de choferes (falta hacer)  
 
 
@@ -361,26 +334,36 @@ def actualizarInsumo(id):
 
 #---combi ---
 @app.route("/listarCombis")
-def listarCombis():
+def combis():
     cur=  mysql.connection.cursor()
     cur.execute(" SELECT * FROM combi")
     data= cur.fetchall()
+
+def listarCombis():
+    data = combis()
     return render_template('listaCombis.html', listaCombi = data)    
 
 #---chofer---
+def choferes ():
+    cur=  mysql.connection.cursor()
+    cur.execute(" SELECT * FROM personal_empresa WHERE tipo=2")
+    data= cur.fetchall()
+    return data
+
 @app.route("/listarChoferes")
 def listarChoferes():
-    cur=  mysql.connection.cursor()
-    cur.execute(" SELECT * FROM personal_empresa")
-    data= cur.fetchall()
+    data = choferes()
     return render_template('listaChoferes.html', empleados = data)
 
 #---Insunmo ---
 @app.route("/listarInsumos")
-def listarInsumos():
+def insumos():
     cur=  mysql.connection.cursor()
     cur.execute(" SELECT * FROM insumo")
     data= cur.fetchall()
+
+def listarInsumos():
+    data = insumos()
     return render_template('listaInsumos.html', listaInsumos = data)
 
 

@@ -22,7 +22,7 @@ def render_altaChofer():
         return render_template('addChofer.html')
     return redirect(url_for('login'))
 
-def render_login_chofer():
+def render_login_personal():
     return render_template("login_personal.html")
 
 def render_altaCombi():

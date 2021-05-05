@@ -42,9 +42,13 @@ def index():
 def contactos():
     return redirect(url_for('contacto'))
 
-@app.route('/homePersonalEmpresa')
-def homePersonalEmpresa():
-    return render_template('homePersonalEmpresa.html')
+@app.route('/homeChofer')
+def homeChofer():
+    return render_template('homeChofer.html')
+
+@app.route('/homeAdmin')
+def homeAdmin():
+    return render_template('homeAdmin.html') 
 
 #--------------- ABM CLIENTE ---------------
 @app.route("/altaUsuario" , methods=["POST"])
@@ -68,7 +72,8 @@ def altaUsuario():
             if request.form.get('tipo') == 'isTrue':
                 # recuperar id
                 idClient = cur.execute ("SELECT id FROM cliente WHERE email = %s", (email,))
-                return render_template("datosTarjeta.html", id = idClient)
+                return render_template("datosTarjeta.html", idC = idClient)
+                # Deberia ejecutarse y luego agregar el usuario. Si carga mal la tarjeta no tendria que cargarse el usuario 
             flash("Registro exitoso", "success")
             return redirect(url_for("login_client"))
         else:
@@ -112,23 +117,23 @@ def actualizarCliente(id):
         return redirect(url_for("home"))
 
 #------------------ Alta de Tarjeta para Cliente -------------------
-@app.route ("/agregarTarjeta/<id>", methods=["POST"])
-def agregarTarjeta(id):
+@app.route ("/agregarTarjeta/<idC>", methods=["GET","POST"])
+def agregarTarjeta(idC):
     if (request.method == "POST"):
         datos = request.form
         nombre = datos["nombre"]
         numero = datos["numero"]
         fechaVencimiento = datos["fechaVencimiento"]
         codSeguridad = datos["codSeguridad"]
-        # if (numero.length() == 16):
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO tarjeta_credito (nombre,numero,codSeguridad,id_cliente,fechaVencimiento) VALUES (%s,%s,%s,%s,%s)", (nombre,numero,codSeguridad,id,fechaVencimiento))
-        cur.connection.commit()
-        flash("Registro exitoso", "success")
-        return redirect(url_for("login_client"))
-        # else:
-        #     flash("Numero de tarjeta incorrecto", "error")
-        #     return redirect(url_for("add_client"))
+        if (len(numero) == 16):
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO tarjeta_credito (nombre,numero,codSeguridad,id_cliente,fechaVencimiento) VALUES (%s,%s,%s,%s,%s)", (nombre,numero,codSeguridad,idC,fechaVencimiento))
+            cur.connection.commit()
+            flash("Registro exitoso", "success")
+            return redirect(url_for("login_client"))
+        else:
+            flash("Numero de tarjeta incorrecto", "error")
+            return redirect(url_for("add_client"))
 
 #------------------ login cliente ------------------
 @app.route("/autenticarCliente" , methods=["POST"])

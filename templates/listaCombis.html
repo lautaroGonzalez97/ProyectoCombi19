@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="section">
+    <div class="columns">
+        <div class="column">
+            <h3 class="is-size-3">Combis</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Patente</th>
+                        <th>Año</th>
+                        <th>Modelo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for combi in listaCombi %}
+                    <tr>
+                        <td>{{combi[1]}}</td>
+                        <td>{{combi[2]}}</td>
+                        <td>{{combi[3]}}</td>
+                        <td>
+                            <a href="/editarCombi/{{combi[0]}} "> Editar</a> 
+                            <a href="/bajaCombi/{{combi[0]}}"> Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

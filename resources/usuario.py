@@ -22,5 +22,11 @@ def render_altaChofer():
         return render_template('addChofer.html')
     return redirect(url_for('login'))
 
-def render_login_personal_empresa():
+def render_login_chofer():
     return render_template("login_personal.html")
+
+def render_altaCombi():
+    return render_template('addCombi.html')  
+
+def render_altaInsumo():
+    return render_template('addInsumo.html')    

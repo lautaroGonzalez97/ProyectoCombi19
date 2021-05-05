@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -8,46 +9,46 @@
 <div class="container">
     <div class="main">
         <div class="main-center">
-        <h5>Alta de chofer</h5>
-            <form class="" action="/altaChofer" method= "POST">
+        <h5>Alta de combi</h5>
+            <form class="" action="/altaCombi" method= "POST">
                 
                 <div class="form-group">
-                    <label for="nombre">Nombre</label>
+                    <label for="modelo">Modelo</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre"/>
+        <input type="text" class="form-control" name="modelo" placeholder="Ingrese Modelo"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="apellido">Apellido</label>
+                    <label for="patente">Patente</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" name="apellido" placeholder="Ingrese apellido"/>
+        <input type="text" class="form-control" name="patente" placeholder="Ingrese patente"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="asientos">Asientos</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="email" placeholder="Ingrese email"/>
+                            <input type="text" class="form-control" name="asientos" placeholder="Ingrese cantidad de asientos"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="telefono">Telefono</label>
+                    <label for="tipo">Tipo</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="telefono" placeholder="Ingrese telefono"/>
+                            <input type="text" class="form-control" name="tipo" placeholder="Ingrese tipo de asiento"/>
                         </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Contraseña</label>
+                    <label for="id_chofer">Chofer</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="password" placeholder="Ingrese contraseña"/>
+                            <input type="text" class="form-control" name="id_chofer" placeholder="Ingrese el id de chofer"/>
                         </div>
                 </div>
                 <br>

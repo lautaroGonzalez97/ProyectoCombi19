@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="section">
+    <div class="columns">
+        <div class="column">
+            <h3 class="is-size-3">Choferes</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empleado in empleados %}
+                    <tr>
+                        <td>{{empleado[1]}}</td>
+                        <td>{{empleado[2]}}</td>
+                        <td>{{empleado[3]}}</td>
+                        <td>{{empleado[4]}}</td>
+                        <td>
+                            <a href="/editarChofer/{{empleado[0]}} "> Editar</a> 
+                            <a href="/bajaChofer/{{empleado[0]}}"> Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

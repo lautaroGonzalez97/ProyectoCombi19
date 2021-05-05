@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<link rel="stylesheet" href="{{url_for('static', filename='style_addChofer.css')}}">
+<!-- <link rel="stylesheet" href="{{url_for('static', filename='style_addChofer.css')}}"> -->
 
 <div>
+    <h3 class="is-size-3">Editar chofer</h3>
+    <br>
     <form action="/actualizarChofer/{{chofer.0}}", method="POST">
         <div style="width:100%;">
             <p>Nombre</p>
@@ -21,8 +23,8 @@
         </div>
         <br>
         <div style="width:100%">
-            <p>Documento</p>
-            <input type="text" name="documento" value="{{chofer.4}}">
+            <p>Telefono</p>
+            <input type="text" name="telefono" value="{{chofer.4}}">
         </div>
         <br>
         <div style="width:100%">

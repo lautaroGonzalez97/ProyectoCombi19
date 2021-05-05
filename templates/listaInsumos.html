@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="section">
+    <div class="columns">
+        <div class="column">
+            <h3 class="is-size-3">Insumos</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for insumo in listaInsumos %}
+                    <tr>
+                        <td>{{insumo[1]}}</td>
+                        <td>{{insumo[2]}}</td>
+                        <td>{{insumo[3]}}</td>
+                        <td>
+                            <a href="/editarInsumo/{{insumo[0]}} "> Editar</a> 
+                            <a href="/bajaInsumo/{{insumo[0]}}"> Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -176,10 +176,11 @@ def altaChofer():
         email = datos["email"]
         telefono = datos["telefono"]
         password = datos["password"]
+        tipo = 2
         if (len(password) > 6):
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO personal_empresa (nombre, apellido, email, telefono, password) VALUES (%s, %s, %s, %s, %s)", 
-                (nombre, apellido, email, telefono, password))
+            cur.execute("INSERT INTO personal_empresa (nombre, apellido, email, telefono, password, tipo) VALUES (%s, %s, %s, %s, %s, %s)", 
+                (nombre, apellido, email, telefono, password, tipo))
             mysql.connection.commit()
             flash("Alta de chofer exitosa", "success")
             return redirect(url_for("home")) #vuelvo al template que me invoco
@@ -194,7 +195,8 @@ def bajaChofer(id):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM personal_empresa WHERE id = {0}".format(id))
     mysql.connection.commit()
-    return redirect(url_for("listarChofer")) #refresca la pagina y no esta mas el chofer que elimino
+    flash ("Se elimino el chofer","success")
+    return redirect(url_for("listarChoferes")) #refresca la pagina y no esta mas el chofer que elimino
 
 @app.route("/editarChofer/<id>")        
 def getChofer(id):
@@ -202,7 +204,9 @@ def getChofer(id):
     cur.execute("SELECT * FROM personal_empresa WHERE id = %s", (id,))
     data = cur.fetchall()
     if (authenticated(session)): #ARREGLAR ESTO QUE QUEDA CHANCHO, TENDRIA QUE ESTAR EN USUARIO.RENDER_EDITARCHOFER
+        flash ("Chofer editado exitosamente","success")
         return render_template('editChofer.html', chofer = data[0])
+    flash ("Chofer editado exitosamente","success")
     return redirect(url_for('listarChoferes'))
 
 @app.route("/actualizarChofer/<id>", methods=["POST"])          
@@ -219,7 +223,7 @@ def actualizarChofer(id):
             (nombre, apellido, email, telefono, password,id))
         mysql.connection.commit()
         flash("Actualizacion exitosa")
-        return redirect(url_for("listarChofer")) #vuelvo a la lista de choferes (falta hacer) 
+        return redirect(url_for("listarChoferes")) #vuelvo a la lista de choferes (falta hacer) 
 
 
 
@@ -234,12 +238,16 @@ def autenticarChofer ():
         password = datos["password"]
         cur = mysql.connection.cursor()
         idUser = cur.execute("SELECT id FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
+        tipo = cur.execute("SELECT tipo FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
         if (idUser != 0):
             session["id"] = idUser
-            if datos['tipo'] == 'isTrue':
-                return redirect(url_for("home", tipo = administrado ))
+            session["tipo"] = tipo
+            print (type(tipo))
+            print (tipo)
+            if tipo == 1:
+                return redirect(url_for("homeAdmin"))
             else:   
-                return redirect(url_for("homePersonalEmpresa", tipo= chofer))
+                return redirect(url_for("homeChofer"))
         else:
             flash("Correo o clave incorrecta", "error")
             return redirect(url_for("login_personal_empresa"))

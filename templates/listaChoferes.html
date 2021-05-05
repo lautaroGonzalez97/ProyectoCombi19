@@ -1,10 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
 <section class="section">
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with errors= get_flashed_messages(category_filter=["error"])%}
+				{% if errros %}
+					{% for messages in errors%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with success= get_flashed_messages(category_filter=["success"])%}
+				{% if success %}
+					{% for messages in success%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+    <div style="text-align: center;">
+        <h1>CHOFERES</h1>
+    </div>
     <div class="columns">
         <div class="column">
-            <h3 class="is-size-3">Choferes</h3>
+
+            <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+                <a href= "{{url_for('add_chofer')}}" class="btn va_btn">Agregar</a>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -12,6 +42,7 @@
                         <th>Apellido</th>
                         <th>Email</th>
                         <th>Telefono</th>
+                        <th>Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,14 +53,18 @@
                         <td>{{empleado[3]}}</td>
                         <td>{{empleado[4]}}</td>
                         <td>
-                            <a href="/editarChofer/{{empleado[0]}} "> Editar</a> 
-                            <a href="/bajaChofer/{{empleado[0]}}"> Eliminar</a>
+                            <div >
+                                <a style="margin-right: 1%;" href= "/editarChofer/{{empleado[0]}} " class="btn va_btn">Editar</a>
+                                <a href= "/bajaChofer/{{empleado[0]}}" class="btn va_btn">Eliminar</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+        <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+            <a href= "/homeAdmin" class="btn va_btn">Volver Atras</a>
     </div>
 </section>
 

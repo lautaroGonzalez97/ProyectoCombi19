@@ -1,26 +1,31 @@
-{% extends "homeChofer.html" %}
-{% block panel_Chofer%}
+{% extends "layout.html" %}
+{% block content %}
+    {% block panel%}
 
-<link rel="stylesheet" href="{{ url_for ('static', filename='style_layout.css') }}">
+    {% endblock %}
+    <link rel="stylesheet" href="{{ url_for ('static', filename='style_layout.css') }}">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/homeAdmin"><img src="{{ url_for ('static', filename='logo.png') }}" width="120" height="120"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav m-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/listarChoferes"> CHOFER </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active cierre" href="/logOut"> CERRAR SESION </a>
-                    </li>
-                </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{url_for('home_admin')}}"><img src="{{ url_for ('static', filename='logo.png') }}" width="120" height="120"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav m-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{url_for('listado_chofer')}}"> CHOFER </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{url_for('listado_insumos')}}"> INSUMOS </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active cierre" href="{{url_for('logOut_personal')}}"> Cerrar Sesion </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>     
+        </nav>     
 {% endblock %}

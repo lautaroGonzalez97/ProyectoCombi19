@@ -8,6 +8,7 @@ class Personal(db.Model):
     email = db.Column(db.String(255))
     telefono = db.Column(db.Integer)
     password = db.Column(db.String(255))
+    tipo = db.Column(db.Integer)
 
     def __init__(self, nombre, apellido, email, telefono, password):
         self.nombre = nombre
@@ -15,18 +16,41 @@ class Personal(db.Model):
         self.email = email
         self.telefono = telefono
         self.password = password
+        self.tipo = 2
 
 
     #aca van las asociaciones entre las tablas, averiguar
+    def all():
+        personal = Personal.query.all()
+        return personal
 
-    def idUsuario(self):
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return True
+
+    def actualizar(self):
+        db.session.commit()
+        return True
+
+    def idPersonal(self):
         personal = self.query.filter_by(email=self.email)
         idPersonal = personal.first().id
         return idPersonal
 
+    def tipoPersonal(self):
+        personal = self.query.filter_by(email=self.email)
+        tipoPersonal = personal.first().tipo
+        return tipoPersonal
+
     def buscarEmailPassword(unEmail, unaPass):
         personal = Personal.query.filter_by(email=unEmail, password=unaPass)
         if (personal.count() == 1):
-            return personal.first().idUsuario()
+            resultado = [personal.first().idPersonal(), personal.first().tipoPersonal()]
+            return resultado
         else:
             return None
+
+    def buscarChoferPorId(id):
+        chofer = Personal.query.filter_by(id=id).first()
+        return chofer

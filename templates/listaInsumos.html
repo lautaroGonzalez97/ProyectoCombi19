@@ -1,34 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
 <section class="section">
+    <div style="text-align: center;">
+        <h1>INSUMOS</h1>
+    </div>
     <div class="columns">
         <div class="column">
-            <h3 class="is-size-3">Insumos</h3>
-            <table class="table">
+            <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+                <a href= "{{url_for('render_alta_insumo')}}" class="btn va_btn">Agregar</a>
+            </div>
+            <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Precio</th>
-                        <th>Operaciones</th>
+                        <th style="text-align: center">Nombre</th>
+                        <th style="text-align: center">Tipo</th>
+                        <th style="text-align: center">Precio</th>
+                        <th style="text-align: center">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for insumo in listaInsumos %}
+                    {% for insumo in insumos %}
                     <tr>
-                        <td>{{insumo[1]}}</td>
-                        <td>{{insumo[2]}}</td>
-                        <td>{{insumo[3]}}</td>
-                        <td>
-                            <a href="/editarInsumo/{{insumo[0]}} "> Editar</a> 
-                            <a href="/bajaInsumo/{{insumo[0]}}"> Eliminar</a>
+                        <td style="text-align: center">{{insumo.nombre}}</td>
+                        <td style="text-align: center">{{insumo.tipo}}</td>
+                        <td style="text-align: center">{{insumo.precio}}</td>
+                        <td style="text-align: center">
+                            <div style="text-align: center;">
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_insumo', id = insumo.id)}}" class="btn va_btn">Editar</a>
+                                <a href= "#" class="btn va_btn">Eliminar</a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+        <a href= "{{url_for('home_admin')}}" class="btn va_btn">Volver Atras</a>
     </div>
 </section>
 {% endblock %}

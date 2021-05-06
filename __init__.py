@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta #pip install python-dateutil
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
-from resources import cliente, personal
+from resources import cliente, personal, insumo
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
@@ -38,7 +38,21 @@ app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
 app.add_url_rule("/login_personal", "autenticar_personal", personal.autenticar, methods=["POST"])
 app.add_url_rule("/login_personal", "login_personal", personal.login)
 app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
-app.add_url_rule("/home_personal", "home_personal", personal.home)
+app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
+
+
+#Rutas Admin
+app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
+app.add_url_rule("/listado_choferes", "listado_chofer", personal.listado_chofer)
+app.add_url_rule("/alta_chofer", "render_alta_chofer", personal.render_alta_chofer)
+app.add_url_rule("/save_chofer", "alta_chofer", personal.alta_chofer, methods=["POST"])
+app.add_url_rule("/editar_chofer/<id>", "render_editar_chofer", personal.render_editar_chofer)
+app.add_url_rule("/saveEdit_chofer/<id>", "editar_chofer", personal.editar_chofer, methods=["POST"])
+app.add_url_rule("/listado_insumos", "listado_insumos", insumo.listado_insumos)
+app.add_url_rule("/alta_insumo", "render_alta_insumo", insumo.render_alta_insumo)
+app.add_url_rule("/save_insumo", "alta_insumo", insumo.alta_insumo, methods=["POST"])
+app.add_url_rule("/editar_insumo/<id>", "render_editar_insumo", insumo.render_editar_insumo)
+app.add_url_rule("/saveEdit_insumo/<id>", "editar_insumo", insumo.editar_insumo, methods=["POST"])
 
 
 def home ():

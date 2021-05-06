@@ -1,30 +1,47 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<!-- <link rel="stylesheet" href="{{url_for('static', filename='style_addChofer.css')}}">  -->
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
-<div>
-    <h3 class="is-size-3">Editar insumo</h3>
-    <br>
-    <form action="/actualizarInsumo/{{insumo.0}}", method="POST">
-        <div style="width:100%;">
-            <p>Nombre</p>
-            <input type="text" name="nombre" value="{{insumo.1}}">
+<div class="container">
+    <div style="text-align: center;">
+        <h1>EDITAR INSUMO</h1>
+    </div>
+    <div class="main">
+        <div class="main-center">
+            <form class="" action="{{url_for('editar_insumo', id = insumo.id)}}" method= "POST">
+                
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" value="{{insumo.nombre}}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" name="tipo" placeholder="Ingrese tipo" value="{{insumo.tipo}}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="precio" placeholder="Ingrese precio" value="{{insumo.precio}}"/>
+                    </div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Actualizar</button>
+                    <a href= "{{url_for('listado_insumos')}}" class="btn va_btn">Volver Atras</a>
+                </div>
+            </form>
         </div>
-        <br>
-        <div style="width:100%;">
-            <p>Tipo</p>
-            <input type="text" name="tipo" value="{{insumo.2}}">
-        </div>
-        <br>
-        <div style="width:100%;">
-            <p>Precio</p>
-            <input type="text" name="precio" value="{{insumo.3}}">
-        </div>
-        <div class="d-flex justify-content-center mt-3 login_container">
-            <button type="submit" name="button" class="btn login_btn">Actualizar</button>
-        </div>
-    </form> 
+    </div>
 </div>
 
 {% endblock %}

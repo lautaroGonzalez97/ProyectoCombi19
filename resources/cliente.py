@@ -5,8 +5,12 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 def verificarSesion():
-    if (not (authenticated(session))):
+    if (not authenticated(session) and (not session.get["tipo"] == "Cliente")):
         abort(401)
+
+def home():
+    verificarSesion()
+    return render_template("homeCliente.html")
 
 def login():
     if (authenticated(session)):
@@ -20,6 +24,9 @@ def logOut():
 
 def registrar():
     return render_template("addClient.html")
+
+def editar():
+    return render_template("editClient.html")
 
 def comprobarDatos(data):
     resultado = [True, ""]
@@ -47,12 +54,17 @@ def crear():
         fechaNac = datetime.strptime(fechaNacimiento, "%Y-%m-%d")
         fecha = fechaNac + relativedelta(years=+18)
         hoy = datetime.today() 
-        if (validarPassword(password) and (fecha <= hoy)):
-            new_cliente = Cliente(nombre, apellido, email, fechaNacimiento, password)
-            new_cliente.save()
-            return redirect(url_for("login_cliente"))
+        if (validarPassword(password)):
+            if (fecha <= hoy):
+                new_cliente = Cliente(nombre, apellido, email, fechaNacimiento, password)
+                new_cliente.save()
+                return redirect(url_for("login_cliente"))
+            else:
+                return redirect(url_for("render_altaCliente"))
         else:
             return redirect(url_for("render_altaCliente"))
+    else:
+        return redirect(url_for("render_altaCliente"))
 
 def autenticar():
     datos = request.form
@@ -64,10 +76,7 @@ def autenticar():
     print(idClient)
     if (idClient is not None):
         session["id"] = idClient
+        session["tipo"] = "Cliente"
         return redirect(url_for("home"))
     else:
         return redirect(url_for("login_cliente"))
-
-def home():
-    verificarSesion()
-    return render_template("homeCliente.html")

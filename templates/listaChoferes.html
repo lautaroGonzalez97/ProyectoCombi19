@@ -31,9 +31,8 @@
     </div>
     <div class="columns">
         <div class="column">
-
             <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
-                <a href= "{{url_for('add_chofer')}}" class="btn va_btn">Agregar</a>
+                <a href= "{{url_for('render_alta_chofer')}}" class="btn va_btn">Agregar</a>
             </div>
             <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
@@ -46,16 +45,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for empleado in empleados %}
+                    {% for empleado in choferes %}
                     <tr>
-                        <td style="text-align: center">{{empleado[1]}}</td>
-                        <td style="text-align: center">{{empleado[2]}}</td>
-                        <td style="text-align: center">{{empleado[3]}}</td>
-                        <td style="text-align: center">{{empleado[4]}}</td>
+                        <td style="text-align: center">{{empleado.nombre}}</td>
+                        <td style="text-align: center">{{empleado.apellido}}</td>
+                        <td style="text-align: center">{{empleado.email}}</td>
+                        <td style="text-align: center">{{empleado.telefono}}</td>
                         <td>
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "/editarChofer/{{empleado[0]}} " class="btn va_btn">Editar</a>
-                                <a href= "/bajaChofer/{{empleado[0]}}" class="btn va_btn">Eliminar</a>
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_chofer', id = empleado.id)}} " class="btn va_btn">Editar</a>
+                                <a href= "#" class="btn va_btn">Eliminar</a>
                             </div>
                         </td>
                     </tr>
@@ -64,7 +63,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
-            <a href= "/homeAdmin" class="btn va_btn">Volver Atras</a>
+            <a href= "{{url_for('home_admin')}}" class="btn va_btn">Volver Atras</a>
         </div>
 </section>
 

@@ -46,7 +46,7 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-center form_container">
-					<form action="/autenticarCliente" , method="POST">
+					<form action= "{{url_for('autenticar_cliente')}}", method="POST">
 						<div class="input-group mb-3">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -68,7 +68,7 @@
 				</div>
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
-						No tenes cuenta? <a href="{{url_for('add_client')}}" class="ml-2">Registrarme</a>
+						No tenes cuenta? <a href="{{url_for('render_altaCliente')}}" class="ml-2">Registrarme</a>
 					</div>
 				</div>
 			</div>

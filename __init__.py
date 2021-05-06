@@ -4,20 +4,51 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta #pip install python-dateutil
 #base de datos
 from flask_mysqldb import MySQL
+import db
 #funcionalidades
-from resources import usuario
+from resources import cliente, personal
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
-app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = ""
-app.config["MYSQL_DB"] = "combi_19"
+app.config["DB_HOST"] = "localhost"
+app.config["DB_USER"] = "root"
+app.config["DB_PASS"] = ""
+app.config["DB_NAME"] = "combi_19"
 mysql = MySQL(app)
+
+#Configure db
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://'+app.config["DB_USER"] + \
+        ':'+app.config["DB_PASS"]+'@' + \
+        app.config["DB_HOST"]+'/'+app.config["DB_NAME"]
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_db(app)
 
 app.secret_key = 'esto-es-una-clave-muy-secreta'
 
-#Rutas Usuarios
+#Rutas Clientes
+app.add_url_rule("/crear_cliente", "crear_cliente", cliente.crear, methods=["POST"])
+app.add_url_rule("/registrar_cliente", "render_altaCliente", cliente.registrar)
+app.add_url_rule("/login_cliente", "autenticar_cliente", cliente.autenticar, methods=["POST"])
+app.add_url_rule("/login_cliente", "login_cliente", cliente.login)
+app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
+app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
+
+
+#Rutas Personal
+app.add_url_rule("/login_personal", "autenticar_personal", personal.autenticar, methods=["POST"])
+app.add_url_rule("/login_personal", "login_personal", personal.login)
+app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
+app.add_url_rule("/home_personal", "home_personal", personal.home)
+
+
+def home ():
+    if ("id" not in session):
+        return redirect(url_for("login_cliente"))
+    return redirect(url_for("home_cliente"))
+
+app.add_url_rule("/", "home", home)
+
+'''#Rutas Usuarios
 #app.add_url_rule("/iniciar_sesion","login", usuario.render_login)
 # app.add_url_rule("/registrar_usuario","register", usuario.render_register)
 app.add_url_rule("/home","home", usuario.render_home) #Hay que mandarle un identificador para tipo y ese identificador despues es evaluado en el html para ver que home muestra
@@ -216,8 +247,10 @@ def autenticarPersonal ():
         email = datos["email"]
         password = datos["password"]
         cur = mysql.connection.cursor()
-        idUser = cur.execute("SELECT * FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
-        tipo = cur.execute("SELECT tipo FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
+        cur.execute("SELECT * FROM personal_empresa WHERE (email = %s) and (password = %s)", (email, password))
+        user = cur.fetchall()[0]
+        idUser = user[0]
+        tipo = user[6]
         if (idUser != 0):
             session["id"] = idUser
             session["tipo"] = tipo
@@ -376,7 +409,7 @@ def listarInsumos():
 def logOut():
     if (authenticated(session)):
         del session['id'] 
-    return redirect (url_for('login_client'))
+    return redirect (url_for('login_client'))'''
 
 if __name__ == '__main__':
     app.run(port= 8080, debug=True)

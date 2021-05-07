@@ -64,7 +64,9 @@ div{
 }
 
 .header {
-  background: url(fondoHome.png) no-repeat center;
+  background: #bdc3c7; 
+  background: -webkit-linear-gradient(to top, #063038, #bdc3c7);  
+  background: linear-gradient(to top, #063038, #bdc3c7);
   background-size: cover;
   min-height: 100vh;
 }

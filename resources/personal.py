@@ -43,22 +43,25 @@ def logOut():
         del session["id"]
     return redirect(url_for("login_personal"))
 
+def listaChoferes():
+    personal = Personal.all()
+    choferes = list (filter(lambda x: x.tipo == 2, personal))
+    return choferes
+
 def autenticar():
     datos = request.form
     email = datos["email"]
     password = datos["password"]
-    datos = Personal.buscarEmailPassword(email,password)
-    print(datos[1])
-    print(datos[0])
-    if (datos[0] is None):
+    info = Personal.buscarEmailPassword(email,password)
+    if (info[0] is None):
         return redirect(url_for("login_personal"))
     else:
-        if (datos[1] == 2):
-            session["id"] = datos[0] 
+        if (info[1] == 2):
+            session["id"] = info[0] 
             session["tipo"] = "Chofer"
             return redirect(url_for("home_chofer")) 
         else:
-            session["id"] = datos[0]  
+            session["id"] = info[0]  
             session["tipo"] = "Admin"
             return redirect(url_for("home_admin"))
 

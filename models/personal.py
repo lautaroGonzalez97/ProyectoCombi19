@@ -9,6 +9,7 @@ class Personal(db.Model):
     telefono = db.Column(db.Integer)
     password = db.Column(db.String(255))
     tipo = db.Column(db.Integer)
+    combis = db.relationship('Combi', backref='combi')
 
     def __init__(self, nombre, apellido, email, telefono, password):
         self.nombre = nombre
@@ -47,9 +48,9 @@ class Personal(db.Model):
         personal = Personal.query.filter_by(email=unEmail, password=unaPass)
         if (personal.count() == 1):
             resultado = [personal.first().idPersonal(), personal.first().tipoPersonal()]
-            return resultado
         else:
-            return None
+            resultado = [None, ""]
+        return resultado
 
     def buscarChoferPorId(id):
         chofer = Personal.query.filter_by(id=id).first()

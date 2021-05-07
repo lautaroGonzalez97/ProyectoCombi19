@@ -56,8 +56,10 @@ def crear():
         hoy = datetime.today() 
         if (validarPassword(password)):
             if (fecha <= hoy):
-                new_cliente = Cliente(nombre, apellido, email, fechaNacimiento, password)
-                new_cliente.save()
+                if (request.form.get('tipo') == 'isTrue'):
+                    return render_template ("datosTarjeta.html", nom = nombre, ape = apellido, email = email, nac = fechaNacimiento, contra = password)
+                new_cliente = Cliente(nombre, apellido, email, fechaNac, password)  
+                new_cliente.save() 
                 return redirect(url_for("login_cliente"))
             else:
                 return redirect(url_for("render_altaCliente"))

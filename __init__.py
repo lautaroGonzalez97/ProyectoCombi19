@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta #pip install python-dateutil
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
-from resources import cliente, personal, insumo, combi
+from resources import cliente, personal, insumo, combi, tarjeta
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
@@ -33,13 +33,14 @@ app.add_url_rule("/login_cliente", "login_cliente", cliente.login)
 app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
 
+#Rutas Tarjeta
+app.add_url_rule("/tarjeta_cliente/<nom>/<ape>/<email>/<nac>/<contra>", "crear_tarjeta", tarjeta.crear, methods=["POST"])
 
 #Rutas Personal
 app.add_url_rule("/login_personal", "autenticar_personal", personal.autenticar, methods=["POST"])
 app.add_url_rule("/login_personal", "login_personal", personal.login)
 app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
 app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
-
 
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
@@ -57,6 +58,8 @@ app.add_url_rule("/editar_insumo/<id>", "render_editar_insumo", insumo.render_ed
 app.add_url_rule("/saveEdit_insumo/<id>", "editar_insumo", insumo.editar_insumo, methods=["POST"])
     #---acciones combi---
 app.add_url_rule("/listado_combis", "listado_combis", combi.listado_combis)
+app.add_url_rule("/alta_combi", "render_alta_combi", combi.render_alta_combi)
+app.add_url_rule("/save_combi", "alta_combi", combi.alta_combi, methods=["POST"])
 
 
 def home ():

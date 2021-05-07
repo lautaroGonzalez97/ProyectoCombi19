@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta #pip install python-dateutil
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
-from resources import cliente, personal, insumo
+from resources import cliente, personal, insumo, combi
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
@@ -43,16 +43,20 @@ app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
 
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
+    #---acciones chofer---
 app.add_url_rule("/listado_choferes", "listado_chofer", personal.listado_chofer)
 app.add_url_rule("/alta_chofer", "render_alta_chofer", personal.render_alta_chofer)
 app.add_url_rule("/save_chofer", "alta_chofer", personal.alta_chofer, methods=["POST"])
 app.add_url_rule("/editar_chofer/<id>", "render_editar_chofer", personal.render_editar_chofer)
 app.add_url_rule("/saveEdit_chofer/<id>", "editar_chofer", personal.editar_chofer, methods=["POST"])
+    #---acciones insumos---
 app.add_url_rule("/listado_insumos", "listado_insumos", insumo.listado_insumos)
 app.add_url_rule("/alta_insumo", "render_alta_insumo", insumo.render_alta_insumo)
 app.add_url_rule("/save_insumo", "alta_insumo", insumo.alta_insumo, methods=["POST"])
 app.add_url_rule("/editar_insumo/<id>", "render_editar_insumo", insumo.render_editar_insumo)
 app.add_url_rule("/saveEdit_insumo/<id>", "editar_insumo", insumo.editar_insumo, methods=["POST"])
+    #---acciones combi---
+app.add_url_rule("/listado_combis", "listado_combis", combi.listado_combis)
 
 
 def home ():

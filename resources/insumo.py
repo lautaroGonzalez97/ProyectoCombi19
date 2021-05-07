@@ -1,22 +1,19 @@
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.insumo import Insumo
-
-def verificarSesion():
-    if (not (authenticated(session))):
-        abort(401) 
+from resources.personal import verificarSesionAdmin 
 
 def listado_insumos():
-    verificarSesion()
+    verificarSesionAdmin()
     insumos = Insumo.all()
     return render_template("listaInsumos.html", insumos = insumos)
 
 def render_alta_insumo():
-    verificarSesion()
+    verificarSesionAdmin()
     return render_template("addInsumo.html")
 
 def render_editar_insumo(id):
-    verificarSesion()
+    verificarSesionAdmin()
     insumo = Insumo.buscarInsumoPorId(id)
     return render_template("editInsumo.html", insumo = insumo)
 
@@ -30,7 +27,6 @@ def alta_insumo():
     return redirect(url_for("listado_insumos"))
 
 def editar_insumo(id):
-    verificarSesion()
     insumo = Insumo.buscarInsumoPorId(id)
     datos = request.form
     insumo.nombre = datos["nombre"]

@@ -7,6 +7,7 @@ class  Tarjeta (db.Model):
     numero = db.Column(db.Integer)
     codigo = db.Column(db.Integer)
     fechaVencimiento = db.Column(db.DateTime())
+    id_owner = db.Column(db.Integer, db.ForeignKey('cliente.id'))
 
     def __init__(self, nombre, numero, codigoSeguridad, fechaVencimiento):
         self.nombre = nombre

@@ -1,4 +1,6 @@
 from db import db
+from models.tarjeta import Tarjeta
+metadata = db.MetaData()
 
 class Cliente(db.Model):
     __tablename__ = 'cliente'
@@ -9,6 +11,7 @@ class Cliente(db.Model):
     fechaNacimiento = db.Column(db.DateTime())
     password = db.Column(db.String(255))
     #disponible = db.Column(db.Integer)
+    tarjetas = db.relationship('Tarjeta', backref='tarjeta')
 
     def __init__(self, nombre, apellido, email, fechaNacimiento, password):
         self.nombre = nombre
@@ -18,8 +21,8 @@ class Cliente(db.Model):
         self.password = password
         #disponible = 1
 
-
     #aca van las asociaciones entre las tablas, averiguar
+
 
     def idUsuario(self):
         client = self.query.filter_by(email=self.email)

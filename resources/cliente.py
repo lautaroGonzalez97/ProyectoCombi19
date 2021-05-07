@@ -5,7 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 def verificarSesion():
-    if (not authenticated(session) and (not session.get["tipo"] == "Cliente")):
+    if (not authenticated(session) or (not session["tipo"] == "Cliente")):
         abort(401)
 
 def home():

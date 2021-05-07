@@ -3,11 +3,11 @@ from helpers.auth import authenticated
 from models.personal import Personal
 
 def verificarSesionChofer():
-    if (not (authenticated(session)) and (not (session["tipo"] == "Chofer"))):
+    if (not (authenticated(session)) or (not (session["tipo"] == "Chofer"))):
         abort(401)
 
 def verificarSesionAdmin():
-    if (not (authenticated(session)) and (not (session["tipo"] == "Admin"))):
+    if (not (authenticated(session)) or (not (session["tipo"] == "Admin"))):
         abort(401)
 
 def home_chofer():
@@ -18,6 +18,12 @@ def home_admin():
     verificarSesionAdmin()
     return render_template("homeAdmin.html")
 
+def listado_chofer():
+    verificarSesionAdmin()
+    personal = Personal.all()
+    choferes = list (filter(lambda x: x.tipo == 2, personal))
+    return render_template("listaChoferes.html", choferes = choferes)
+    
 def render_alta_chofer():
     verificarSesionAdmin()
     return render_template("addChofer.html")
@@ -55,12 +61,6 @@ def autenticar():
             session["id"] = datos[0]  
             session["tipo"] = "Admin"
             return redirect(url_for("home_admin"))
-     
-def listado_chofer():
-    verificarSesionAdmin()
-    personal = Personal.all()
-    choferes = list (filter(lambda x: x.tipo == 2, personal))
-    return render_template("listaChoferes.html", choferes = choferes)
 
 def validarPassword(password):
     if (6 < len(password) <= 16):

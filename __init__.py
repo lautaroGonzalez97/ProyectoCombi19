@@ -60,6 +60,8 @@ app.add_url_rule("/saveEdit_insumo/<id>", "editar_insumo", insumo.editar_insumo,
 app.add_url_rule("/listado_combis", "listado_combis", combi.listado_combis)
 app.add_url_rule("/alta_combi", "render_alta_combi", combi.render_alta_combi)
 app.add_url_rule("/save_combi", "alta_combi", combi.alta_combi, methods=["POST"])
+app.add_url_rule("/editar_combi/<id>", "render_editar_combi", combi.render_editar_combi)
+app.add_url_rule("/saveEdit_combi/<id>", "editar_combi", combi.editar_combi, methods=["POST"])
 
 
 def home ():

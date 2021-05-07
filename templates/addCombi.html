@@ -36,16 +36,16 @@
                 </div>
                 <div class="form-group">
                     <label for="tipo">Elegir Tipo:</label>
-                        <select id="tipo" name="tipos">
+                        <select id="tipo" name="tipos" required>
                                 <option value="Semicama">Semi-Cama</option>  
                                 <option value="Cama">Cama</option>  
                         </select>
                 </div>
                 <div class="form-group">
                     <label for="choferes">Elegir chofer:</label>
-                        <select id="chofer" name="choferes">
+                        <select id="chofer" name="choferes" required>
                         {% for chofer in choferes%}
-                            <option value="{{chofer.email}}">{{chofer.nombre}} {{chofer.apellido}}</option>
+                            <option value="{{chofer.id}}">{{chofer.nombre}} {{chofer.apellido}}</option>
                         {% endfor %}
                         </select>
                 </div>

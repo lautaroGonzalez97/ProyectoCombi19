@@ -3,18 +3,18 @@ from db import db
 class Combi(db.Model):
     __tablename__ = 'combi'
     id = db.Column(db.Integer, primary_key=True)
-    patente = db.Column(db.Integer)
+    patente = db.Column(db.String(255))
     modelo = db.Column(db.String(255))
     asientos = db.Column(db.Integer)
     tipo = db.Column(db.String(255))
-    email_chofer = db.Column(db.Integer, db.ForeignKey('personal.id'))
+    id_chofer = db.Column(db.Integer, db.ForeignKey('personal.id'))
 
-    def __init__(self, patente, modelo, asientos, tipo, email_chofer):
+    def __init__(self, patente, modelo, asientos, tipo, id_chofer):
         self.patente = patente
         self.modelo = modelo
         self.asientos = asientos
         self.tipo = tipo
-        self.email_chofer = email_chofer
+        self.id_chofer = id_chofer
 
     
     def save(self):
@@ -25,3 +25,11 @@ class Combi(db.Model):
     def all():
         combis = Combi.query.all()
         return combis
+
+    def buscarCombiPorId(id):
+        combi = Combi.query.filter_by(id=id).first()
+        return combi
+
+    def actualizar(id):
+        db.session.commit()
+        return True

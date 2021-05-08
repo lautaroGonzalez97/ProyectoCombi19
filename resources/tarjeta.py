@@ -26,8 +26,11 @@ def crear(nom, ape, email, nac, contra):
             c = Cliente.buscarPorEmail(email)
             new_tarjeta = Tarjeta(nombre, numero, codigo, fechaVencimiento, c.id)
             new_tarjeta.save()
+            flash ("Registro Gold exitoso", "success")
             return redirect(url_for("login_cliente"))
         else:
+            flash ("Numero de tarjeta incorrecto", "error")
             return render_template ("datosTarjeta.html", nom = nom, ape = ape, email = email, nac = nac, contra = contra)
     else:
+        flash ("Tarjeta vencida", "error")
         return render_template ("datosTarjeta.html", nom = nom, ape = ape, email = email, nac = nac, contra = contra)

@@ -26,6 +26,7 @@ def alta_insumo():
     precio = insumo["precio"]
     new_insumo = Insumo(nombre, tipo, precio)
     new_insumo.save()
+    flash ("Alta de insumo exitoso", "success")
     return redirect(url_for("listado_insumos"))
 
 def editar_insumo(id):
@@ -35,9 +36,11 @@ def editar_insumo(id):
     insumo.tipo = datos["tipo"]
     insumo.precio = datos["precio"]
     Insumo.actualizar(insumo)
+    flash ("Datos del insumo actualizado exitosamente", "success")
     return redirect(url_for("listado_insumos"))
 
 def eliminar_insumo(id):
     insumo = Insumo.buscarInsumoPorId(id)
     Insumo.eliminar_insumo(insumo)
+    flash ("Baja de insumo exitoso", "success")
     return redirect(url_for("listado_insumos"))

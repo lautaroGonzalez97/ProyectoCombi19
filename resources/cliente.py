@@ -60,12 +60,16 @@ def crear():
                     return render_template ("datosTarjeta.html", nom = nombre, ape = apellido, email = email, nac = fechaNacimiento, contra = password)
                 new_cliente = Cliente(nombre, apellido, email, fechaNac, password)  
                 new_cliente.save()
+                flash ("Registro exitoso", "success")
                 return redirect(url_for("login_cliente"))
             else:
+                flash ("Edad invalida", "error")
                 return redirect(url_for("render_altaCliente"))
         else:
+            flash ("Contraseña corta", "error")
             return redirect(url_for("render_altaCliente"))
     else:
+        flash ("Email registrado en el sistema", "error")
         return redirect(url_for("render_altaCliente"))
 
 def autenticar():

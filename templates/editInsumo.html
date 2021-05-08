@@ -7,6 +7,28 @@
     <div style="text-align: center;">
         <h1>EDITAR INSUMO</h1>
     </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with mensajes= get_flashed_messages(category_filter=["error"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
     <div class="main">
         <div class="main-center">
             <form class="" action="{{url_for('editar_insumo', id = insumo.id)}}" method= "POST">

@@ -45,7 +45,7 @@
                     <label for="choferes">Elegir chofer:</label>
                         <select id="chofer" name="choferes">
                         {% for chofer in choferes%}
-                            <option value="{{chofer.email}}">{{chofer.nombre}} {{chofer.apellido}}</option>
+                            <option value="{{chofer.id}}">{{chofer.nombre}} {{chofer.apellido}}</option>
                         {% endfor %}
                         </select>
                 </div>

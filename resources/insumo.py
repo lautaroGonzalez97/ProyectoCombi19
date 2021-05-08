@@ -34,3 +34,5 @@ def editar_insumo(id):
     insumo.precio = datos["precio"]
     Insumo.actualizar(insumo)
     return redirect(url_for("listado_insumos"))
+
+#def baja_insumo():

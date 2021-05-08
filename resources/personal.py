@@ -66,6 +66,9 @@ def autenticar():
             return redirect(url_for("home_admin"))
 
 def validarPassword(password):
+    """
+    Valida que la contraseña sea mayor que 6, y menor o igual a 16 
+    """
     if (6 < len(password) <= 16):
         return True  
     else: return False  
@@ -77,11 +80,17 @@ def alta_chofer():
     email = chofer["email"]
     telefono = chofer["telefono"]
     password = chofer["password"]
-    if (validarPassword(password)):
+    if (validarPassword(password)) and (validarEmail(email)):
         new_chofer = Personal(nombre, apellido, email, telefono, password)
         new_chofer.save()
         return redirect(url_for("listado_chofer"))
-    return redirect(url_for("render_alta_chofer"))
+    else: 
+        if not (validarPassword(password)):
+            #flash que informa que la contraseña debe contener mas de 6 caracteres y menos que 16
+            return redirect(url_for("render_alta_chofer"))
+        else:
+            #Flash que informa que el email ya se encuentra cargado en el sistema
+            return redirect(url_for("render_alta_chofer"))         
 
 def editar_chofer(id):
     verificarSesionAdmin()
@@ -92,7 +101,33 @@ def editar_chofer(id):
     chofer.email = datos["email"]
     chofer.telefono = datos["telefono"]
     chofer.password = datos["password"]
-    if (validarPassword(chofer.password)):
+    if (validarPassword(chofer.password) and validarEmail(chofer.email)):
         Personal.actualizar(chofer)
         return redirect(url_for("listado_chofer"))
-    return render_template("editChofer.html", chofer = chofer)
+    else: 
+        if not (validarPassword(password)):
+            #flash que informa que la contraseña debe contener mas de 6 caracteres y menos que 16
+            return render_template("editChofer.html", chofer = chofer)
+        else:
+            #Flash que informa que el email ya se encuentra cargado en el sistema
+            return render_template("editChofer.html", chofer = chofer)  
+
+def devolvelEmail():
+    """ 
+    Devuelve los email de todos los choferes 
+    """
+    aux = listaChoferes()
+    listaEmails =[]
+    print (type(aux))
+    for a in aux:
+        listaEmails.append(a.email)
+    return listaEmails    
+
+def validarEmail(email):
+    """ 
+    Valida que no exista en la tabla chofer el email que llego por parametro 
+    """
+    aux = devolvelEmail()
+    if email in aux:
+        return False
+    return True

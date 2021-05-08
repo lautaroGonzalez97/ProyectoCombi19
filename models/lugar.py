@@ -19,6 +19,14 @@ class Lugar(db.Model):
         db.session.commit()
         return True
 
+    def actualizar(id):
+        db.session.commit()
+        return True
+
     def buscarPorLocalidadYProvincia(loc, prov):
         lugar = Lugar.query.filter_by(localidad=loc, provincia=prov).first()
+        return lugar
+
+    def buscarLugarPorId(id):
+        lugar = Lugar.query.filter_by(id=id).first()
         return lugar

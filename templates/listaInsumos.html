@@ -12,6 +12,19 @@
             <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
                 <a href= "{{url_for('render_alta_insumo')}}" class="btn va_btn">Agregar</a>
             </div>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+                <div class="col-4" style="text-align: center;">
+                    {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+                        {% if mensajes %}
+                            {% for messages in mensajes%}
+                                <div class="alert alert-info" role="alert">
+                                    {{ messages }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
             <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
                     <tr>
@@ -30,7 +43,7 @@
                         <td style="text-align: center">
                             <div style="text-align: center;">
                                 <a style="margin-right: 1%;" href= "{{url_for('render_editar_insumo', id = insumo.id)}}" class="btn va_btn">Editar</a>
-                                <a href= "#" class="btn va_btn">Eliminar</a>
+                                <a href= "#" onclick="return confirm('Estas seguro que deseas eliminar?')" class="btn va_btn">Eliminar</a>
                             </div>
                         </td>
                     </tr>

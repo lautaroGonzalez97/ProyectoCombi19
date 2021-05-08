@@ -59,7 +59,7 @@ def crear():
                 if (request.form.get('tipo') == 'isTrue'):
                     return render_template ("datosTarjeta.html", nom = nombre, ape = apellido, email = email, nac = fechaNacimiento, contra = password)
                 new_cliente = Cliente(nombre, apellido, email, fechaNac, password)  
-                new_cliente.save() 
+                new_cliente.save()
                 return redirect(url_for("login_cliente"))
             else:
                 return redirect(url_for("render_altaCliente"))
@@ -80,5 +80,6 @@ def autenticar():
         session["id"] = idClient
         session["tipo"] = "Cliente"
         return redirect(url_for("home"))
-    else:
-        return redirect(url_for("login_cliente"))
+    flash ("Email o contraseña incorrecta", "error")
+    return redirect(url_for("login_cliente"))
+

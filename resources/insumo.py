@@ -6,6 +6,8 @@ from resources.personal import verificarSesionAdmin
 def listado_insumos():
     verificarSesionAdmin()
     insumos = Insumo.all()
+    if len(insumos) == 0:
+        flash ("No hay insumos cargados", "warning")
     return render_template("listaInsumos.html", insumos = insumos)
 
 def render_alta_insumo():

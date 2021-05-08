@@ -17,18 +17,18 @@
 <body>
 	<div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
 		<div class="col-4" style="text-align: center;">
-			{% with errors= get_flashed_messages(category_filter=["error"])%}
-				{% if errros %}
-					{% for messages in errors%}
+			{% with mensajes= get_flashed_messages(category_filter=["error"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
 						<div class="alert alert-danger" role="alert">
 							{{ messages }}
 						</div>
 					{% endfor %}
 				{% endif %}
 			{% endwith %}
-			{% with success= get_flashed_messages(category_filter=["success"])%}
-				{% if success %}
-					{% for messages in success%}
+			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
 						<div class="alert alert-success" role="alert">
 							{{ messages }}
 						</div>

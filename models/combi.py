@@ -25,3 +25,11 @@ class Combi(db.Model):
     def all():
         combis = Combi.query.all()
         return combis
+
+    def buscarCombiPorId(id):
+        combi = Combi.query.filter_by(id=id).first()
+        return combi
+
+    def actualizar(id):
+        db.session.commit()
+        return True

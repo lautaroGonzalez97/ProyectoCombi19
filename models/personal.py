@@ -55,3 +55,8 @@ class Personal(db.Model):
     def buscarChoferPorId(id):
         chofer = Personal.query.filter_by(id=id).first()
         return chofer
+
+    def eliminar_chofer(chofer):
+        db.session.delete(chofer)
+        db.session.commit()
+        return True

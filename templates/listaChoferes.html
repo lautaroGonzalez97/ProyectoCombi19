@@ -54,7 +54,7 @@
                         <td>
                             <div style="text-align: center;">
                                 <a style="margin-right: 1%;" href= "{{url_for('render_editar_chofer', id = empleado.id)}} " class="btn va_btn">Editar</a>
-                                <a href= "#" class="btn va_btn">Eliminar</a>
+                                <a href= "{{url_for('eliminar_chofer', id = empleado.id)}}" class="btn va_btn">Eliminar</a>
                             </div>
                         </td>
                     </tr>

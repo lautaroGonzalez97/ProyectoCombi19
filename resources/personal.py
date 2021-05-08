@@ -131,3 +131,15 @@ def validarEmail(email):
     if email in aux:
         return False
     return True
+
+def eliminar_chofer(id):
+    chofer = Personal.buscarChoferPorId(id)
+    print(chofer.nombre)
+    print(chofer.combis)
+    if (len(chofer.combis) == 0):
+        print("NO TIENE COMBI")
+        #indicar que se pudo borrar
+        Personal.eliminar_chofer(chofer)
+    #else:
+        #indicar que no se pudo borrar
+    return redirect (url_for("listado_chofer"))

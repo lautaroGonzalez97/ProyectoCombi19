@@ -21,15 +21,6 @@
         <input type="text" class="form-control" name="nombre" placeholder="Ingrese el nombre del insumo" required/>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="tipo">Tipo</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" name="tipo" placeholder="Ingrese tipo" required/>
-                    </div>
-                </div>
-
                 <div class="form-group">
                     <label for="precio">Precio</label>
                         <div class="input-group">
@@ -37,7 +28,16 @@
                             <input type="text" class="form-control" name="precio" placeholder="Ingrese el precio" required/>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <label for="tipo">Elegir Tipo:</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="Bebida">Bebida</option>
+                            <option value="Caramelo">Caramelo</option>
+                            <option value="Chocolate">Chocolate</option>
+                            <option value="Chupetin">Chupetin</option>
+                            <option value="Snack">Snack</option>
+                        </select>
+                </div>
                 <br>
                 <div class="d-flex justify-content-center mt-3 login_container">
                     <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Agregar</button>

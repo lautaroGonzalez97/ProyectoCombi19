@@ -50,12 +50,14 @@ app.add_url_rule("/alta_chofer", "render_alta_chofer", personal.render_alta_chof
 app.add_url_rule("/save_chofer", "alta_chofer", personal.alta_chofer, methods=["POST"])
 app.add_url_rule("/editar_chofer/<id>", "render_editar_chofer", personal.render_editar_chofer)
 app.add_url_rule("/saveEdit_chofer/<id>", "editar_chofer", personal.editar_chofer, methods=["POST"])
+app.add_url_rule("/eliminar_chofer/<id>", "eliminar_chofer", personal.eliminar_chofer)
     #---acciones insumos---
 app.add_url_rule("/listado_insumos", "listado_insumos", insumo.listado_insumos)
 app.add_url_rule("/alta_insumo", "render_alta_insumo", insumo.render_alta_insumo)
 app.add_url_rule("/save_insumo", "alta_insumo", insumo.alta_insumo, methods=["POST"])
 app.add_url_rule("/editar_insumo/<id>", "render_editar_insumo", insumo.render_editar_insumo)
 app.add_url_rule("/saveEdit_insumo/<id>", "editar_insumo", insumo.editar_insumo, methods=["POST"])
+app.add_url_rule("/eliminar_insumo/<id>", "eliminar_insumo", insumo.eliminar_insumo)
     #---acciones combi---
 app.add_url_rule("/listado_combis", "listado_combis", combi.listado_combis)
 app.add_url_rule("/alta_combi", "render_alta_combi", combi.render_alta_combi)

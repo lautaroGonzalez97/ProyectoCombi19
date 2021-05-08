@@ -10,6 +10,13 @@ def render_alta_combi():
     choferes = list (filter(lambda x: x.tipo == 2, personal))
     return render_template("addCombi.html", choferes = choferes)
 
+def render_editar_combi(id):
+    verificarSesionAdmin()
+    combi = Combi.buscarCombiPorId(id)
+    personal = Personal.all()
+    choferes = list (filter(lambda x: x.tipo == 2, personal))
+    return render_template("editCombi.html", combi = combi, choferes = choferes)
+
 def listado_combis(): 
     verificarSesionAdmin()
     combis = Combi.all()
@@ -39,7 +46,22 @@ def devolverPatentes():
 
 def evaluarPatente(patente):
     aux = devolverPatentes()
-    print (aux)
     if (patente in aux):
         return False
     return True
+
+def editar_combi(id):
+    verificarSesionAdmin()
+    combi = Combi.buscarCombiPorId(id)
+    datos = request.form
+    if (evaluarPatente(datos["patente"])):
+        combi.patente = datos["patente"]
+        combi.modelo = datos["modelo"]
+        combi.asientos = datos["asientos"]
+        combi.tipo = datos["tipos"]
+        combi.id_chofer = datos["choferes"] #falta arreglar esta verificacion, no queda bien el edit cuando se edita con una patente que ya existe
+        Combi.actualizar(combi)
+        return redirect(url_for("listado_combis"))
+    personal = Personal.all()
+    choferes = list (filter(lambda x: x.tipo == 2, personal))
+    return render_template("editCombi.html", combi = combi, choferes = choferes)

@@ -13,6 +13,12 @@ def render_alta_lugar():
     verificarSesionAdmin()
     return render_template("addLugar.html")
 
+def render_editar_lugar(id):
+    verificarSesionAdmin()
+    lugar = Lugar.buscarLugarPorId(id)
+    print(lugar.localidad)
+    return render_template("editLugar.html", lugar = lugar)
+
 def comprobarDatos(datos):
     localidad = datos["localidad"]
     provincia = datos["provincia"]
@@ -32,3 +38,14 @@ def alta_lugar():
         new_lugar.save()
         return redirect(url_for("listado_lugares"))
     return redirect(url_for("render_alta_lugar"))
+
+def editar_lugar(id):
+    verificarSesionAdmin()
+    lugar = Lugar.buscarLugarPorId(id)
+    datos = request.form
+    if (comprobarDatos(datos)):
+        lugar.localidad = datos["localidad"]
+        lugar.provincia = datos["provincia"]
+        Lugar.actualizar(id)
+        return redirect(url_for("listado_lugares"))
+    return render_template("editLugar.html", lugar = lugar)

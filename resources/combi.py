@@ -46,12 +46,12 @@ def devolverPatentes():
 
 def evaluarPatente(patente):
     aux = devolverPatentes()
-    print (aux)
     if (patente in aux):
         return False
     return True
 
 def editar_combi(id):
+    verificarSesionAdmin()
     combi = Combi.buscarCombiPorId(id)
     datos = request.form
     combi.patente = datos["patente"]
@@ -59,5 +59,7 @@ def editar_combi(id):
     combi.asientos = datos["asientos"]
     combi.tipo = datos["tipos"]
     combi.id_chofer = datos["choferes"]
-    Combi.actualizar(combi)
-    return redirect(url_for("listado_combis"))
+    if (evaluarPatente(combi.patente)): #falta arreglar esta verificacion, no queda bien el edit cuando se edita con una patente que ya existe
+        Combi.actualizar(combi)
+        return redirect(url_for("listado_combis"))
+    return render_template("editCombi.html", combi = combi)

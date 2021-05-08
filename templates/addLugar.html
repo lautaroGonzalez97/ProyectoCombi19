@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<div class="container">
+    <div style="text-align: center;">
+        <h1>ALTA LUGAR</h1>
+    </div>
+    <div class="main">
+        <div class="main-center">
+            <form class="" action="{{url_for('alta_lugar')}}" method= "POST">
+                <div class="form-group">
+                    <label for="localidad">Localidad</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" name="localidad" placeholder="Ingrese localidad" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="provincia">Elegir Provincia:</label>
+                        <select id="provincia" name="provincia">
+                            <option value="Buenos Aires">Buenos Aires</option>
+                            <option value="Catamarca">Catamarca</option>
+                            <option value="Chaco">Chaco</option>
+                            <option value="Chubut">Chubut</option>
+                            <option value="Cordoba">Cordoba</option>
+                            <option value="Corrientes">Corrientes</option>
+                            <option value="Entre Rios">Entre Rios</option>
+                            <option value="Formosa">Formosa</option>
+                            <option value="Jujuy">Jujuy</option>
+                            <option value="La Pampa">La Pampa</option>
+                            <option value="La Rioja">La Rioja</option>
+                            <option value="Mendoza">Mendoza</option>
+                            <option value="Misiones">Misiones</option>
+                            <option value="Neuquen">Neuquen</option>
+                            <option value="Rio Negro">Rio Negro</option>
+                            <option value="Salta">Salta</option>
+                            <option value="San Juan">San Juan</option>
+                            <option value="San Luis">Catamarca</option>
+                            <option value="Santa Cruz">Santa Cruz</option>
+                            <option value="Santa Fe">Santa Fe</option>
+                            <option value="Santiago del Estero">Santiago del Estero</option>
+                            <option value="Tierra del Fuego">Tierra del Fuego</option>
+                            <option value="Tucuman">Tucuman</option>
+                        </select>
+                </div>
+                <br>
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Agregar</button>
+                    <a href= "{{url_for('listado_lugares')}}" class="btn va_btn">Volver Atras</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

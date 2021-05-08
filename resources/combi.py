@@ -12,7 +12,7 @@ def render_alta_combi():
 
 def listado_combis(): 
     verificarSesionAdmin()
-    combis = Combi.all() 
+    combis = Combi.all()
     return render_template("listaCombis.html", combis = combis)
 
 def alta_combi():

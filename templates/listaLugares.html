@@ -27,35 +27,29 @@
 		</div>
 	</div>
     <div style="text-align: center;">
-        <h1>COMBIS</h1>
+        <h1>LUGARES</h1>
     </div>
     <div class="columns">
         <div class="column">
             <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
-                <a href= "{{url_for('render_alta_combi')}}" class="btn va_btn">Agregar</a>
+                <a href= "{{url_for('render_alta_lugar')}}" class="btn va_btn">Agregar</a>
             </div>
             <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
                     <tr>
-                        <th style="text-align: center">Patente</th>
-                        <th style="text-align: center">Modelo</th>
-                        <th style="text-align: center">Cantidad Asientos</th>
-                        <th style="text-align: center">Tipo</th>
-                        <th style="text-align: center">Chofer ID</th>
+                        <th style="text-align: center">Localidad</th>
+                        <th style="text-align: center">Provincia</th>
                         <th style="text-align: center">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for combi in combis %}
+                    {% for lugar in lugares %}
                     <tr>
-                        <td style="text-align: center">{{combi.patente}}</td>
-                        <td style="text-align: center">{{combi.modelo}}</td>
-                        <td style="text-align: center">{{combi.asientos}}</td>
-                        <td style="text-align: center">{{combi.tipo}}</td>
-                        <td style="text-align: center">{{combi.id_chofer}}</td>
+                        <td style="text-align: center">{{lugar.localidad}}</td>
+                        <td style="text-align: center">{{lugar.provincia}}</td>
                         <td>
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_combi', id = combi.id)}}" class="btn va_btn">Editar</a>
+                                <a style="margin-right: 1%;" href= "#" class="btn va_btn">Editar</a>
                                 <a href= "#" class="btn va_btn">Eliminar</a>
                             </div>
                         </td>

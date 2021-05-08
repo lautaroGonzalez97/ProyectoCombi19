@@ -21,7 +21,15 @@ class Combi(db.Model):
         db.session.add(self)
         db.session.commit()
         return True
-        
+
     def all():
         combis = Combi.query.all()
         return combis
+
+    def buscarCombiPorId(id):
+        combi = Combi.query.filter_by(id=id).first()
+        return combi
+
+    def actualizar(id):
+        db.session.commit()
+        return True

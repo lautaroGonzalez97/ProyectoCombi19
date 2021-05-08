@@ -37,4 +37,7 @@ def editar_insumo(id):
     Insumo.actualizar(insumo)
     return redirect(url_for("listado_insumos"))
 
-#def baja_insumo():
+def eliminar_insumo(id):
+    insumo = Insumo.buscarInsumoPorId(id)
+    Insumo.eliminar_insumo(insumo)
+    return redirect(url_for("listado_insumos"))

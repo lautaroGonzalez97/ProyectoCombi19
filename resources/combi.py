@@ -54,12 +54,14 @@ def editar_combi(id):
     verificarSesionAdmin()
     combi = Combi.buscarCombiPorId(id)
     datos = request.form
-    combi.patente = datos["patente"]
-    combi.modelo = datos["modelo"]
-    combi.asientos = datos["asientos"]
-    combi.tipo = datos["tipos"]
-    combi.id_chofer = datos["choferes"]
-    if (evaluarPatente(combi.patente)): #falta arreglar esta verificacion, no queda bien el edit cuando se edita con una patente que ya existe
+    if (evaluarPatente(datos["patente"])):
+        combi.patente = datos["patente"]
+        combi.modelo = datos["modelo"]
+        combi.asientos = datos["asientos"]
+        combi.tipo = datos["tipos"]
+        combi.id_chofer = datos["choferes"] #falta arreglar esta verificacion, no queda bien el edit cuando se edita con una patente que ya existe
         Combi.actualizar(combi)
         return redirect(url_for("listado_combis"))
-    return render_template("editCombi.html", combi = combi)
+    personal = Personal.all()
+    choferes = list (filter(lambda x: x.tipo == 2, personal))
+    return render_template("editCombi.html", combi = combi, choferes = choferes)

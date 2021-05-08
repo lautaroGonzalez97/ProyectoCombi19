@@ -10,6 +10,13 @@ def render_alta_combi():
     choferes = list (filter(lambda x: x.tipo == 2, personal))
     return render_template("addCombi.html", choferes = choferes)
 
+def render_editar_combi(id):
+    verificarSesionAdmin()
+    combi = Combi.buscarCombiPorId(id)
+    personal = Personal.all()
+    choferes = list (filter(lambda x: x.tipo == 2, personal))
+    return render_template("editCombi.html", combi = combi, choferes = choferes)
+
 def listado_combis(): 
     verificarSesionAdmin()
     combis = Combi.all()
@@ -43,3 +50,14 @@ def evaluarPatente(patente):
     if (patente in aux):
         return False
     return True
+
+def editar_combi(id):
+    combi = Combi.buscarCombiPorId(id)
+    datos = request.form
+    combi.patente = datos["patente"]
+    combi.modelo = datos["modelo"]
+    combi.asientos = datos["asientos"]
+    combi.tipo = datos["tipos"]
+    combi.id_chofer = datos["choferes"]
+    Combi.actualizar(combi)
+    return redirect(url_for("listado_combis"))

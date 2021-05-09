@@ -100,22 +100,35 @@ def editar_chofer(id):
     verificarSesionAdmin()
     chofer = Personal.buscarChoferPorId(id)
     datos = request.form
-    chofer.nombre = datos["nombre"]
-    chofer.apellido = datos["apellido"]
-    chofer.email = datos["email"]
-    chofer.telefono = datos["telefono"]
-    chofer.password = datos["password"]
-    if (validarPassword(chofer.password) and validarEmail(chofer.email)):
-        Personal.actualizar(chofer)
-        flash ("Datos de chofer actualizados exitosamente", "success")
-        return redirect(url_for("listado_chofer"))
-    else: 
-        if not (validarPassword(password)):
-            flash ("Contraseña corta", "error")
-            return render_template("editChofer.html", chofer = chofer)
-        else:
-            flash ("Email registrado en el sistema", "error")
-            return render_template("editChofer.html", chofer = chofer)  
+    if (chofer.email != datos["email"]):
+        if (validarPassword(datos["password"]) and validarEmail(datos["email"])):
+            chofer.nombre = datos["nombre"]
+            chofer.apellido = datos["apellido"]
+            chofer.email = datos["email"]
+            chofer.telefono = datos["telefono"]
+            chofer.password = datos["password"]
+            Personal.actualizar(chofer)
+            flash ("Datos de chofer actualizados exitosamente", "success")
+            return redirect(url_for("listado_chofer"))
+        else: 
+            if not (validarPassword(datos["password"])):
+                flash ("Contraseña corta", "error")
+                return render_template("editChofer.html", chofer = chofer)
+            else:
+                flash ("Email registrado en el sistema", "error")
+                return render_template("editChofer.html", chofer = chofer)  
+    else:
+            if (validarPassword(datos["password"])):
+                chofer.nombre = datos["nombre"]
+                chofer.apellido = datos["apellido"]
+                chofer.telefono = datos["telefono"]
+                chofer.password = datos["password"]
+                Personal.actualizar(chofer)
+                flash ("Datos de chofer actualizados exitosamente", "success")
+                return redirect(url_for("listado_chofer"))
+            else:
+                flash ("Contraseña corta", "error")
+                return render_template("editChofer.html", chofer = chofer)
 
 def devolvelEmail():
     """ 

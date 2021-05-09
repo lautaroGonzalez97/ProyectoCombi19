@@ -46,6 +46,7 @@
             <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
                     <tr>
+                        <th style="text-align: center">ID</th>
                         <th style="text-align: center">Nombre</th>
                         <th style="text-align: center">Apellido</th>
                         <th style="text-align: center">Email</th>
@@ -56,6 +57,7 @@
                 <tbody>
                     {% for empleado in choferes %}
                     <tr>
+                        <td style="text-align: center">{{empleado.id}}</td>
                         <td style="text-align: center">{{empleado.nombre}}</td>
                         <td style="text-align: center">{{empleado.apellido}}</td>
                         <td style="text-align: center">{{empleado.email}}</td>

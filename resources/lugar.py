@@ -47,11 +47,19 @@ def editar_lugar(id):
     verificarSesionAdmin()
     lugar = Lugar.buscarLugarPorId(id)
     datos = request.form
-    if (comprobarDatos(datos)):
+    if ((datos["localidad"] != lugar.localidad) or (datos["provincia"] != lugar.provincia)):
+        if (comprobarDatos(datos)):
+            lugar.localidad = datos["localidad"]
+            lugar.provincia = datos["provincia"]
+            Lugar.actualizar(id)
+            flash ("Datos de lugar actualizados exitosamente", "success")
+            return redirect(url_for("listado_lugares"))
+        flash ("Lugar cargado en el sistema", "error")
+        return render_template("editLugar.html", lugar = lugar)
+    else:
         lugar.localidad = datos["localidad"]
         lugar.provincia = datos["provincia"]
         Lugar.actualizar(id)
         flash ("Datos de lugar actualizados exitosamente", "success")
         return redirect(url_for("listado_lugares"))
-    flash ("Lugar cargado en el sistema", "error")
-    return render_template("editLugar.html", lugar = lugar)
+    

@@ -57,7 +57,6 @@ def editar_combi(id):
     verificarSesionAdmin()
     combi = Combi.buscarCombiPorId(id)
     datos = request.form
-    print (datos["patente"])
     if (combi.patente != datos["patente"]):
         if (evaluarPatente(datos["patente"])):
             combi.patente = datos["patente"]

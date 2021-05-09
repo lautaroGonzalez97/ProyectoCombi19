@@ -28,7 +28,7 @@ app.secret_key = 'esto-es-una-clave-muy-secreta'
 #Rutas Clientes
 app.add_url_rule("/crear_cliente", "crear_cliente", cliente.crear, methods=["POST"])
 app.add_url_rule("/registrar_cliente", "render_altaCliente", cliente.registrar)
-app.add_url_rule("/login_cliente", "autenticar_cliente", cliente.autenticar, methods=["POST"])
+app.add_url_rule("/autenticar_cliente", "autenticar_cliente", cliente.autenticar, methods=["POST"])
 app.add_url_rule("/login_cliente", "login_cliente", cliente.login)
 app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)

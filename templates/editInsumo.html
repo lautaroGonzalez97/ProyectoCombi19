@@ -40,21 +40,23 @@
         <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" value="{{insumo.nombre}}"/>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="tipo">Tipo</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" name="tipo" placeholder="Ingrese tipo" value="{{insumo.tipo}}"/>
-                    </div>
-                </div>
-
                 <div class="form-group">
                     <label for="precio">Precio</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="precio" placeholder="Ingrese precio" value="{{insumo.precio}}"/>
                     </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="tipo">Elegir Tipo:</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="Bebida" >Bebida</option>
+                            <option value="Caramelo">Caramelo</option>
+                            <option value="Chocolate">Chocolate</option>
+                            <option value="Chupetin">Chupetin</option>
+                            <option value="Snack">Snack</option>
+                        </select>
                 </div>
                 <br>
                 <div class="d-flex justify-content-center mt-3 login_container">

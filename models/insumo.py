@@ -29,3 +29,8 @@ class Insumo(db.Model):
     def actualizar(id):
         db.session.commit()
         return True
+    
+    def eliminar_insumo(insumo):
+        db.session.delete(insumo)
+        db.session.commit()
+        return True

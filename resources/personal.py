@@ -22,6 +22,8 @@ def listado_chofer():
     verificarSesionAdmin()
     personal = Personal.all()
     choferes = list (filter(lambda x: x.tipo == 2, personal))
+    if len(choferes) == 0:
+        flash ("No hay choferes cargados", "warning")
     return render_template("listaChoferes.html", choferes = choferes)
     
 def render_alta_chofer():
@@ -54,6 +56,7 @@ def autenticar():
     password = datos["password"]
     info = Personal.buscarEmailPassword(email,password)
     if (info[0] is None):
+        flash ("Email o contraseña incorrecta", "error")
         return redirect(url_for("login_personal"))
     else:
         if (info[1] == 2):
@@ -83,34 +86,49 @@ def alta_chofer():
     if (validarPassword(password)) and (validarEmail(email)):
         new_chofer = Personal(nombre, apellido, email, telefono, password)
         new_chofer.save()
+        flash ("Alta chofer exitoso", "success")
         return redirect(url_for("listado_chofer"))
     else: 
         if not (validarPassword(password)):
-            #flash que informa que la contraseña debe contener mas de 6 caracteres y menos que 16
+            flash ("Contraseña corta", "error")
             return redirect(url_for("render_alta_chofer"))
         else:
-            #Flash que informa que el email ya se encuentra cargado en el sistema
+            flash ("Email registrado en el sistema", "error")
             return redirect(url_for("render_alta_chofer"))         
 
 def editar_chofer(id):
     verificarSesionAdmin()
     chofer = Personal.buscarChoferPorId(id)
     datos = request.form
-    chofer.nombre = datos["nombre"]
-    chofer.apellido = datos["apellido"]
-    chofer.email = datos["email"]
-    chofer.telefono = datos["telefono"]
-    chofer.password = datos["password"]
-    if (validarPassword(chofer.password) and validarEmail(chofer.email)):
-        Personal.actualizar(chofer)
-        return redirect(url_for("listado_chofer"))
-    else: 
-        if not (validarPassword(password)):
-            #flash que informa que la contraseña debe contener mas de 6 caracteres y menos que 16
-            return render_template("editChofer.html", chofer = chofer)
-        else:
-            #Flash que informa que el email ya se encuentra cargado en el sistema
-            return render_template("editChofer.html", chofer = chofer)  
+    if (chofer.email != datos["email"]):
+        if (validarPassword(datos["password"]) and validarEmail(datos["email"])):
+            chofer.nombre = datos["nombre"]
+            chofer.apellido = datos["apellido"]
+            chofer.email = datos["email"]
+            chofer.telefono = datos["telefono"]
+            chofer.password = datos["password"]
+            Personal.actualizar(chofer)
+            flash ("Datos de chofer actualizados exitosamente", "success")
+            return redirect(url_for("listado_chofer"))
+        else: 
+            if not (validarPassword(datos["password"])):
+                flash ("Contraseña corta", "error")
+                return render_template("editChofer.html", chofer = chofer)
+            else:
+                flash ("Email registrado en el sistema", "error")
+                return render_template("editChofer.html", chofer = chofer)  
+    else:
+            if (validarPassword(datos["password"])):
+                chofer.nombre = datos["nombre"]
+                chofer.apellido = datos["apellido"]
+                chofer.telefono = datos["telefono"]
+                chofer.password = datos["password"]
+                Personal.actualizar(chofer)
+                flash ("Datos de chofer actualizados exitosamente", "success")
+                return redirect(url_for("listado_chofer"))
+            else:
+                flash ("Contraseña corta", "error")
+                return render_template("editChofer.html", chofer = chofer)
 
 def devolvelEmail():
     """ 
@@ -131,3 +149,15 @@ def validarEmail(email):
     if email in aux:
         return False
     return True
+
+def eliminar_chofer(id):
+    chofer = Personal.buscarChoferPorId(id)
+    print(chofer.nombre)
+    print(chofer.combis)
+    if (len(chofer.combis) == 0):
+        print("NO TIENE COMBI")
+        flash ("Baja de chofer exitoso", "success")
+        Personal.eliminar_chofer(chofer)
+    else:
+        flash ("El chofer tiene una combi asignada, por favor realize las operaciones necesarias y vuelve a intentarlo", "error")
+    return redirect (url_for("listado_chofer"))

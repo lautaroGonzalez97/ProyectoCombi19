@@ -26,7 +26,7 @@
 		{% endwith %}
 		</div>
 	</div>
-    <div class="container h-100" style="margin-top: 10%;">
+    <div class="container h-100" style="margin-top: 5%;">
         <div class="d-flex justify-content-center h-100">
             <div class="user_card">
                 <div class="d-flex justify-content-center">
@@ -42,6 +42,8 @@
                             </div>
                             <input type="text" name="nombre" class="form-control input_user" value=""
                                 placeholder="Nombre de la tarjeta" required>
+                        </div>
+                        <div class="input-group mb-3">   
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
@@ -73,11 +75,13 @@
                         </div>
                     </form>
                 </div>
+                <div style="text-align: center;">
+                    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%;">
+                        <a href= "{{url_for('login_cliente')}}" class="btn va_btn">Volver Atras</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%;">
-        <a href= "{{url_for('login_cliente')}}" class="btn va_btn">Volver Atras</a>
     </div>
 </body>
 

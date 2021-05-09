@@ -12,8 +12,8 @@ html {
 
 
 .user_card {
-    height: 500px;
-    width: 380px;
+    height: 460px;
+    width: 350px;
     margin-top: auto;
     margin-bottom: auto;
     background: #60a3bc;
@@ -45,7 +45,7 @@ html {
     border: 2px solid white;
 }
 .form_container {
-    margin-top: 100px;
+    margin-top: 25%;
 }
 .login_btn {
     width: 100%;

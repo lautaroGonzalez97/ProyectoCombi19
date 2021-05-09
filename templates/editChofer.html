@@ -1,10 +1,10 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "homeAdmin.html" %}
+{% block panel %}
 
 <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
 <div class="container">
-    <div style="text-align: center;">
+    <div style="text-align: center; font-family:Times New Roman;">
         <h1>EDITAR CHOFER</h1>
     </div>
     <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
@@ -53,7 +53,7 @@
                     <label for="email">Email</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="email" placeholder="Ingrese email" value="{{chofer.email}}"/>
+                            <input type="email" class="form-control" name="email" placeholder="Ingrese email" value="{{chofer.email}}"/>
                     </div>
                 </div>
 

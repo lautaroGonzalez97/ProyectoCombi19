@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "homeAdmin.html" %}
+{%  block panel %}
 
 <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
@@ -57,7 +57,7 @@
                     <tr>
                         <td style="text-align: center">{{insumo.nombre}}</td>
                         <td style="text-align: center">{{insumo.tipo}}</td>
-                        <td style="text-align: center">{{insumo.precio}}</td>
+                        <td style="text-align: center">${{insumo.precio}}</td>
                         <td style="text-align: center">
                             <div style="text-align: center;">
                                 <a style="margin-right: 1%;" href= "{{url_for('render_editar_insumo', id = insumo.id)}}" class="btn va_btn">Editar</a>

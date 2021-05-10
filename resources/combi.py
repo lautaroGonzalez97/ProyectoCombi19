@@ -83,8 +83,9 @@ def editar_combi(id):
         else:
             personal = Personal.all()
             choferes = list (filter(lambda x: x.tipo == 2, personal))
-            flash ("Patente cargada de sistema", "error") 
-            return render_template("editCombi.html", combi = combi, choferes = choferes)
+            flash ("Patente cargada de sistema", "error")
+            tipos_asientos= ["SemiCama", "Cama"] 
+            return render_template("editCombi.html", combi = combi, choferes = choferes, tipos= tipos_asientos)
     else:
         combi.modelo = datos["modelo"]
         combi.asientos = datos["asientos"]

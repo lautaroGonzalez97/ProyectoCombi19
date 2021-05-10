@@ -13,13 +13,14 @@ def listado_lugares():
 
 def render_alta_lugar():
     verificarSesionAdmin()
-    return render_template("addLugar.html")
+    lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']    
+    return render_template("addLugar.html",provincias=lugares)
 
 def render_editar_lugar(id):
     verificarSesionAdmin()
     lugar = Lugar.buscarLugarPorId(id)
-    print(lugar.localidad)
-    return render_template("editLugar.html", lugar = lugar)
+    lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']
+    return render_template("editLugar.html", lugar = lugar, provincias=lugares)
 
 def comprobarDatos(datos):
     localidad = datos["localidad"]

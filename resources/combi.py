@@ -4,25 +4,38 @@ from models.combi import Combi
 from models.personal import Personal
 from resources.personal import verificarSesionAdmin 
 
+
 def render_alta_combi():
     verificarSesionAdmin()
     personal = Personal.all()
     choferes = list (filter(lambda x: x.tipo == 2, personal))
-    return render_template("addCombi.html", choferes = choferes)
+    tipos_asiento=['SemiCama', 'Cama']
+    return render_template("addCombi.html", choferes = choferes, tipos = tipos_asiento)
 
 def render_editar_combi(id):
     verificarSesionAdmin()
     combi = Combi.buscarCombiPorId(id)
     personal = Personal.all()
     choferes = list (filter(lambda x: x.tipo == 2, personal))
-    return render_template("editCombi.html", combi = combi, choferes = choferes)
+    tipos_asiento=['SemiCama', 'Cama']
+    return render_template("editCombi.html", combi = combi, choferes = choferes, tipos = tipos_asiento)
 
 def listado_combis(): 
     verificarSesionAdmin()
     combis = Combi.all()
+    combisPost=[]
+    for each in combis:
+        combisPost.append({
+            'id':each.id,
+            'patente':each.patente,
+            'modelo':each.modelo,
+            'asientos':each.asientos,
+            'tipo':each.tipo,
+            'id_chofer': Personal.buscarChoferPorId(each.id_chofer).email 
+        })
     if len(combis) == 0:
         flash ("No hay combis cargadas", "warning")
-    return render_template("listaCombis.html", combis = combis)
+    return render_template("listaCombis.html", combis = combisPost)
 
 def alta_combi():
     datos = request.form

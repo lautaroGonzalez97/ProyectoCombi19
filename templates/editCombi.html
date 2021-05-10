@@ -53,21 +53,30 @@
                     <label for="asientos">Asientos</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="asientos" placeholder="Ingrese capacidad de asientos" value="{{combi.asientos}}" required/>
+                            <input type="number" class="form-control" name="asientos" placeholder="Ingrese capacidad de asientos" value="{{combi.asientos}}" required/>
                         </div>
                 </div>
                 <div class="form-group">
-                    <label for="tipo">Elegir Tipo:</label>
+                    <label for="tipo">Elegir Tipo Asiento:</label>
                         <select id="tipo" name="tipos" required>
-                                <option value="Semicama">Semi-Cama</option>  
-                                <option value="Cama">Cama</option>  
+                            {% for tipo in tipos %}
+                                {% if combi.tipo==tipo %}
+                                    <option value="{{tipo}}" selected>{{tipo}}</option>
+                                {% else %}
+                                    <option value="{{tipo}}">{{tipo}}</option>
+                                {% endif %}
+                        {% endfor %}
                         </select>
                 </div>
                 <div class="form-group">
                     <label for="choferes">Elegir chofer:</label>
                         <select id="chofere" name="choferes" required>
-                        {% for chofer in choferes%}
-                            <option value="{{chofer.id}}">{{chofer.nombre}} {{chofer.apellido}}</option>
+                            {% for chofer in choferes %}
+                                {% if combi.id_chofer==chofer.id %}
+                                    <option value="{{chofer.id}}" selected>{{chofer.nombre}} {{chofer.apellido}}</option>
+                                {% else %}
+                                    <option value="{{chofer.id}}">{{chofer.nombre}} {{chofer.apellido}}</option>
+                                {% endif %}
                         {% endfor %}
                         </select>
                 </div>

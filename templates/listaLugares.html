@@ -58,8 +58,8 @@
                         <td style="text-align: center">{{lugar.provincia}}</td>
                         <td>
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_lugar', id = lugar.id)}}" class="btn va_btn">Editar</a>
-                                <a href= "#" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn va_btn">Eliminar</a>
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_lugar', id = lugar.id)}}" class="btn btn-warning">Editar</a>
+                                <a href= "#" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
                             </div>
                         </td>
                     </tr>

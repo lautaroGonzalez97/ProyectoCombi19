@@ -7,7 +7,10 @@ class Combi(db.Model):
     modelo = db.Column(db.String(255))
     asientos = db.Column(db.Integer)
     tipo = db.Column(db.String(255))
+    # relacion con la class Personal
     id_chofer = db.Column(db.Integer, db.ForeignKey('personal.id'))
+    # relacion con la class Ruta
+    rutas = db.relationship('Ruta', backref='ruta')
 
     def __init__(self, patente, modelo, asientos, tipo, id_chofer):
         self.patente = patente

@@ -11,7 +11,7 @@ db = SQLAlchemy()
 def init_db(app):
     db.init_app(app)
     db.app = app
-    from models import cliente, personal, tarjeta, insumo, combi, lugar
+    from models import cliente, personal, tarjeta, insumo, combi, lugar, ruta
     db.create_all()
 
 

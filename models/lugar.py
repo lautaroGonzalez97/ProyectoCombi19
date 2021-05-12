@@ -1,3 +1,4 @@
+from sqlalchemy.orm import backref
 from db import db
 
 class Lugar(db.Model):
@@ -5,6 +6,8 @@ class Lugar(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     localidad = db.Column(db.String(255))
     provincia = db.Column(db.String(255))
+    origen = db.relationship('Ruta', backref='origen', foreign_keys="Ruta.id_origen")
+    destino = db.relationship('Ruta', backref='destino', foreign_keys="Ruta.id_destino")
 
     def __init__(self, localidad, provincia):
         self.localidad = localidad

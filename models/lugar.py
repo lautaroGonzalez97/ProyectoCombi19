@@ -33,3 +33,8 @@ class Lugar(db.Model):
     def buscarLugarPorId(id):
         lugar = Lugar.query.filter_by(id=id).first()
         return lugar
+
+    def eliminar_lugar(lugar):
+        db.session.delete(lugar)
+        db.session.commit()
+        return True

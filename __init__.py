@@ -64,14 +64,14 @@ app.add_url_rule("/alta_combi", "render_alta_combi", combi.render_alta_combi)
 app.add_url_rule("/save_combi", "alta_combi", combi.alta_combi, methods=["POST"])
 app.add_url_rule("/editar_combi/<id>", "render_editar_combi", combi.render_editar_combi)
 app.add_url_rule("/saveEdit_combi/<id>", "editar_combi", combi.editar_combi, methods=["POST"])
-#falta eliminar una combi
+app.add_url_rule("/eliminar_combi/<id>", "eliminar_combi", combi.eliminar_combi)
     #---acciones lugar---
 app.add_url_rule("/listado_lugares", "listado_lugares", lugar.listado_lugares)
 app.add_url_rule("/alta_lugar", "render_alta_lugar", lugar.render_alta_lugar)
 app.add_url_rule("/save_lugar", "alta_lugar", lugar.alta_lugar, methods=["POST"])
 app.add_url_rule("/editar_lugar/<id>", "render_editar_lugar", lugar.render_editar_lugar)
 app.add_url_rule("/saveEdit_lugar/<id>", "editar_lugar", lugar.editar_lugar, methods=["POST"])
-#falta eliminar un lugar
+app.add_url_rule("/eliminar_lugar/<id>", "eliminar_lugar", lugar.eliminar_lugar)
     #---acciones ruta---
 app.add_url_rule("/listado_rutas", "listado_rutas", ruta.listado_rutas) 
 app.add_url_rule("/alta_ruta", "render_alta_ruta", ruta.render_alta_ruta)

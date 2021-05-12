@@ -65,3 +65,11 @@ def editar_lugar(id):
         flash ("Datos de lugar actualizados exitosamente", "success")
         return redirect(url_for("listado_lugares"))
     
+def eliminar_lugar(id):
+    lugar = Lugar.buscarLugarPorId(id)
+    if ((len(lugar.origen) == 0) and (len(lugar.destino) == 0)):
+        flash ("Baja de lugar exitoso", "success")
+        Lugar.eliminar_lugar(lugar)
+    else:
+        flash ("El lugar tiene asignado una ruta, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
+    return redirect (url_for('listado_lugares'))

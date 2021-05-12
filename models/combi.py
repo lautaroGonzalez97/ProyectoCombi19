@@ -36,3 +36,8 @@ class Combi(db.Model):
     def actualizar(id):
         db.session.commit()
         return True
+
+    def eliminar_combi(combi):
+        db.session.delete(combi)
+        db.session.commit()
+        return True

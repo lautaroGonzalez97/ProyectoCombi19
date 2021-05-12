@@ -53,7 +53,7 @@ def alta_ruta():
     if (comprobarDatos(origen, destino)):
         new_ruta = Ruta(origen, destino, combi, duracion, km)
         new_ruta.save()
-        flash("Alta de ruta exitosa", "succcess")
+        flash("Alta de ruta exitosa", "success")
         return redirect(url_for("listado_rutas"))
     else:
         flash("Ruta cargada en el sistema", "error")

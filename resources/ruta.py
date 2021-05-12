@@ -77,7 +77,7 @@ def editar_ruta(id):
             flash("Ruta cargada en el sistema", "error")
             combis = Combi.all()
             lugares = Lugar.all()
-            ruta = Ruta.buscarRutaPorId(ruta)
+            ruta = Ruta.buscarRutaPorId(id)
             return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
     else:
         ruta.id_combi = datos['combi']

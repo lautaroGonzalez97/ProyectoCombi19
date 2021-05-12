@@ -14,9 +14,9 @@ def listado_viajes():
     for each in viajes:
         viajePost.append({
             'id':each.id,
-            'origen': Lugar.buscarLugarPorId(Ruta.id_origen).localidad,
-            'destino': Lugar.buscarLugarPorId(Ruta.id_destino).localidad,
-            'combi': Combi.buscarCombiPorId(Ruta.id_combi).patente,
+            'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_origen).localidad,
+            'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_destino).localidad,
+            'combi': Combi.buscarCombiPorId(Ruta.buscarRutaPorId(each.id_ruta).id_combi).patente,
             'asientos': each.asientos_disponibles,
             'fecha': each.fecha,
             'precio': each.precio

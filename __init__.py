@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta #pip install python-dateutil
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
-from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta
+from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta, viaje
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
@@ -78,7 +78,12 @@ app.add_url_rule("/alta_ruta", "render_alta_ruta", ruta.render_alta_ruta)
 app.add_url_rule("/save_ruta", "alta_ruta", ruta.alta_ruta, methods=["POST"])
 app.add_url_rule("/editar_ruta/<id>", "render_editar_ruta", ruta.render_editar_ruta)
 app.add_url_rule("/saveEdit_ruta/<id>", "editar_ruta", ruta.editar_ruta, methods=["POST"])
-
+app.add_url_rule("/eliminar_ruta/<id>", "eliminar_ruta", ruta.eliminar_ruta)
+    #---acciones viaje---
+app.add_url_rule("/listado_viajes", "listado_viajes", viaje.listado_viajes) 
+app.add_url_rule("/alta_viaje", "render_alta_viaje", viaje.render_alta_viaje)
+app.add_url_rule("/save_viaje", "alta_viaje", viaje.alta_viaje, methods=["POST"])
+app.add_url_rule("/eliminar_viaje/<id>", "eliminar_viaje", viaje.eliminar_viaje)
 
 def home ():
     if ("id" not in session):

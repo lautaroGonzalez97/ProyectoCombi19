@@ -10,6 +10,7 @@ class Ruta(db.Model):
     id_combi = db.Column(db.Integer, db.ForeignKey('combi.id'))
     duracion_minutos = db.Column(db.Integer)
     km = db.Column(db.Integer)
+    viajes = db.relationship('Viaje', backref = 'viaje')
 
     def __init__(self, origen, destino, combi, duracion_minutos, km):
         self.id_origen = origen 
@@ -36,5 +37,10 @@ class Ruta(db.Model):
         return ruta
 
     def actualizar(self):
+        db.session.commit()
+        return True
+
+    def eliminar_ruta(ruta):
+        db.session.delete(ruta)
         db.session.commit()
         return True

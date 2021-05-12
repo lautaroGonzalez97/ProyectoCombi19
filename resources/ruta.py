@@ -86,3 +86,12 @@ def editar_ruta(id):
         Ruta.actualizar(ruta)
         flash("Datos de ruta actualizados exitosamente", "success")
         return redirect(url_for("listado_rutas"))
+
+def eliminar_ruta(id):
+    ruta = Ruta.buscarRutaPorId(id)
+    if (len(ruta.viajes) == 0):
+        flash ("Baja de ruta exitoso", "success")
+        Ruta.eliminar_ruta(ruta)
+    else:
+        flash ("El lugar tiene asignada un viaje, por favor realice las operaciones necesarias y vuelve a intentarlo", "error")
+    return redirect(url_for('listado_rutas'))

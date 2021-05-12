@@ -29,6 +29,13 @@ def render_alta_ruta():
     lugares = Lugar.all()
     return render_template("addRuta.html", combis = combis, lugares = lugares)
 
+def render_editar_ruta(id):
+    verificarSesionAdmin()
+    combis = Combi.all()
+    lugares = Lugar.all()
+    ruta = Ruta.buscarRutaPorId(id)
+    return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
+
 def comprobarDatos(origen, destino):
     ruta = Ruta.buscarRutaPorOrigenYDestino(origen, destino)
     if (ruta is None):
@@ -51,3 +58,31 @@ def alta_ruta():
     else:
         flash("Ruta cargada en el sistema", "error")
         return redirect(url_for("render_alta_ruta"))
+
+def editar_ruta(id):
+    verificarSesionAdmin()
+    ruta = Ruta.buscarRutaPorId(id)
+    datos = request.form
+    if ((int(datos["origen"]) != ruta.id_origen) or (int(datos["destino"]) != ruta.id_destino)):
+        if (comprobarDatos(datos["origen"], datos["destino"])):
+            ruta.id_origen = datos['origen']
+            ruta.id_destino = datos['destino']
+            ruta.id_combi = datos['combi']
+            ruta.duracion_minutos = datos['duracion']
+            ruta.km = datos['kilometros']
+            Ruta.actualizar(ruta)
+            flash("Datos de ruta actualizados exitosamente", "success")
+            return redirect(url_for("listado_rutas"))
+        else:
+            flash("Ruta cargada en el sistema", "error")
+            combis = Combi.all()
+            lugares = Lugar.all()
+            ruta = Ruta.buscarRutaPorId(ruta)
+            return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
+    else:
+        ruta.id_combi = datos['combi']
+        ruta.duracion_minutos = datos['duracion']
+        ruta.km = datos['kilometros']
+        Ruta.actualizar(ruta)
+        flash("Datos de ruta actualizados exitosamente", "success")
+        return redirect(url_for("listado_rutas"))

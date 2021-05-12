@@ -96,10 +96,10 @@ def editar_combi(id):
         return redirect(url_for("listado_combis"))
     
 def eliminar_combi(id):
-    combi= Combi.buscarCombiPorId(id)
+    combi = Combi.buscarCombiPorId(id)
     if (len(combi.rutas) == 0):
-        flash ("Baja de combi exitoso","success")
-        Combi.eliminar_combi(combi)
+        flash ("Baja de combi exitoso", "success")
+        Combi.eliminar_combi(combi)       
     else:
-        flash ("La combi tiene una ruta asignada, por favor realize las operaciones necesarias y vuelva a intentarlo", "error")
+        flash("La combi tiene asignada al menos una Ruta de viaje, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
     return redirect(url_for("listado_combis"))

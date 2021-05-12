@@ -76,6 +76,9 @@ app.add_url_rule("/eliminar_lugar/<id>", "eliminar_lugar", lugar.eliminar_lugar)
 app.add_url_rule("/listado_rutas", "listado_rutas", ruta.listado_rutas) 
 app.add_url_rule("/alta_ruta", "render_alta_ruta", ruta.render_alta_ruta)
 app.add_url_rule("/save_ruta", "alta_ruta", ruta.alta_ruta, methods=["POST"])
+app.add_url_rule("/editar_ruta/<id>", "render_editar_ruta", ruta.render_editar_ruta)
+app.add_url_rule("/saveEdit_ruta/<id>", "editar_ruta", ruta.editar_ruta, methods=["POST"])
+
 
 def home ():
     if ("id" not in session):

@@ -30,3 +30,11 @@ class Ruta(db.Model):
     def buscarRutaPorOrigenYDestino(origen, destino):
         ruta = Ruta.query.filter_by(id_origen=origen, id_destino=destino).first()
         return ruta
+
+    def buscarRutaPorId(id):
+        ruta = Ruta.query.filter_by(id=id).first()
+        return ruta
+
+    def actualizar(self):
+        db.session.commit()
+        return True

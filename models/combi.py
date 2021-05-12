@@ -33,10 +33,10 @@ class Combi(db.Model):
         combi = Combi.query.filter_by(id=id).first()
         return combi
 
-    def actualizar(id):
+    def actualizar(self):
         db.session.commit()
         return True
-
+    
     def eliminar_combi(combi):
         db.session.delete(combi)
         db.session.commit()

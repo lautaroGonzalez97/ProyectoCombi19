@@ -152,10 +152,7 @@ def validarEmail(email):
 
 def eliminar_chofer(id):
     chofer = Personal.buscarChoferPorId(id)
-    print(chofer.nombre)
-    print(chofer.combis)
     if (len(chofer.combis) == 0):
-        print("NO TIENE COMBI")
         flash ("Baja de chofer exitoso", "success")
         Personal.eliminar_chofer(chofer)
     else:

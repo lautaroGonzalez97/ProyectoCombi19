@@ -48,11 +48,12 @@ def editar_lugar(id):
     verificarSesionAdmin()
     lugar = Lugar.buscarLugarPorId(id)
     datos = request.form
+    print((datos["localidad"] != lugar.localidad))
     if ((datos["localidad"] != lugar.localidad) or (datos["provincia"] != lugar.provincia)):
         if (comprobarDatos(datos)):
             lugar.localidad = datos["localidad"]
             lugar.provincia = datos["provincia"]
-            Lugar.actualizar(id)
+            Lugar.actualizar(lugar)
             flash ("Datos de lugar actualizados exitosamente", "success")
             return redirect(url_for("listado_lugares"))
         flash ("Lugar cargado en el sistema", "error")
@@ -61,7 +62,7 @@ def editar_lugar(id):
     else:
         lugar.localidad = datos["localidad"]
         lugar.provincia = datos["provincia"]
-        Lugar.actualizar(id)
+        Lugar.actualizar(lugar)
         flash ("Datos de lugar actualizados exitosamente", "success")
         return redirect(url_for("listado_lugares"))
     

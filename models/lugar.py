@@ -22,7 +22,7 @@ class Lugar(db.Model):
         db.session.commit()
         return True
 
-    def actualizar(id):
+    def actualizar(self):
         db.session.commit()
         return True
 

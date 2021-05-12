@@ -64,7 +64,7 @@
                         <td style="text-align: center">{{ruta.km}}</td>
                         <td style="text-align: center">
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "#" class="btn btn-warning">Editar</a>
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_ruta', id = ruta.id)}}" class="btn btn-warning">Editar</a>
                                 <a href= "#" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
                             </div>
                         </td>

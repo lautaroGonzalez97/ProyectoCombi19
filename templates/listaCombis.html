@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "homeAdmin.html" %}
+{%  block panel %}
 
 <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
@@ -50,7 +50,7 @@
                         <th style="text-align: center">Modelo</th>
                         <th style="text-align: center">Cantidad Asientos</th>
                         <th style="text-align: center">Tipo</th>
-                        <th style="text-align: center">Chofer ID</th>
+                        <th style="text-align: center">Contacto Chofer</th>
                         <th style="text-align: center">Operaciones</th>
                     </tr>
                 </thead>
@@ -64,8 +64,8 @@
                         <td style="text-align: center">{{combi.id_chofer}}</td>
                         <td>
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_combi', id = combi.id)}}" class="btn va_btn">Editar</a>
-                                <a href= "#"  onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn va_btn">Eliminar</a>
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_combi', id = combi.id)}}" class="btn btn-warning">Editar</a>
+                                <a href= "{{url_for('eliminar_combi', id = combi.id)}}"  onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
                             </div>
                         </td>
                     </tr>

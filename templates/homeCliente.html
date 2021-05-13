@@ -1,30 +1,29 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div style="text-align: center;"><h1>HOME DEL CLIENTE</h1></div>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='homeAdmin.css')}}">
 
-<a class="nav-link active cierre" href="{{url_for('logOut_cliente')}}"> CERRAR SESION </a>
-<div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
-    <div class="col-4" style="text-align: center;">
-        {% with errors= get_flashed_messages(category_filter=["error"])%}
-            {% if errros %}
-                {% for messages in errors%}
-                    <div class="alert alert-danger" role="alert">
-                        {{ messages }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        {% with success= get_flashed_messages(category_filter=["success"])%}
-            {% if success %}
-                {% for messages in success%}
-                    <div class="alert alert-success" role="alert">
-                        {{ messages }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+<nav class="navbar navbar-expand-lg navStyle">
+    <a class="brand-navbar" href="{{url_for('home_cliente')}}"><img style="margin-left: -130%;" src="{{ url_for ('static', filename='logo.png') }}" alt="Responsive image"  width="120" height="120""></a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#mainMenu">
+        <span><i class="fas fa-align-right iconStyle"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainMenu">
+        <ul class="navbar-nav ml-auto navList">
+            <li class="nav-item active"><a href="{{url_for('home_cliente')}}" class="nav-link"><i class="fas fa-home"></i>HOME<span class="sr-only">(current)</span></a></li>
+            <li class="nav-item">
+            <li class="nav-item">
+                <a href="{{url_for('logOut_cliente')}}" class="nav-link"><i class="fas fa-users"></i>Cerrar sesion</a>
+            </li>
+        </ul>
     </div>
-</div>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 {% endblock %}

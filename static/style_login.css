@@ -12,7 +12,7 @@ html {
 
 
 .user_card {
-    height: 500px;
+    height: 550px;
     width: 380px;
     margin-top: auto;
     margin-bottom: auto;
@@ -45,7 +45,7 @@ html {
     border: 2px solid white;
 }
 .form_container {
-    margin-top: 100px;
+    margin-top: 25%;
 }
 .login_btn {
     width: 100%;

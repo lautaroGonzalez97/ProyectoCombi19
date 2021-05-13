@@ -13,13 +13,14 @@ def listado_lugares():
 
 def render_alta_lugar():
     verificarSesionAdmin()
-    return render_template("addLugar.html")
+    lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']    
+    return render_template("addLugar.html",provincias=lugares)
 
 def render_editar_lugar(id):
     verificarSesionAdmin()
     lugar = Lugar.buscarLugarPorId(id)
-    print(lugar.localidad)
-    return render_template("editLugar.html", lugar = lugar)
+    lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']
+    return render_template("editLugar.html", lugar = lugar, provincias=lugares)
 
 def comprobarDatos(datos):
     localidad = datos["localidad"]
@@ -47,19 +48,29 @@ def editar_lugar(id):
     verificarSesionAdmin()
     lugar = Lugar.buscarLugarPorId(id)
     datos = request.form
+    print((datos["localidad"] != lugar.localidad))
     if ((datos["localidad"] != lugar.localidad) or (datos["provincia"] != lugar.provincia)):
         if (comprobarDatos(datos)):
             lugar.localidad = datos["localidad"]
             lugar.provincia = datos["provincia"]
-            Lugar.actualizar(id)
+            Lugar.actualizar(lugar)
             flash ("Datos de lugar actualizados exitosamente", "success")
             return redirect(url_for("listado_lugares"))
         flash ("Lugar cargado en el sistema", "error")
-        return render_template("editLugar.html", lugar = lugar)
+        lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']
+        return render_template("editLugar.html", lugar = lugar, provincias = lugares)
     else:
         lugar.localidad = datos["localidad"]
         lugar.provincia = datos["provincia"]
-        Lugar.actualizar(id)
+        Lugar.actualizar(lugar)
         flash ("Datos de lugar actualizados exitosamente", "success")
         return redirect(url_for("listado_lugares"))
     
+def eliminar_lugar(id):
+    lugar = Lugar.buscarLugarPorId(id)
+    if ((len(lugar.origen) == 0) and (len(lugar.destino) == 0)):
+        flash ("Baja de lugar exitoso", "success")
+        Lugar.eliminar_lugar(lugar)
+    else:
+        flash ("El lugar tiene asignado una ruta, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
+    return redirect (url_for('listado_lugares'))

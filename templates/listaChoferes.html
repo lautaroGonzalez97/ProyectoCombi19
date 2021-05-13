@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "homeAdmin.html" %}
+{% block panel %}
 
 <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
@@ -46,7 +46,6 @@
             <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
                     <tr>
-                        <th style="text-align: center">ID</th>
                         <th style="text-align: center">Nombre</th>
                         <th style="text-align: center">Apellido</th>
                         <th style="text-align: center">Email</th>
@@ -57,15 +56,14 @@
                 <tbody>
                     {% for empleado in choferes %}
                     <tr>
-                        <td style="text-align: center">{{empleado.id}}</td>
                         <td style="text-align: center">{{empleado.nombre}}</td>
                         <td style="text-align: center">{{empleado.apellido}}</td>
                         <td style="text-align: center">{{empleado.email}}</td>
                         <td style="text-align: center">{{empleado.telefono}}</td>
                         <td>
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_chofer', id = empleado.id)}} " class="btn va_btn">Editar</a>
-                                <a href= "{{url_for('eliminar_chofer', id = empleado.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn va_btn">Eliminar</a>
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_chofer', id = empleado.id)}} " class="btn btn-warning">Editar</a>
+                                <a href= "{{url_for('eliminar_chofer', id = empleado.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
                             </div>
                         </td>
                     </tr>

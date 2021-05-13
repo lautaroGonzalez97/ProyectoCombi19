@@ -5,7 +5,7 @@
 
 <section class="section">
     <div style="text-align: center;">
-        <h1>INSUMOS</h1>
+        <h1>VIAJES</h1>
     </div>
     <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
         <div class="col-4" style="text-align: center;">
@@ -41,27 +41,33 @@
     <div class="columns">
         <div class="column">
             <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
-                <a href= "{{url_for('render_alta_insumo')}}" class="btn va_btn">Agregar</a>
+                <a href= "{{url_for('render_alta_viaje')}}" class="btn va_btn">Agregar</a>
             </div>
             <table class="table" style="background-color: #FFFFFF80;">
                 <thead>
                     <tr>
-                        <th style="text-align: center">Nombre</th>
-                        <th style="text-align: center">Tipo</th>
+                        <th style="text-align: center">Origen</th>
+                        <th style="text-align: center">Destino</th>
+                        <th style="text-align: center">Combi</th>
+                        <th style="text-align: center">Asientos</th>
+                        <th style="text-align: center">Fecha</th>
                         <th style="text-align: center">Precio</th>
                         <th style="text-align: center">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for insumo in insumos %}
+                    {% for viaje in viajes %}
                     <tr>
-                        <td style="text-align: center">{{insumo.nombre}}</td>
-                        <td style="text-align: center">{{insumo.tipo}}</td>
-                        <td style="text-align: center">${{insumo.precio}}</td>
+                        <td style="text-align: center">{{viaje.origen}}</td>
+                        <td style="text-align: center">{{viaje.destino}}</td>
+                        <td style="text-align: center">{{viaje.combi}}</td>
+                        <td style="text-align: center">{{viaje.asientos}}</td>
+                        <td style="text-align: center">{{viaje.fecha}}</td>
+                        <td style="text-align: center">${{viaje.precio}}</td>
                         <td style="text-align: center">
                             <div style="text-align: center;">
-                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_insumo', id = insumo.id)}}" class="btn btn-warning">Editar</a>
-                                <a href= "{{url_for('eliminar_insumo', id = insumo.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
+                                <a style="margin-right: 1%;" href= "#" class="btn btn-warning">Editar</a>
+                                <a href= "{{url_for('eliminar_viaje', id = viaje.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
                             </div>
                         </td>
                     </tr>

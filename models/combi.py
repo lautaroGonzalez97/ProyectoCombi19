@@ -7,7 +7,10 @@ class Combi(db.Model):
     modelo = db.Column(db.String(255))
     asientos = db.Column(db.Integer)
     tipo = db.Column(db.String(255))
+    # relacion con la class Personal
     id_chofer = db.Column(db.Integer, db.ForeignKey('personal.id'))
+    # relacion con la class Ruta
+    rutas = db.relationship('Ruta', backref='ruta')
 
     def __init__(self, patente, modelo, asientos, tipo, id_chofer):
         self.patente = patente
@@ -30,6 +33,11 @@ class Combi(db.Model):
         combi = Combi.query.filter_by(id=id).first()
         return combi
 
-    def actualizar(id):
+    def actualizar(self):
+        db.session.commit()
+        return True
+    
+    def eliminar_combi(combi):
+        db.session.delete(combi)
         db.session.commit()
         return True

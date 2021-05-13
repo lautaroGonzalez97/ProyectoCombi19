@@ -1,10 +1,10 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "homeAdmin.html" %}
+{% block panel %}
 
 <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
 <div class="container">
-    <div style="text-align: center;">
+    <div style="text-align: center; font-family:Times New Roman;">
         <h1>EDITAR INSUMO</h1>
     </div>
     <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
@@ -37,25 +37,27 @@
                     <label for="nombre">Nombre</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" value="{{insumo.nombre}}"/>
+        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" value="{{insumo.nombre}}" required/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="precio">Precio</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="precio" placeholder="Ingrese precio" value="{{insumo.precio}}"/>
+                            <input type="number" class="form-control" name="precio" placeholder="Ingrese precio" value="{{insumo.precio}}" required/>
                     </div>
                 </div>
                 <br>
                 <div class="form-group">
                     <label for="tipo">Elegir Tipo:</label>
                         <select id="tipo" name="tipo" required>
-                            <option value="Bebida" >Bebida</option>
-                            <option value="Caramelo">Caramelo</option>
-                            <option value="Chocolate">Chocolate</option>
-                            <option value="Chupetin">Chupetin</option>
-                            <option value="Snack">Snack</option>
+                            {% for tipo in tiposPosibles %}
+                                {% if insumo.tipo==tipo %}
+                                    <option value="{{tipo}}" selected>{{tipo}}</option>
+                                {% else %}
+                                    <option value="{{tipo}}">{{tipo}}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select>
                 </div>
                 <br>

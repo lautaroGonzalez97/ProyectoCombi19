@@ -1,3 +1,4 @@
+from sqlalchemy.orm import backref
 from db import db
 
 class Lugar(db.Model):
@@ -5,6 +6,8 @@ class Lugar(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     localidad = db.Column(db.String(255))
     provincia = db.Column(db.String(255))
+    origen = db.relationship('Ruta', backref='origen', foreign_keys="Ruta.id_origen")
+    destino = db.relationship('Ruta', backref='destino', foreign_keys="Ruta.id_destino")
 
     def __init__(self, localidad, provincia):
         self.localidad = localidad
@@ -19,7 +22,7 @@ class Lugar(db.Model):
         db.session.commit()
         return True
 
-    def actualizar(id):
+    def actualizar(self):
         db.session.commit()
         return True
 
@@ -30,3 +33,8 @@ class Lugar(db.Model):
     def buscarLugarPorId(id):
         lugar = Lugar.query.filter_by(id=id).first()
         return lugar
+
+    def eliminar_lugar(lugar):
+        db.session.delete(lugar)
+        db.session.commit()
+        return True

@@ -17,7 +17,7 @@ def render_alta_insumo():
 def render_editar_insumo(id):
     verificarSesionAdmin()
     insumo = Insumo.buscarInsumoPorId(id)
-    return render_template("editInsumo.html", insumo = insumo)
+    return render_template("editInsumo.html", insumo = insumo, tiposPosibles=['Bebida','Chocolate','Chupetin','Snack','Caramelo'])
 
 def alta_insumo():
     insumo = request.form

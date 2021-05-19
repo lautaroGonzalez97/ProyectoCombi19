@@ -39,7 +39,7 @@
                         <label for="ruta">Elegir Ruta:</label>
                             <select id="ruta" name="ruta" required>
                             {% for ruta in rutas%}
-                                <option value="{{ruta.id}}">{{ruta.origen}}, {{ruta.destino}}</option>
+                                <option value="{{ruta.id}}"> de {{ruta.origen}} a {{ruta.destino}} con {{ruta.combi}}</option>
                             {% endfor %}
                             </select>
                     </div>
@@ -59,13 +59,20 @@
                         </div>
                 </div>
                 <div class="form-group">
+                    <label for="fecha">Hora de Salida</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="time" class="form-control" name="horaSalida" placeholder="Ingrese la hora de salida" required/>
+                        </div>
+                </div>
+                <div class="form-group">
                     <label for="precio">Precio</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                             <input type="number" class="form-control" name="precio" placeholder="Ingrese el precio" required/>
                         </div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="estado">Elegir Estado:</label>
                         <select id="estado" name="estado" required>
                             <option value="1">Pendiente</option>
@@ -74,6 +81,7 @@
                             <option value="4">Rechazado</option>
                             <option value="5">Realizado</option>
                         </select>
+                </div> -->
                 <div class="d-flex justify-content-center mt-3 login_container">
                     <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Agregar</button>
                     <a href= "{{url_for('listado_viajes')}}" class="btn va_btn">Volver Atras</a>

@@ -5,12 +5,14 @@ from models.ruta import Ruta
 from models.combi import Combi
 from models.viaje import Viaje
 from models.lugar import Lugar
+from models.personal import Personal
 from resources.personal import verificarSesionAdmin 
-from datetime import date
+from datetime import  datetime,time, timedelta, date
 
 def listado_viajes():
     verificarSesionAdmin()
     viajes = Viaje.all()
+    estados=["PENDIENTE","EN CURSO","CANCELADO","RECHAZADO","REALIZADO"]
     viajePost=[]
     for each in viajes:
         viajePost.append({
@@ -21,9 +23,9 @@ def listado_viajes():
             'asientos': each.asientos_disponibles,
             'fecha': each.fecha,
             'horaSalida': each.horaSalida,
-            #'horaLlegada': #calcular la hora con la de ruta
+            'horaLlegada': each.horaLlegada,
             'precio': each.precio,
-            'estado':each.estado
+            'estado':estados[each.estado - 1]
         })
     if (len(viajes) == 0):
         flash ("No hay viajes cargados", "warning")
@@ -50,20 +52,47 @@ def alta_viaje():
     asientos = datos["asientos"]
     fecha = datos ["fecha"]
     precio = datos ["precio"]
-    estado = datos ["estado"]
-    diaActual = datetime.now()
-    if (fecha >= diaActual):
+    horaSalida = datos["horaSalida"]
+    horaLlegada = sumarHora(horaSalida, id_ruta)
+    #estado = datos ["estado"]
+    estado = 1 #siempre que se cargue un viaje su estado va a ser pendiente
+    diaActual = datetime.today()
+    fec = datetime.strptime(fecha, "%Y-%m-%d")
+    if (fec >= diaActual):
         if (comprobar_asientos(id_ruta,asientos)):
-            new_viaje= Viaje(id_ruta,asientos,fecha,precio)
-            new_viaje.save()
-            flash("Alta de viaje exitoso", "success")
-            return redirect (url_for('listado_viajes'))
+            if (comprobarViaje(fecha, horaLlegada, horaSalida,(Combi.buscarCombiPorId(Ruta.buscarRutaPorId(id_ruta).id_combi)))):
+                new_viaje= Viaje(id_ruta,asientos,fecha,horaSalida,horaLlegada,precio,estado)
+                new_viaje.save()
+                flash("Alta de viaje exitoso", "success")
+                return redirect (url_for('listado_viajes'))
+            else:
+                flash ("Error de alta de viaje. Esa combi esta en viaje","error")
+                return redirect (url_for('render_alta_viaje'))
         else: 
             flash ("Error de alta de viaje. Mala carga de asientos","error")
             return redirect (url_for('render_alta_viaje'))          #NUEVO   error, el num de asientos cargados es mayor a la cant de asientos de combi
     else:
         flash("Error de alta de viaje, fecha invalida","error")    #NUEVO    error, la fecha cargada no supera la fecha actual
         return redirect (url_for('render_alta_viaje'))
+
+def comprobarViaje(fec, horaLlegada,horaSalida, combi):
+    viajes = Viaje.all()
+    for viaje in viajes:
+        fechaViaje = datetime.strptime(str(viaje.fecha),"%Y-%m-%d") #de la base de datos me lo trae como date y cuando compraraba contra un date time no funcionaba. Por eso parseo primero a string y despues a datetime
+        if (fechaViaje == datetime.strptime(fec, "%Y-%m-%d")):
+            if (horaSalida >= viaje.horaSalida and horaSalida <= horaLlegada or horaLlegada >= horaSalida and horaLlegada <= viaje.horaLlegada):
+                if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
+                        return False
+    return True
+
+def sumarHora(horaSalida, id_ruta):
+    formato = formato = "%H:%M"
+    salida = datetime.strptime(horaSalida, formato)
+    horas = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos / 60)
+    minutos = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos % 60)
+    dh = timedelta(hours=horas)
+    dm = timedelta(minutes=minutos)
+    return salida + dh + dm
 
 def eliminar_viaje(id):
     viaje = Viaje.buscarViajePorId(id)
@@ -79,10 +108,10 @@ def eliminar_viaje(id):
         return redirect (url_for('listado_viajes'))
 
 
-def comprobar_asientos(id, asientos):
+def comprobar_asientos(id_ruta, asientos):
     """ Comprobamos que el numero de asientos cargado no sea mayor que el numero de asientos de la combi """
-    aux = Ruta.buscarRutaPorId(id)
-    if (asientos > aux.asientos):
+    aux = Combi.buscarCombiPorId(Ruta.buscarRutaPorId(id_ruta).id_combi).asientos
+    if (int(asientos) > int(aux)):
         return False
     else:
         return True

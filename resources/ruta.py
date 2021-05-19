@@ -113,10 +113,12 @@ def viajesPendientes (viajes):
     index= 0
     print (len(viajes))
     if (len(viajes) != 0):
-        while (index < len(viajes)):
-            while (viajes[index].estado != 1) and (index < len(viajes)):
-                print (index)
+        ok = True
+        while ((viajes[index].estado != 1) and ok):
+            if index + 1 < len(viajes):
                 index= index + 1
-        if (viajes[index-1].estado == 1):
+            else:
+                ok = False
+        if (viajes[index].estado == 1):
             return True
     return False        

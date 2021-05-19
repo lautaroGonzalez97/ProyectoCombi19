@@ -158,3 +158,6 @@ def eliminar_chofer(id):
     else:
         flash ("El chofer tiene una combi asignada, por favor realize las operaciones necesarias y vuelve a intentarlo", "error")
     return redirect (url_for("listado_chofer"))
+
+def nombreCompleto():
+    return Personal.nombre()

@@ -28,8 +28,8 @@ class Ruta(db.Model):
         db.session.commit()
         return True
 
-    def buscarRutaPorOrigenYDestino(origen, destino):
-        ruta = Ruta.query.filter_by(id_origen=origen, id_destino=destino).first()
+    def buscarRutaPorOrigenYDestinoYCombi(origen, destino, combi):
+        ruta = Ruta.query.filter_by(id_origen=origen, id_destino=destino, id_combi=combi).first()
         return ruta
 
     def buscarRutaPorId(id):

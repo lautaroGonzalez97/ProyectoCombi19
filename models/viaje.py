@@ -6,13 +6,19 @@ class Viaje(db.Model):
     id_ruta = db.Column(db.Integer, db.ForeignKey('ruta.id'))
     asientos_disponibles = db.Column(db.Integer)
     fecha = db.Column(db.Date)
+    horaSalida = db.Column (db.Time())
+    horaLlegada = db.Column (db.Time())
     precio = db.Column(db.Float)
+    estado = db.Column(db.Integer)
 
-    def __init__(self, id_ruta, asientos_disponibles, fecha, precio):
+    def __init__(self, id_ruta, asientos_disponibles, fecha, horaSalida, horaLlegada, precio, estado):
         self.id_ruta = id_ruta
         self.asientos_disponibles=asientos_disponibles
         self.fecha=fecha
+        self.horaSalida= horaSalida
+        self.horaLlegada= horaLlegada
         self.precio=precio
+        self.estado=estado    # 1 = pendiente     2= en curso     3= cancelado   4 = rechazado    5 = realizado
 
     def all():
         viajes = Viaje.query.all()

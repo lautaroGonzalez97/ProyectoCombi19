@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta #pip install python-dateutil
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
-from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta, viaje
+from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta, viaje, comentario
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
@@ -32,6 +32,9 @@ app.add_url_rule("/autenticar_cliente", "autenticar_cliente", cliente.autenticar
 app.add_url_rule("/login_cliente", "login_cliente", cliente.login)
 app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
+    #---acciones comentarios---
+app.add_url_rule ("/listado_comentarios", "listado_comentarios", comentario.listado_comentarios)
+app.add_url_rule("/save_comentario/<id>", "alta_comentario", comentario.alta_comentario, methods=["POST"])
 
 #Rutas Tarjeta
 app.add_url_rule("/tarjeta_cliente/<nom>/<ape>/<email>/<nac>/<contra>", "crear_tarjeta", tarjeta.crear, methods=["POST"])
@@ -83,7 +86,8 @@ app.add_url_rule("/eliminar_ruta/<id>", "eliminar_ruta", ruta.eliminar_ruta)
 app.add_url_rule("/listado_viajes", "listado_viajes", viaje.listado_viajes) 
 app.add_url_rule("/alta_viaje", "render_alta_viaje", viaje.render_alta_viaje)
 app.add_url_rule("/save_viaje", "alta_viaje", viaje.alta_viaje, methods=["POST"])
-#falta editar un viaje
+#app.add_url_rule("/editar_viaje/<id>", "render_editar_viaje", viaje.render_editar_viaje)
+#app.add_url_rule("/saveEdit_viaje/<id>", "editar_viaje", viaje.editar_viaje, methods=["POST"])
 app.add_url_rule("/eliminar_viaje/<id>", "eliminar_viaje", viaje.eliminar_viaje)
 
 def home ():

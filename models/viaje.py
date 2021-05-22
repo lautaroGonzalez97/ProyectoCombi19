@@ -18,7 +18,7 @@ class Viaje(db.Model):
         self.horaSalida= horaSalida
         self.horaLlegada= horaLlegada
         self.precio=precio
-        self.estado=estado    # 1 = pendiente     2= en curso     3= cancelado   4 = rechazado    5 = realizado
+        self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado 
 
     def all():
         viajes = Viaje.query.all()

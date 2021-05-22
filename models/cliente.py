@@ -12,6 +12,7 @@ class Cliente(db.Model):
     password = db.Column(db.String(255))
     #disponible = db.Column(db.Integer)
     tarjetas = db.relationship('Tarjeta', backref='tarjeta')
+    comentarios = db.relationship('Comentario', backref='comentario')
 
     def __init__(self, nombre, apellido, email, fechaNacimiento, password):
         self.nombre = nombre
@@ -40,7 +41,11 @@ class Cliente(db.Model):
             return client.first().idUsuario()
         else:
             return None
-
+            
     def buscarPorEmail(email):
         client = Cliente.query.filter_by(email=email).first()
+        return client
+
+    def buscarPorId(id):
+        client = Cliente.query.filter_by(id=id).first()
         return client

@@ -10,7 +10,9 @@ html {
     display: flex;
 }
 
-
+.blockquote-footer{
+    color: rgb(36, 34, 34);
+}
 .user_card {
     height: 550px;
     width: 380px;

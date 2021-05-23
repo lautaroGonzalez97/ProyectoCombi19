@@ -53,15 +53,15 @@ def alta_viaje():
     fecha = datos ["fecha"]
     precio = datos ["precio"]
     horaSalida = datos["horaSalida"]
-    horaLlegada = sumarHora(horaSalida, id_ruta)
-    #estado = datos ["estado"]
-    estado = 1 #siempre que se cargue un viaje su estado va a ser pendiente
+    salida = datetime.strptime(horaSalida, "%H:%M")
+    horaLlegada = sumarHora(salida, id_ruta)
+    estado = 1 
     diaActual = datetime.today()
     fec = datetime.strptime(fecha, "%Y-%m-%d")
     if (fec >= diaActual):
         if (comprobar_asientos(id_ruta,asientos)):
-            if (comprobarViaje(fecha, horaLlegada, horaSalida,(Combi.buscarCombiPorId(Ruta.buscarRutaPorId(id_ruta).id_combi)))):
-                new_viaje= Viaje(id_ruta,asientos,fecha,horaSalida,horaLlegada,precio,estado)
+            if (comprobarViaje(fec, horaLlegada, salida,(Combi.buscarCombiPorId(Ruta.buscarRutaPorId(id_ruta).id_combi)))):
+                new_viaje= Viaje(id_ruta,asientos,fecha,salida,horaLlegada,precio,estado)
                 new_viaje.save()
                 flash("Alta de viaje exitoso", "success")
                 return redirect (url_for('listado_viajes'))
@@ -78,16 +78,16 @@ def alta_viaje():
 def comprobarViaje(fec, horaLlegada,horaSalida, combi):
     viajes = Viaje.all()
     for viaje in viajes:
-        fechaViaje = datetime.strptime(str(viaje.fecha),"%Y-%m-%d") #de la base de datos me lo trae como date y cuando compraraba contra un date time no funcionaba. Por eso parseo primero a string y despues a datetime
-        if (fechaViaje == datetime.strptime(fec, "%Y-%m-%d")):
-            if (horaSalida >= viaje.horaSalida and horaSalida <= horaLlegada or horaLlegada >= horaSalida and horaLlegada <= viaje.horaLlegada):
+        if (datetime.strptime(str(viaje.fecha),"%Y-%m-%d") == fec):
+            if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() or horaSalida.time() >= datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()
+            and horaSalida.time() <= datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time() or horaSalida.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()
+            or horaLlegada.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() or horaLlegada.time() >= datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()
+            and horaLlegada.time() <= datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time() or horaLlegada.time() ==datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
                 if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
-                        return False
+                    return False
     return True
 
-def sumarHora(horaSalida, id_ruta):
-    formato = formato = "%H:%M"
-    salida = datetime.strptime(horaSalida, formato)
+def sumarHora(salida, id_ruta):
     horas = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos / 60)
     minutos = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos % 60)
     dh = timedelta(hours=horas)

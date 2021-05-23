@@ -34,8 +34,11 @@ app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
     #---acciones comentarios---
 app.add_url_rule ("/listado_comentarios", "listado_comentarios", comentario.listado_comentarios)
+app.add_url_rule ("/listado_misComentarios", "listado_misComentarios", comentario.listado_misComentarios)
 app.add_url_rule("/save_comentario/<id>", "alta_comentario", comentario.alta_comentario, methods=["POST"])
-
+app.add_url_rule("/editar_comentario/<id>", "render_editar_comentario", comentario.render_editar_comentario)
+app.add_url_rule("/saveEdit_comentario/<id>", "editar_comentario", comentario.editar_comentario, methods=["POST"])
+app.add_url_rule("/eliminar_comentario/<id>", "eliminar_comentario", comentario.eliminar_comentario)
 #Rutas Tarjeta
 app.add_url_rule("/tarjeta_cliente/<nom>/<ape>/<email>/<nac>/<contra>", "crear_tarjeta", tarjeta.crear, methods=["POST"])
 

@@ -5,40 +5,36 @@
 
 <section class="section">
     <div style="text-align: center;">
-    <h1>COMENTARIOS</h1>
-    <form action="{{url_for('alta_comentario' , id = idCliente)}}}" , method="POST">      
-        <p><textarea cols="80" rows="5" name="descripcion"  wrap="hard" placeholder="COMPARTE TU OPINION ACERCA DE COMBI-19"></textarea></p>
-      
-        <button type="submit" name="button" class="btn va_btn">Agregar</button>
-      
-      </form>
+        <h1>COMENTARIOS</h1>
+        <form action="{{url_for('alta_comentario', id = idCliente)}}}" , method="POST">      
+            <p aria-required="true"><textarea cols="80" rows="5" name="descripcion"  wrap="hard" placeholder="COMPARTE TU OPINION ACERCA DE COMBI-19" required></textarea></p>
+            <button type="submit" name="button" class="btn va_btn">Agregar</button>
+        </form>
     </div>
     <br>
-    <button type="submit" name="button" class="btn va_btn">Mis comentarios</button> <!-- aca no va asi, tiene que ir un boton del estilo de volver atras del registrar cliente-->
+    <a href= "{{url_for('listado_misComentarios')}}" class="btn va_btn"> Mis comentarios </a>
     <br>
     <br>
-    <table width="1040" cellspacing="2" cellpadding="3" border="0" style="background-color: #FFFFFF80">
+    <table width="1040" cellspacing="2" cellpadding="3" style="background-color: #FFFFFF80">
         <tr>
-           <td>
-        <h4>Otros comentarios</h4> 
+            <td>
+                <h4>Otros comentarios</h4> 
+            </td>
         </tr>
-            <tr>
+        <tr>
             <td style="background-color: #FFFFFF80;">   
                     {% for comentario in comentarios%}
                         <div>
                             <blockquote class="blockquote">
                                 <div style="text-align: left;">
                                     <p>{{comentario.desc}}.</p>
-                                    <strong><em><footer class="blockquote-footer" style="font-size: 75%;">{{comentario.nomCliente}} {{comentario.apeCliente}}</footer></em></strong>
+                                    <strong><em><footer class="blockquote-footer" style="font-size: 75%;">{{comentario.nomCliente}} {{comentario.apeCliente}}, {{comentario.fecha}}</footer></em></strong>
                                 </div>
-                            </div>
                             </blockquote>
-                            
                         </div>
                     {% endfor %}
             </td>
         </tr>
     </table>
-
 </section>
 {% endblock %}

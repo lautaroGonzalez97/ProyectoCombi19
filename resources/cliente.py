@@ -3,6 +3,7 @@ from helpers.auth import authenticated
 from models.cliente import Cliente
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from datetime import  datetime,time, timedelta, date
 
 def verificarSesion():
     if (not authenticated(session) or (not session["tipo"] == "Cliente")):
@@ -86,4 +87,30 @@ def autenticar():
         return redirect(url_for("home"))
     flash ("Email o contraseña incorrecta", "error")
     return redirect(url_for("login_cliente"))
+
+def ver_perfil():
+    verificarSesion()
+    perfil= Cliente.buscarPorId(session["id"])
+    perfil.fechaNacimiento = datetime.strptime(str(perfil.fechaNacimiento),"%Y-%m-%d").date()
+    if (esGold(perfil.id)):
+        tarjetasPost=[]
+        for each in perfil.tarjetas:
+            tarjetasPost.append({
+            'id':each.id,
+            'nombre': each.nombre,
+            'numero': each.numero,
+            'codigo': each.codigo,
+            'fechaVencimiento':datetime.strptime(str(each.fechaVencimiento),"%Y-%m-%d").date()
+        })
+        return render_template ("verPerfilGold.html", usuario= perfil, tarjetas= tarjetasPost)
+    return render_template ("verPerfil.html", usuario=perfil)
+
+
+def esGold (id):
+        usuario = Cliente.buscarPorId(id)
+        if ( len(usuario.tarjetas) != 0 ):
+            return True
+        return False
+
+#def editar_cliente ()    
 

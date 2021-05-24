@@ -1,0 +1,48 @@
+{% extends "homeCliente.html" %}
+{% block panel %}
+
+    <div class="container">
+        <div class="row">
+            <div
+                class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> PERFIL </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class=" col-md-9 col-lg-9 ">
+                                <table class="table table-user-information">
+                                    <tbody>
+
+                                        <tr>
+                                            <td>Nombre:</td>
+                                            <td>{{usuario.nombre}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Apellido:</td>
+                                            <td>{{usuario.apellido}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>{{usuario.email}}</td>
+                                        </tr>
+
+                                        <tr>
+                                        <tr>
+                                            <td>Fecha de nacimiento</td>
+                                            <td>{{usuario.fechaNacimiento}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <a href="#" class="btn btn-primary">Editar </a>
+                                <a href="homeCliente.html" class="btn btn-primary">Volver Atras </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

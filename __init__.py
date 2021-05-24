@@ -39,6 +39,8 @@ app.add_url_rule("/save_comentario/<id>", "alta_comentario", comentario.alta_com
 app.add_url_rule("/editar_comentario/<id>", "render_editar_comentario", comentario.render_editar_comentario)
 app.add_url_rule("/saveEdit_comentario/<id>", "editar_comentario", comentario.editar_comentario, methods=["POST"])
 app.add_url_rule("/eliminar_comentario/<id>", "eliminar_comentario", comentario.eliminar_comentario)
+    #---Perfil---
+app.add_url_rule ("/ver_perfil", "ver_perfil", cliente.ver_perfil)    
 #Rutas Tarjeta
 app.add_url_rule("/tarjeta_cliente/<nom>/<ape>/<email>/<nac>/<contra>", "crear_tarjeta", tarjeta.crear, methods=["POST"])
 

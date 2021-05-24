@@ -8,7 +8,7 @@ class Cliente(db.Model):
     nombre = db.Column(db.String(255))
     apellido = db.Column(db.String(255))
     email = db.Column(db.String(255))
-    fechaNacimiento = db.Column(db.DateTime())
+    fechaNacimiento = db.Column(db.Date())
     password = db.Column(db.String(255))
     #disponible = db.Column(db.Integer)
     tarjetas = db.relationship('Tarjeta', backref='tarjeta')
@@ -49,3 +49,5 @@ class Cliente(db.Model):
     def buscarPorId(id):
         client = Cliente.query.filter_by(id=id).first()
         return client
+
+        

@@ -66,30 +66,43 @@ def alta_viaje():
                 flash("Alta de viaje exitoso", "success")
                 return redirect (url_for('listado_viajes'))
             else:
-                flash ("Error de alta de viaje. Esa combi esta en viaje","error")
                 return redirect (url_for('render_alta_viaje'))
         else: 
-            flash ("Error de alta de viaje. Mala carga de asientos","error")
+            flash ("Error de alta de viaje, cantidad de asientos invalida","error")
             return redirect (url_for('render_alta_viaje'))          #NUEVO   error, el num de asientos cargados es mayor a la cant de asientos de combi
     else:
         flash("Error de alta de viaje, fecha invalida","error")    #NUEVO    error, la fecha cargada no supera la fecha actual
         return redirect (url_for('render_alta_viaje'))
 
-def comprobarViaje(fec, horaLlegada,horaSalida, combi):
+def comprobarViaje(fec, horaLlegada, horaSalida, combi):
     viajes = Viaje.all()
     for viaje in viajes:
         if (datetime.strptime(str(viaje.fecha),"%Y-%m-%d") == fec):
-            if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() or horaSalida.time() >= datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()
-            and horaSalida.time() <= datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time() or horaSalida.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()
-            or horaLlegada.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() or horaLlegada.time() >= datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()
-            and horaLlegada.time() <= datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time() or horaLlegada.time() ==datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
+            print("ES MISMA FECHA")
+            if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
+                if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
+                    flash("HORA DE SALIDA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
                     return False
+                if (horaSalida.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaSalida.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
+                    flash("HORA DE SALIDA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    return False
+                if (horaSalida.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
+                    flash("HORA DE SALIDA IGUAL A HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    return False
+                if (horaLlegada.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
+                    flash("HORA DE LLEGADA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    return False
+                if (horaLlegada.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaLlegada.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
+                    flash("HORA DE LLEGADA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    return False
+                #if (horaLlegada.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):   NO TENDRIA QUE IR PORQUE PARA QUE LLEGUEN A LA MISMA HORA TIENEN QUE SALIR 
+                    #flash("HORA DE LLEGADA IGUAL A HORA DE LLEGADA DE OTRO VIAJE", "error")                  A LA MISMA HORA PORQUE SON LA MISMA RUTA  
+                    #return False
     return True
 
 def sumarHora(salida, id_ruta):
-    horas = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos / 60)
-    minutos = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos % 60)
+    horas = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos) / 60
+    minutos = int(Ruta.buscarRutaPorId(id_ruta).duracion_minutos) % 60
     dh = timedelta(hours=horas)
     dm = timedelta(minutes=minutos)
     return salida + dh + dm

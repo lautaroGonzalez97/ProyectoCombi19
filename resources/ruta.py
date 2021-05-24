@@ -1,10 +1,11 @@
+from datetime import datetime, timedelta
 from resources.lugar import comprobarDatos
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.ruta import Ruta
 from models.lugar import Lugar
 from models.combi import Combi
-from models.viaje import Viaje
+from resources.viaje import sumarHora
 from resources.personal import verificarSesionAdmin 
 
 def listado_rutas():
@@ -68,10 +69,7 @@ def editar_ruta(id):
     verificarSesionAdmin()
     ruta = Ruta.buscarRutaPorId(id)
     datos = request.form
-    aux1= datos["origen"]
-    aux2= datos["destino"]
-    if (aux1 != aux2):
-        if ((int(datos["origen"]) != ruta.id_origen) or (int(datos["destino"]) != ruta.id_destino) or ((int(datos["combi"] != ruta.id_combi )))):
+    if ((int(datos["origen"]) != ruta.id_origen) or (int(datos["destino"]) != ruta.id_destino) or (int(datos["combi"]) != ruta.id_combi)):
             if (comprobarDatos(datos["origen"], datos["destino"], int(datos["combi"]))):
                 ruta.id_origen = datos['origen']
                 ruta.id_destino = datos['destino']
@@ -87,18 +85,17 @@ def editar_ruta(id):
                 lugares = Lugar.all()
                 ruta = Ruta.buscarRutaPorId(id)
                 return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
-        else:
-            ruta.duracion_minutos = datos['duracion']
-            ruta.km = datos['kilometros']
-            Ruta.actualizar(ruta)
-            flash("Datos de ruta actualizados exitosamente", "success")
-            return redirect(url_for("listado_rutas"))
     else:
-        flash ("Error. Origen y destino deben ser distintos","error")   #NUEVO   error, origen destino iguales
-        combis = Combi.all()
-        lugares = Lugar.all()
-        ruta = Ruta.buscarRutaPorId(id)
-        return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
+        ruta.duracion_minutos = datos['duracion']
+        if(int(datos['duracion']) != ruta.duracion_minutos):
+            viajes = ruta.viajes
+            for viaje in viajes:
+                salida = timedelta(hours=viaje.horaSalida.hour, minutes=viaje.horaSalida.minute)
+                viaje.horaLlegada = sumarHora(salida, ruta.id)
+        ruta.km = datos['kilometros']
+        Ruta.actualizar(ruta)
+        flash("Datos de ruta actualizados exitosamente", "success")
+        return redirect(url_for("listado_rutas"))
 
 def eliminar_ruta(id):
     ruta = Ruta.buscarRutaPorId(id)

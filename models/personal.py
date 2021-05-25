@@ -60,6 +60,3 @@ class Personal(db.Model):
         db.session.delete(chofer)
         db.session.commit()
         return True
-
-def nombreCompleto(self):
-    return self.nombre + self.apellido

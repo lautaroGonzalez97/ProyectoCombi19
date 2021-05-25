@@ -112,5 +112,57 @@ def esGold (id):
             return True
         return False
 
-#def editar_cliente ()    
+def render_editar_cliente (id):
+    verificarSesion()
+    cliente = Cliente.buscarPorId(id)
+    return render_template("editClient.html", cliente = cliente)
 
+def editar_cliente(id):
+    verificarSesion()
+    cliente = Cliente.buscarPorId(id)
+    datos = request.form
+    if (datos["email"]  != cliente.email):
+        check = comprobarDatos(datos)
+        if (check[0]):
+            if (validarPassword(datos["password"])):
+                fechaNac = datetime.strptime(datos["fechaNacimiento"], "%Y-%m-%d")
+                fecha = fechaNac + relativedelta(years=+18)
+                hoy = datetime.today() 
+                if (fecha <= hoy):
+                    cliente.nombre = datos["nombre"]
+                    cliente.apellido = datos["apellido"]
+                    cliente.email = datos["email"]
+                    cliente.password = datos["password"]
+                    cliente.fecha = fecha
+                    Cliente.actualizar(cliente)
+                    flash ("Datos personales actualizados exitosamente", "success")
+                    return redirect(url_for ("ver_perfil"))
+                else:
+                    flash ("Edad invalida", "error")
+                    return redirect (url_for("render_editar_cliente", id = id))
+            else:
+                flash ("Contraseña corta", "error")
+                return redirect (url_for("render_editar_cliente", id = id))
+        else:
+            flash ("Email registrado en el sistema", "error")
+            return redirect (url_for("render_editar_cliente", id = id))
+    else:
+        if (validarPassword(datos["password"])):
+            fechaNac = datetime.strptime(datos["fechaNacimiento"], "%Y-%m-%d")
+            fecha = fechaNac + relativedelta(years=+18)
+            hoy = datetime.today() 
+            if (fecha <= hoy):
+                cliente.nombre = datos["nombre"]
+                cliente.apellido = datos["apellido"]
+                cliente.email = datos["email"]
+                cliente.password = datos["password"]
+                cliente.fecha = fecha
+                Cliente.actualizar(cliente)
+                flash ("Datos personales actualizados exitosamente", "success")
+                return redirect(url_for ("ver_perfil"))
+            else:
+                flash ("Edad invalida", "error")
+                return redirect (url_for("render_editar_cliente", id = id))
+        else:
+            flash ("Contraseña corta", "error")
+            return redirect (url_for("render_editar_cliente", id = id))

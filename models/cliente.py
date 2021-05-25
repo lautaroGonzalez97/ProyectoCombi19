@@ -50,4 +50,6 @@ class Cliente(db.Model):
         client = Cliente.query.filter_by(id=id).first()
         return client
 
-        
+    def actualizar (self):
+        db.session.commit()
+        return True

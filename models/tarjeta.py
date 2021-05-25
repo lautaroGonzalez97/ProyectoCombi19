@@ -20,3 +20,16 @@ class  Tarjeta (db.Model):
         db.session.add(self)
         db.session.commit()
         return True
+    
+    def buscarPorId(id):
+        tarjeta= Tarjeta.query.filter_by(id=id).first()
+        return tarjeta
+
+    def eliminar_tarjeta(tarjeta):
+        db.session.delete(tarjeta)
+        db.session.commit()
+        return True
+
+    def actualizar(self):
+        db.session.commit()
+        return True

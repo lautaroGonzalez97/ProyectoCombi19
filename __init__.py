@@ -31,6 +31,8 @@ app.add_url_rule("/registrar_cliente", "render_altaCliente", cliente.registrar)
 app.add_url_rule("/autenticar_cliente", "autenticar_cliente", cliente.autenticar, methods=["POST"])
 app.add_url_rule("/login_cliente", "login_cliente", cliente.login)
 app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
+app.add_url_rule("/editar_cliente/<id>", "render_editar_cliente", cliente.render_editar_cliente)
+app.add_url_rule("/saveEdit_cliente/<id>", "editar_cliente", cliente.editar_cliente, methods=["POST"])
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
     #---acciones comentarios---
 app.add_url_rule ("/listado_comentarios", "listado_comentarios", comentario.listado_comentarios)
@@ -43,7 +45,9 @@ app.add_url_rule("/eliminar_comentario/<id>", "eliminar_comentario", comentario.
 app.add_url_rule ("/ver_perfil", "ver_perfil", cliente.ver_perfil)    
 #Rutas Tarjeta
 app.add_url_rule("/tarjeta_cliente/<nom>/<ape>/<email>/<nac>/<contra>", "crear_tarjeta", tarjeta.crear, methods=["POST"])
-
+app.add_url_rule("/eliminar_tarjeta/<id>", "eliminar_tarjeta", tarjeta.eliminar_tarjeta)
+app.add_url_rule("/editar_tarjeta/<id>", "render_editar_tarjeta", tarjeta.render_editar_tarjeta)
+app.add_url_rule("/saveEdit_tarjeta/<id>", "editar_tarjeta", tarjeta.editar_tarjeta, methods=["POST"])
 #Rutas Personal
 app.add_url_rule("/login_personal", "autenticar_personal", personal.autenticar, methods=["POST"])
 app.add_url_rule("/login_personal", "login_personal", personal.login)

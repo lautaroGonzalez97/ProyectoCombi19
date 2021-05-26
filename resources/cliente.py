@@ -105,7 +105,6 @@ def ver_perfil():
         return render_template ("verPerfilGold.html", usuario= perfil, tarjetas= tarjetasPost)
     return render_template ("verPerfil.html", usuario=perfil)
 
-
 def esGold (id):
         usuario = Cliente.buscarPorId(id)
         if ( len(usuario.tarjetas) != 0 ):
@@ -133,7 +132,7 @@ def editar_cliente(id):
                     cliente.apellido = datos["apellido"]
                     cliente.email = datos["email"]
                     cliente.password = datos["password"]
-                    cliente.fecha = fecha
+                    cliente.fechaNacimiento = fechaNac
                     Cliente.actualizar(cliente)
                     flash ("Datos personales actualizados exitosamente", "success")
                     return redirect(url_for ("ver_perfil"))
@@ -156,7 +155,7 @@ def editar_cliente(id):
                 cliente.apellido = datos["apellido"]
                 cliente.email = datos["email"]
                 cliente.password = datos["password"]
-                cliente.fecha = fecha
+                cliente.fechaNacimiento = fechaNac
                 Cliente.actualizar(cliente)
                 flash ("Datos personales actualizados exitosamente", "success")
                 return redirect(url_for ("ver_perfil"))

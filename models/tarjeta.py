@@ -4,14 +4,16 @@ class  Tarjeta (db.Model):
     __tablename__ = "terjeta_credito"
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(255))
-    numero = db.Column(db.Integer)
+    numero = db.Column(db.String(50))
     codigo = db.Column(db.Integer)
     fechaVencimiento = db.Column(db.Date())
     id_owner = db.Column(db.Integer, db.ForeignKey('cliente.id'))
 
     def __init__(self, nombre, numero, codigoSeguridad, fechaVencimiento, id_owner):
         self.nombre = nombre
+        print(numero)
         self.numero = numero
+        print(self.numero)
         self.codigo = codigoSeguridad
         self.fechaVencimiento = fechaVencimiento
         self.id_owner = id_owner

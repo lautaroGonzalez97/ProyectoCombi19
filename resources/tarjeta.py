@@ -12,7 +12,6 @@ def validarNumero(numero):
     else: return False  
 
 def crear(nom, ape, email, nac, contra):
-    print (nom, ape, email)
     datos = request.form
     nombre = datos["nombre"]
     numero = datos["numero"]
@@ -24,13 +23,13 @@ def crear(nom, ape, email, nac, contra):
         if (validarNumero(numero)):
             cliente = Cliente(nom, ape, email, nac, contra)
             cliente.save()
-            print (numero)
             c = Cliente.buscarPorEmail(email)
             new_tarjeta = Tarjeta(nombre, numero, codigo, fechaVencimiento, c.id) #guarda en la bd cualquier cosa
+            print(new_tarjeta.nombre)
+            print(new_tarjeta.numero)
             new_tarjeta.save()
+            print(new_tarjeta.numero)
             flash ("Registro Gold exitoso", "success")
-            print (new_tarjeta.numero)
-            print (numero)
             return redirect(url_for("login_cliente"))
         else:
             flash ("Numero de tarjeta incorrecto", "error")

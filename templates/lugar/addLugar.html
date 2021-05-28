@@ -1,0 +1,62 @@
+{% extends "personal/homeAdmin.html" %}
+{% block panel %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<div class="container">
+    <div style="text-align: center; font-family:Times New Roman;">
+        <h1>ALTA LUGAR</h1>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with mensajes= get_flashed_messages(category_filter=["error"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+    <div class="main">
+        <div class="main-center">
+            <form class="" action="{{url_for('alta_lugar')}}" method= "POST">
+                <div class="form-group">
+                    <label for="localidad">Localidad</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" name="localidad" placeholder="Ingrese localidad" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="provincia">Elegir Provincia:</label>
+                        <select id="provincia" name="provincia" required>
+                            {% for place in provincias %}
+                                <option value="{{place}}">{{place}}</option>
+                            {% endfor %}
+                        </select>
+                </div>
+                <br>
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Agregar</button>
+                    <a href= "{{url_for('listado_lugares')}}" class="btn va_btn">Volver Atras</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

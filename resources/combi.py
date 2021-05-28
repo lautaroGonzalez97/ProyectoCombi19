@@ -10,7 +10,7 @@ def render_alta_combi():
     personal = Personal.all()
     choferes = list (filter(lambda x: x.tipo == 2, personal))
     tipos_asiento=['SemiCama', 'Cama']
-    return render_template("addCombi.html", choferes = choferes, tipos = tipos_asiento)
+    return render_template("combi/addCombi.html", choferes = choferes, tipos = tipos_asiento)
 
 def render_editar_combi(id):
     verificarSesionAdmin()
@@ -18,7 +18,7 @@ def render_editar_combi(id):
     personal = Personal.all()
     choferes = list (filter(lambda x: x.tipo == 2, personal))
     tipos_asiento=['SemiCama', 'Cama']
-    return render_template("editCombi.html", combi = combi, choferes = choferes, tipos = tipos_asiento)
+    return render_template("combi/editCombi.html", combi = combi, choferes = choferes, tipos = tipos_asiento)
 
 def listado_combis(): 
     verificarSesionAdmin()
@@ -35,7 +35,7 @@ def listado_combis():
         })
     if len(combis) == 0:
         flash ("No hay combis cargadas", "warning")
-    return render_template("listaCombis.html", combis = combisPost)
+    return render_template("combi/listaCombis.html", combis = combisPost)
 
 def alta_combi():
     datos = request.form
@@ -85,7 +85,7 @@ def editar_combi(id):
             choferes = list (filter(lambda x: x.tipo == 2, personal))
             flash ("Patente cargada de sistema", "error")
             tipos_asientos= ["SemiCama", "Cama"] 
-            return render_template("editCombi.html", combi = combi, choferes = choferes, tipos= tipos_asientos)
+            return render_template("combi/editCombi.html", combi = combi, choferes = choferes, tipos= tipos_asientos)
     else:
         combi.modelo = datos["modelo"]
         combi.asientos = datos["asientos"]
@@ -101,5 +101,5 @@ def eliminar_combi(id):
         flash ("Baja de combi exitoso", "success")
         Combi.eliminar_combi(combi)       
     else:
-        flash("La combi tiene asignada al menos una Ruta de viaje, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
+        flash("La combi tiene asignada al menos una ruta de viaje, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
     return redirect(url_for("listado_combis"))

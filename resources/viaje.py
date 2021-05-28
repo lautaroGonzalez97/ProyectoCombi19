@@ -29,7 +29,7 @@ def listado_viajes():
         })
     if (len(viajes) == 0):
         flash ("No hay viajes cargados", "warning")
-    return render_template ("listaViajes.html", viajes = viajePost)
+    return render_template ("viaje/listaViajes.html", viajes = viajePost)
 
 def render_alta_viaje():
     verificarSesionAdmin()
@@ -44,7 +44,7 @@ def render_alta_viaje():
             'duracion':each.duracion_minutos,
             'km': each.km
         })
-    return render_template("addViaje.html", rutas = rutasPost)
+    return render_template("viaje/addViaje.html", rutas = rutasPost)
 
 def alta_viaje():
     datos = request.form
@@ -66,12 +66,13 @@ def alta_viaje():
                 flash("Alta de viaje exitoso", "success")
                 return redirect (url_for('listado_viajes'))
             else:
+                flash ("UPS! Este viaje es imposible realizarlo", "error")
                 return redirect (url_for('render_alta_viaje'))
         else: 
-            flash ("Error de alta de viaje, cantidad de asientos invalida","error")
+            flash ("Cantidad de asientos invalida","error")
             return redirect (url_for('render_alta_viaje'))          #NUEVO   error, el num de asientos cargados es mayor a la cant de asientos de combi
     else:
-        flash("Error de alta de viaje, fecha invalida","error")    #NUEVO    error, la fecha cargada no supera la fecha actual
+        flash("Fecha invalida","error")    #NUEVO    error, la fecha cargada no supera la fecha actual
         return redirect (url_for('render_alta_viaje'))
 
 def comprobarViaje(fec, horaLlegada, horaSalida, combi):
@@ -81,23 +82,23 @@ def comprobarViaje(fec, horaLlegada, horaSalida, combi):
             print("ES MISMA FECHA")
             if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
                 if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
-                    flash("HORA DE SALIDA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    # flash("HORA DE SALIDA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
                     return False
                 if (horaSalida.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaSalida.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                    flash("HORA DE SALIDA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    # flash("HORA DE SALIDA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
                     return False
                 if (horaSalida.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                    flash("HORA DE SALIDA IGUAL A HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    # flash("HORA DE SALIDA IGUAL A HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
                     return False
                 if (horaLlegada.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
-                    flash("HORA DE LLEGADA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    # flash("HORA DE LLEGADA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
                     return False
                 if (horaLlegada.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaLlegada.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                    flash("HORA DE LLEGADA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
+                    # flash("HORA DE LLEGADA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
                     return False
-                #if (horaLlegada.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):   NO TENDRIA QUE IR PORQUE PARA QUE LLEGUEN A LA MISMA HORA TIENEN QUE SALIR 
-                    #flash("HORA DE LLEGADA IGUAL A HORA DE LLEGADA DE OTRO VIAJE", "error")                  A LA MISMA HORA PORQUE SON LA MISMA RUTA  
-                    #return False
+                if (horaLlegada.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):    
+                    # flash("HORA DE LLEGADA IGUAL A HORA DE LLEGADA DE OTRO VIAJE", "error")                 
+                    return False
     return True
 
 def sumarHora(salida, id_ruta):
@@ -114,10 +115,10 @@ def eliminar_viaje(id):
         flash ("Baja de viaje exitoso", "success")
         return redirect (url_for('listado_viajes'))
     if (viaje.estado == 2):
-        flash("Error. El viaje se encuentra en curso","error")
+        flash("El viaje se encuentra en curso","error")
         return redirect (url_for('listado_viajes'))
     if (viaje.estado == 1):
-        flash("Error. El viaje se encuentra pendiente","error")
+        flash("El viaje se encuentra pendiente","error")
         return redirect (url_for('listado_viajes'))
 
 

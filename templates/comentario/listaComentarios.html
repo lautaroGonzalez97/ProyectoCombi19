@@ -1,0 +1,71 @@
+{% extends "cliente/homeCliente.html" %}
+{%  block panel %}
+
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<section class="section">
+    <div style="text-align: center;">
+        <h1>COMENTARIOS</h1>
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+            <div class="col-4" style="text-align: center;">
+                {% with mensajes= get_flashed_messages(category_filter=["error"])%}
+                    {% if mensajes %}
+                        {% for messages in mensajes%}
+                            <div class="alert alert-danger" role="alert">
+                                {{ messages }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% with mensajes= get_flashed_messages(category_filter=["success"])%}
+                    {% if mensajes %}
+                        {% for messages in mensajes%}
+                            <div class="alert alert-success" role="alert">
+                                {{ messages }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-info" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <form action="{{url_for('alta_comentario', id = idCliente)}}}" , method="POST">      
+            <p aria-required="true"><textarea cols="80" rows="5" name="descripcion"  wrap="hard" placeholder="COMPARTE TU OPINION ACERCA DE COMBI-19" required></textarea></p>
+            <button type="submit" name="button" class="btn va_btn">Agregar</button>
+        </form>
+    </div>
+    <br>
+    <a href= "{{url_for('listado_misComentarios')}}" class="btn va_btn"> Mis comentarios </a>
+    <br>
+    <br>
+    <table width="1040" cellspacing="2" cellpadding="3" style="background-color: #FFFFFF80">
+        <tr>
+            <td>
+                <h4>Otros comentarios</h4> 
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color: #FFFFFF80;">   
+                    {% for comentario in comentarios%}
+                        <div>
+                            <blockquote class="blockquote">
+                                <div style="text-align: left;">
+                                    <p>{{comentario.desc}}.</p>
+                                    <strong><em><footer class="blockquote-footer" style="font-size: 75%;">{{comentario.nomCliente}} {{comentario.apeCliente}}, {{comentario.fecha}}</footer></em></strong>
+                                </div>
+                            </blockquote>
+                        </div>
+                    {% endfor %}
+            </td>
+        </tr>
+    </table>
+</section>
+{% endblock %}

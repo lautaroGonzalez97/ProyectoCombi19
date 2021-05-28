@@ -8,16 +8,16 @@ def listado_insumos():
     insumos = Insumo.all()
     if len(insumos) == 0:
         flash ("No hay insumos cargados", "warning")
-    return render_template("listaInsumos.html", insumos = insumos)
+    return render_template("insumo/listaInsumos.html", insumos = insumos)
 
 def render_alta_insumo():
     verificarSesionAdmin()
-    return render_template("addInsumo.html")
+    return render_template("insumo/addInsumo.html")
 
 def render_editar_insumo(id):
     verificarSesionAdmin()
     insumo = Insumo.buscarInsumoPorId(id)
-    return render_template("editInsumo.html", insumo = insumo, tiposPosibles=['Bebida','Chocolate','Chupetin','Snack','Caramelo'])
+    return render_template("insumo/editInsumo.html", insumo = insumo, tiposPosibles=['Bebida','Chocolate','Chupetin','Snack','Caramelo'])
 
 def alta_insumo():
     insumo = request.form

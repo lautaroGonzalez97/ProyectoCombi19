@@ -34,15 +34,15 @@ app.add_url_rule("/logout_cliente", "logOut_cliente", cliente.logOut)
 app.add_url_rule("/editar_cliente/<id>", "render_editar_cliente", cliente.render_editar_cliente)
 app.add_url_rule("/saveEdit_cliente/<id>", "editar_cliente", cliente.editar_cliente, methods=["POST"])
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
+app.add_url_rule ("/ver_perfil", "ver_perfil", cliente.ver_perfil)    
     #---acciones comentarios---
 app.add_url_rule ("/listado_comentarios", "listado_comentarios", comentario.listado_comentarios)
+app.add_url_rule ("/listado_comentariosPersonal", "listado_comentariosPersonal", comentario.listado_comentariosPersonal)
 app.add_url_rule ("/listado_misComentarios", "listado_misComentarios", comentario.listado_misComentarios)
 app.add_url_rule("/save_comentario/<id>", "alta_comentario", comentario.alta_comentario, methods=["POST"])
 app.add_url_rule("/editar_comentario/<id>", "render_editar_comentario", comentario.render_editar_comentario)
 app.add_url_rule("/saveEdit_comentario/<id>", "editar_comentario", comentario.editar_comentario, methods=["POST"])
 app.add_url_rule("/eliminar_comentario/<id>", "eliminar_comentario", comentario.eliminar_comentario)
-    #---Perfil---
-app.add_url_rule ("/ver_perfil", "ver_perfil", cliente.ver_perfil)    
 #Rutas Tarjeta
 app.add_url_rule("/tarjeta_cliente/<nom>/<ape>/<email>/<nac>/<contra>", "crear_tarjeta", tarjeta.crear, methods=["POST"])
 app.add_url_rule("/eliminar_tarjeta/<id>", "eliminar_tarjeta", tarjeta.eliminar_tarjeta)
@@ -63,6 +63,8 @@ app.add_url_rule("/save_chofer", "alta_chofer", personal.alta_chofer, methods=["
 app.add_url_rule("/editar_chofer/<id>", "render_editar_chofer", personal.render_editar_chofer)
 app.add_url_rule("/saveEdit_chofer/<id>", "editar_chofer", personal.editar_chofer, methods=["POST"])
 app.add_url_rule("/eliminar_chofer/<id>", "eliminar_chofer", personal.eliminar_chofer)
+app.add_url_rule ("/ver_perfilPersonal", "ver_perfil_personal", personal.ver_perfil_personal) 
+app.add_url_rule("/saveEdit_perfil/<id>", "editar_perfil_personal", personal.editar_perfil_personal, methods=["POST"])   
     #---acciones insumos---
 app.add_url_rule("/listado_insumos", "listado_insumos", insumo.listado_insumos)
 app.add_url_rule("/alta_insumo", "render_alta_insumo", insumo.render_alta_insumo)

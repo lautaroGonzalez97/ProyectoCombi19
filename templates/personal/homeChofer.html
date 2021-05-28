@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='homeAdmin.css')}}">
+
+<!-- <p>Aca se va a mostrar las funcionalidades que tengan los choferes y ademas los va a tener el admin</p> -->
+<div class="container p-4">
+    <nav class="navbar navbar-expand-lg navStyle">
+        <a class="brand-navbar" href="{{url_for('home_chofer')}}"><img style="margin-left: -130%;" src="{{ url_for ('static', filename='logo.png') }}" alt="Responsive image"  width="120" height="120""></a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#mainMenu">
+            <span><i class="fas fa-align-right iconStyle"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainMenu">
+            <ul class="navbar-nav ml-auto navList">
+                <li class="nav-item active"><a href="{{url_for('home_chofer')}}" class="nav-link"><i class="fas fa-home"></i>HOME<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item">
+                    <a href="{{url_for('listado_comentariosPersonal')}}" class="nav-link"><i class="fas fa-users"></i>Comentarios</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url_for('ver_perfil_personal')}}" class="nav-link"><i class="fas fa-users"></i>Perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url_for('logOut_personal')}}" class="nav-link"><i class="fas fa-users"></i>Cerrar sesion</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+{% block panel %}
+
+{% endblock %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+{% endblock %}

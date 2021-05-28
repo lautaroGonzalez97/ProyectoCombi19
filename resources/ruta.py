@@ -23,20 +23,20 @@ def listado_rutas():
         })
     if len(rutas) == 0:
         flash ("No hay rutas cargadas", "warning")
-    return render_template("listaRutas.html", rutas = rutasPost)
+    return render_template("ruta/listaRutas.html", rutas = rutasPost)
 
 def render_alta_ruta():
     verificarSesionAdmin()
     combis = Combi.all()
     lugares = Lugar.all()
-    return render_template("addRuta.html", combis = combis, lugares = lugares)
+    return render_template("ruta/addRuta.html", combis = combis, lugares = lugares)
 
 def render_editar_ruta(id):
     verificarSesionAdmin()
     combis = Combi.all()
     lugares = Lugar.all()
     ruta = Ruta.buscarRutaPorId(id)
-    return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
+    return render_template("ruta/editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
 
 def comprobarDatos(origen, destino, combi):
     ruta = Ruta.buscarRutaPorOrigenYDestinoYCombi(origen, destino, combi)
@@ -84,7 +84,7 @@ def editar_ruta(id):
                 combis = Combi.all()
                 lugares = Lugar.all()
                 ruta = Ruta.buscarRutaPorId(id)
-                return render_template("editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
+                return render_template("ruta/editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
     else:
         ruta.duracion_minutos = datos['duracion']
         if(int(datos['duracion']) != ruta.duracion_minutos):
@@ -103,7 +103,7 @@ def eliminar_ruta(id):
         flash ("Baja de ruta exitoso", "success")
         Ruta.eliminar_ruta(ruta)
     else:
-        flash ("El lugar tiene asignada al menos un viaje, por favor realice las operaciones necesarias y vuelve a intentarlo", "error")
+        flash ("La ruta tiene asignada al menos un viaje, por favor realice las operaciones necesarias y vuelve a intentarlo", "error")
     return redirect(url_for('listado_rutas'))
 
 def viajesPendientes (viajes):

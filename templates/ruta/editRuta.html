@@ -1,0 +1,98 @@
+{% extends "personal/homeAdmin.html" %}
+{% block panel %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<div class="container">
+    <div style="text-align: center; font-family:Times New Roman;">
+        <h1>EDITAR RUTA</h1>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with mensajes= get_flashed_messages(category_filter=["error"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+    <div class="main">
+        <div class="main-center">
+            <form class="" action="{{url_for('editar_ruta', id = ruta.id)}}" method= "POST">
+                <div class="form-group">
+                    <label for="asientos">Duracion</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="number" class="form-control" name="duracion" placeholder="Ingrese duracion en minutos" value="{{ruta.duracion_minutos}}" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="asientos">Kilometros</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="number" class="form-control" name="kilometros" placeholder="Ingrese cantidad de kilometros" value="{{ruta.km}}" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="origen">Elegir Origen:</label>
+                        <select id="origen" name="origen" required>
+                            {% for lugar in lugares %}
+                                {% if ruta.id_origen==lugar.id %}
+                                    <option value="{{lugar.id}}" selected>{{lugar.localidad}}, {{lugar.provincia}}</option>
+                                {% else %}
+                                <option value="{{lugar.id}}">{{lugar.localidad}}, {{lugar.provincia}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="destino">Elegir Destino:</label>
+                        <select id="destino" name="destino" required>
+                            {% for lugar in lugares %}
+                                {% if ruta.id_destino==lugar.id %}
+                                    <option value="{{lugar.id}}" selected>{{lugar.localidad}}, {{lugar.provincia}}</option>
+                                {% else %}
+                                    <option value="{{lugar.id}}">{{lugar.localidad}}, {{lugar.provincia}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="combi">Elegir Combi:</label>
+                            <select id="combi" name="combi" required>
+                            {% for combi in combis%}
+                                {% if ruta.id_combi == combi.id %}
+                                    <option value="{{combi.id}}" selected>{{combi.patente}}</option>
+                                {% else %}
+                                <option value="{{combi.id}}" >{{combi.patente}}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Actualizar</button>
+                    <a href= "{{url_for('listado_rutas')}}" class="btn va_btn">Volver Atras</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

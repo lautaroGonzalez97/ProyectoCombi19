@@ -1,0 +1,58 @@
+{% extends "cliente/homeCliente.html" %}
+{% block panel %}
+<div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+    <div class="col-4" style="text-align: center;">
+        {% with mensajes= get_flashed_messages(category_filter=["error"])%}
+            {% if mensajes %}
+                {% for messages in mensajes%}
+                    <div class="alert alert-danger" role="alert">
+                        {{ messages }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% with mensajes= get_flashed_messages(category_filter=["success"])%}
+            {% if mensajes %}
+                {% for messages in mensajes%}
+                    <div class="alert alert-success" role="alert">
+                        {{ messages }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</div>
+<div class="container" style="align-content: center;">
+    <div style="text-align: center;" class="panel-heading">
+        <h1 class="panel-title"> PERFIL </h1>
+    </div>
+    <div class="panel-heading" style="text-align: center;">
+        <h3 class="panel-title"> Datos personales </h3>
+    </div>
+    <table class="table" style="background-color: #FFFFFF80; width: 40%;margin: 0 auto; border-collapse: collapse;">
+        <thead>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nombre: {{usuario.nombre}}</td>
+            </tr>
+            <tr>
+                <td>Apellido: {{usuario.apellido}}</td>
+            </tr>
+            <tr>
+                <td>Email: {{usuario.email}}</td>
+            </tr>
+            <tr>
+                <td>fecha Nacimiento: {{usuario.fechaNacimiento}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align: center; margin-top: 1%; margin-bottom: 2%;">
+        <a style="margin-right: 1%;" href= "{{url_for('render_editar_cliente', id = usuario.id)}}" class="btn btn-primary">Editar</a>
+    </div>
+        <div style="text-align: center;">
+            <a href="{{url_for('home_cliente')}}" class="btn btn-primary">Volver Atras </a>
+        </div>
+</div>
+{% endblock %}

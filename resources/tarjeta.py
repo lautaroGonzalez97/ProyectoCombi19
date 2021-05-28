@@ -33,10 +33,10 @@ def crear(nom, ape, email, nac, contra):
             return redirect(url_for("login_cliente"))
         else:
             flash ("Numero de tarjeta incorrecto", "error")
-            return render_template ("datosTarjeta.html", nom = nom, ape = ape, email = email, nac = nac, contra = contra)
+            return render_template ("tarjeta/datosTarjeta.html", nom = nom, ape = ape, email = email, nac = nac, contra = contra)
     else:
         flash ("Tarjeta vencida", "error")
-        return render_template ("datosTarjeta.html", nom = nom, ape = ape, email = email, nac = nac, contra = contra)
+        return render_template ("tarjeta/datosTarjeta.html", nom = nom, ape = ape, email = email, nac = nac, contra = contra)
 
 def eliminar_tarjeta (id):
     tarjeta= Tarjeta.buscarPorId(id)
@@ -47,7 +47,7 @@ def eliminar_tarjeta (id):
 def render_editar_tarjeta(id):
     verificarSesion()
     tarjeta=Tarjeta.buscarPorId(id)
-    return render_template('editTarjeta.html', tarjeta=tarjeta)
+    return render_template('tarjeta/editTarjeta.html', tarjeta=tarjeta)
 
 def editar_tarjeta(id):
     tarjeta= Tarjeta.buscarPorId(id)

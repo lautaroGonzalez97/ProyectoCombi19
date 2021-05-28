@@ -1,0 +1,83 @@
+{% extends "cliente/homeCliente.html" %}
+{% block panel %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<div class="container">
+    <div style="text-align: center; font-family:Times New Roman;">
+        <h1>EDITAR MI PERFIL</h1>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with mensajes= get_flashed_messages(category_filter=["error"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+    <div class="main">
+        <div class="main-center">
+            <form class="" action="{{url_for('editar_cliente', id = cliente.id)}}" method= "POST">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" name="nombre" placeholder="Ingrese nombre" value="{{cliente.nombre}}" required/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" name="apellido" placeholder="Ingrese apellido" value="{{cliente.apellido}}" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">email</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="email" class="form-control" name="email" placeholder="Ingrese email" value="{{cliente.email}}" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="fechaNacimiento">Fecha Nacimiento</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="date" class="form-control" name="fechaNacimiento" placeholder="Ingrese fecha nacimiento" value="{{cliente.fechaNacimiento}}" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" placeholder="Ingrese contraseña" value="{{cliente.password}}" required/>
+                        </div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Actualizar</button>
+                    <a href= "{{url_for('ver_perfil')}}" class="btn va_btn">Volver Atras</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

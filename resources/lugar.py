@@ -8,19 +8,19 @@ def listado_lugares():
     lugares = Lugar.all()
     if len(lugares) == 0:    
         flash ("No hay lugares cargados", "warning")
-    return render_template("listaLugares.html", lugares = lugares)
+    return render_template("lugar/listaLugares.html", lugares = lugares)
 
 
 def render_alta_lugar():
     verificarSesionAdmin()
     lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']    
-    return render_template("addLugar.html",provincias=lugares)
+    return render_template("lugar/addLugar.html",provincias=lugares)
 
 def render_editar_lugar(id):
     verificarSesionAdmin()
     lugar = Lugar.buscarLugarPorId(id)
     lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']
-    return render_template("editLugar.html", lugar = lugar, provincias=lugares)
+    return render_template("lugar/editLugar.html", lugar = lugar, provincias=lugares)
 
 def comprobarDatos(datos):
     localidad = datos["localidad"]
@@ -58,7 +58,7 @@ def editar_lugar(id):
             return redirect(url_for("listado_lugares"))
         flash ("Lugar cargado en el sistema", "error")
         lugares=['Buenos Aires','Catamarca','Chaco','Chubut','Cordoba','Corrientes','Entre Rios','Formosa','Jujuy','La Pampa','La Rioja','Mendoza','Misiones','Neuquen','Rio Negro','Salta','San Juan','San Luis','Santa Cruz','Santa Fe','Santiago del Estero', 'Tierra del Fuego','Tucuman']
-        return render_template("editLugar.html", lugar = lugar, provincias = lugares)
+        return render_template("lugar/editLugar.html", lugar = lugar, provincias = lugares)
     else:
         lugar.localidad = datos["localidad"]
         lugar.provincia = datos["provincia"]
@@ -72,5 +72,5 @@ def eliminar_lugar(id):
         flash ("Baja de lugar exitoso", "success")
         Lugar.eliminar_lugar(lugar)
     else:
-        flash ("El lugar tiene asignado una ruta, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
+        flash ("El lugar tiene una ruta asignada, por favor realice las operaciones necesarias y vuelva a intentarlo", "error")
     return redirect (url_for('listado_lugares'))

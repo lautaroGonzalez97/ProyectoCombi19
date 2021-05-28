@@ -11,12 +11,12 @@ def verificarSesion():
 
 def home():
     verificarSesion()
-    return render_template("homeCliente.html")
+    return render_template("cliente/homeCliente.html")
 
 def login():
     if (authenticated(session)):
         return redirect(url_for("home_cliente"))
-    return render_template("login_client.html")
+    return render_template("cliente/login_client.html")
 
 def logOut():
     if (authenticated(session)):
@@ -24,10 +24,10 @@ def logOut():
     return redirect(url_for("login_cliente"))
 
 def registrar():
-    return render_template("addClient.html")
+    return render_template("cliente/addClient.html")
 
 def editar():
-    return render_template("editClient.html")
+    return render_template("cliente/editClient.html")
 
 def comprobarDatos(data):
     resultado = [True, ""]
@@ -58,7 +58,7 @@ def crear():
         if (validarPassword(password)):
             if (fecha <= hoy):
                 if (request.form.get('tipo') == 'isTrue'):
-                    return render_template ("datosTarjeta.html", nom = nombre, ape = apellido, email = email, nac = fechaNacimiento, contra = password)
+                    return render_template ("tarjeta/datosTarjeta.html", nom = nombre, ape = apellido, email = email, nac = fechaNacimiento, contra = password)
                 new_cliente = Cliente(nombre, apellido, email, fechaNac, password)  
                 new_cliente.save()
                 flash ("Registro exitoso", "success")
@@ -102,8 +102,8 @@ def ver_perfil():
             'codigo': each.codigo,
             'fechaVencimiento':datetime.strptime(str(each.fechaVencimiento),"%Y-%m-%d").date()
         })
-        return render_template ("verPerfilGold.html", usuario= perfil, tarjetas= tarjetasPost)
-    return render_template ("verPerfil.html", usuario=perfil)
+        return render_template ("cliente/verPerfilGold.html", usuario= perfil, tarjetas= tarjetasPost)
+    return render_template ("cliente/verPerfil.html", usuario=perfil)
 
 def esGold (id):
         usuario = Cliente.buscarPorId(id)
@@ -114,7 +114,7 @@ def esGold (id):
 def render_editar_cliente (id):
     verificarSesion()
     cliente = Cliente.buscarPorId(id)
-    return render_template("editClient.html", cliente = cliente)
+    return render_template("cliente/editClient.html", cliente = cliente)
 
 def editar_cliente(id):
     verificarSesion()

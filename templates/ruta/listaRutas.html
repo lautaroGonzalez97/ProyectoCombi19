@@ -1,0 +1,81 @@
+{% extends "personal/homeAdmin.html" %}
+{%  block panel %}
+
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<section class="section">
+    <div style="text-align: center;">
+        <h1>RUTAS</h1>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+        <div class="col-4" style="text-align: center;">
+            {% with mensajes= get_flashed_messages(category_filter=["error"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% with mensajes= get_flashed_messages(category_filter=["success"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-success" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+            {% if mensajes %}
+                {% for messages in mensajes%}
+                    <div class="alert alert-info" role="alert">
+                        {{ messages }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+                <a href= "{{url_for('render_alta_ruta')}}" class="btn va_btn">Agregar</a>
+            </div>
+            <table class="table" style="background-color: #FFFFFF80;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">Origen</th>
+                        <th style="text-align: center">Destino</th>
+                        <th style="text-align: center">Combi</th>
+                        <th style="text-align: center">Duracion</th>
+                        <th style="text-align: center">Kilometros</th>
+                        <th style="text-align: center">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ruta in rutas %}
+                    <tr>
+                        <td style="text-align: center">{{ruta.origen}}</td>
+                        <td style="text-align: center">{{ruta.destino}}</td>
+                        <td style="text-align: center">{{ruta.combi}}</td>
+                        <td style="text-align: center">{{ruta.duracion}}</td>
+                        <td style="text-align: center">{{ruta.km}}</td>
+                        <td style="text-align: center">
+                            <div style="text-align: center;">
+                                <a style="margin-right: 1%;" href= "{{url_for('render_editar_ruta', id = ruta.id)}}" class="btn btn-warning">Editar</a>
+                                <a href= "{{url_for('eliminar_ruta', id = ruta.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+        <a href= "{{url_for('home_admin')}}" class="btn va_btn">Volver Atras</a>
+    </div>
+</section>
+{% endblock %}

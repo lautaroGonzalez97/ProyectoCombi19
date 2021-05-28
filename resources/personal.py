@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.personal import Personal
@@ -10,13 +11,19 @@ def verificarSesionAdmin():
     if (not (authenticated(session)) or (not (session["tipo"] == "Admin"))):
         abort(401)
 
+def verificarSesionPersonal():
+    if (not (authenticated(session))):
+        abort(401)
+    if not (not (session["tipo"] == "Admin") and (session["tipo"] == "Chofer") or ((session["tipo"] == "Admin") and (not (session["tipo"] == "Chofer")))):
+        abort(401)
+
 def home_chofer():
     verificarSesionChofer()
-    return render_template("homeChofer.html")
+    return render_template("personal/homeChofer.html")
 
 def home_admin():
     verificarSesionAdmin()
-    return render_template("homeAdmin.html")
+    return render_template("personal/homeAdmin.html")
 
 def listado_chofer():
     verificarSesionAdmin()
@@ -24,21 +31,24 @@ def listado_chofer():
     choferes = list (filter(lambda x: x.tipo == 2, personal))
     if len(choferes) == 0:
         flash ("No hay choferes cargados", "warning")
-    return render_template("listaChoferes.html", choferes = choferes)
+    return render_template("personal/listaChoferes.html", choferes = choferes)
     
 def render_alta_chofer():
     verificarSesionAdmin()
-    return render_template("addChofer.html")
+    return render_template("personal/addChofer.html")
 
 def render_editar_chofer(id):
-    verificarSesionAdmin()
+    verificarSesionPersonal()
     chofer = Personal.buscarChoferPorId(id)
-    return render_template("editChofer.html", chofer = chofer)
+    if (session["tipo"] == "Admin"):
+        return render_template("personal/editChofer.html", chofer = chofer)
+    else:
+        return render_template("personal/editPerfilPersonal.html", chofer = chofer)
 
 def login():
     if (authenticated(session)):
         return redirect(url_for("home_personal"))
-    return render_template("login_personal.html")
+    return render_template("personal/login_personal.html")
 
 def logOut():
     if (authenticated(session)):
@@ -49,6 +59,11 @@ def listaChoferes():
     personal = Personal.all()
     choferes = list (filter(lambda x: x.tipo == 2, personal))
     return choferes
+
+def ver_perfil_personal():
+    verificarSesionChofer()
+    perfil= Personal.buscarChoferPorId(session["id"])
+    return render_template ("personal/verPerfilPersonal.html", usuario=perfil)
 
 def autenticar():
     datos = request.form
@@ -94,7 +109,41 @@ def alta_chofer():
             return redirect(url_for("render_alta_chofer"))
         else:
             flash ("Email registrado en el sistema", "error")
-            return redirect(url_for("render_alta_chofer"))         
+            return redirect(url_for("render_alta_chofer")) 
+
+def editar_perfil_personal(id):
+    verificarSesionChofer()
+    chofer = Personal.buscarChoferPorId(id)
+    datos= request.form
+    if (chofer.email != datos["email"]):
+        if (validarPassword(datos["password"]) and validarEmail(datos["email"])):
+            chofer.nombre = datos["nombre"]
+            chofer.apellido = datos["apellido"]
+            chofer.email = datos["email"]
+            chofer.telefono = datos["telefono"]
+            chofer.password = datos["password"]
+            Personal.actualizar(chofer)
+            flash ("Datos de chofer actualizados exitosamente", "success")
+            return redirect(url_for("ver_perfil_personal"))
+        else: 
+            if not (validarPassword(datos["password"])):
+                flash ("Contraseña corta", "error")
+                return render_template("personal/editPerfilPersonal.html", chofer = chofer)
+            else:
+                flash ("Email registrado en el sistema", "error")
+                return render_template("personal/editPerfilPersonal.html", chofer = chofer)  
+    else:
+            if (validarPassword(datos["password"])):
+                chofer.nombre = datos["nombre"]
+                chofer.apellido = datos["apellido"]
+                chofer.telefono = datos["telefono"]
+                chofer.password = datos["password"]
+                Personal.actualizar(chofer)
+                flash ("Datos de chofer actualizados exitosamente", "success")
+                return redirect(url_for("ver_perfil_personal"))
+            else:
+                flash ("Contraseña corta", "error")
+                return render_template("personal/editPerfilPersonal.html", chofer = chofer)        
 
 def editar_chofer(id):
     verificarSesionAdmin()
@@ -113,10 +162,10 @@ def editar_chofer(id):
         else: 
             if not (validarPassword(datos["password"])):
                 flash ("Contraseña corta", "error")
-                return render_template("editChofer.html", chofer = chofer)
+                return render_template("personal/editChofer.html", chofer = chofer)
             else:
                 flash ("Email registrado en el sistema", "error")
-                return render_template("editChofer.html", chofer = chofer)  
+                return render_template("personal/editChofer.html", chofer = chofer)  
     else:
             if (validarPassword(datos["password"])):
                 chofer.nombre = datos["nombre"]
@@ -128,7 +177,7 @@ def editar_chofer(id):
                 return redirect(url_for("listado_chofer"))
             else:
                 flash ("Contraseña corta", "error")
-                return render_template("editChofer.html", chofer = chofer)
+                return render_template("personal/editChofer.html", chofer = chofer)
 
 def devolvelEmail():
     """ 

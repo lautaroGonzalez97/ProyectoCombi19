@@ -1,0 +1,94 @@
+{% extends "personal/homeAdmin.html" %}
+{% block panel %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<div class="container">
+    <div style="text-align: center; font-family:Times New Roman;">
+        <h1>ALTA VIAJE</h1>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+		<div class="col-4" style="text-align: center;">
+			{% with mensajes= get_flashed_messages(category_filter=["error"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-danger" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
+				{% if mensajes %}
+					{% for messages in mensajes%}
+						<div class="alert alert-success" role="alert">
+							{{ messages }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+    <div class="main">
+        <div class="main-center">
+            <form class="" action="{{url_for('alta_viaje')}}" method= "POST">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="ruta">Elegir Ruta:</label>
+                            <select id="ruta" name="ruta" required>
+                            {% for ruta in rutas%}
+                                <option value="{{ruta.id}}"> de {{ruta.origen}} a {{ruta.destino}} con {{ruta.combi}}</option>
+                            {% endfor %}
+                            </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="asientos">Asientos disponibles</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="number" class="form-control" name="asientos" placeholder="Ingrese la cantidad de asientos disponibles" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="date" class="form-control" name="fecha" placeholder="Ingrese la fecha" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Hora de Salida</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="time" class="form-control" name="horaSalida" placeholder="Ingrese la hora de salida" required/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="number" class="form-control" name="precio" placeholder="Ingrese el precio" required/>
+                        </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="estado">Elegir Estado:</label>
+                        <select id="estado" name="estado" required>
+                            <option value="1">Pendiente</option>
+                            <option value="2">En curso</option>
+                            <option value="3">Cancelado</option>
+                            <option value="4">Rechazado</option>
+                            <option value="5">Realizado</option>
+                        </select>
+                </div> -->
+                <div class="d-flex justify-content-center mt-3 login_container">
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Agregar</button>
+                    <a href= "{{url_for('listado_viajes')}}" class="btn va_btn">Volver Atras</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

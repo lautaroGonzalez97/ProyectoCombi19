@@ -1,5 +1,7 @@
 {% extends "cliente/homeCliente.html" %}
 {% block panel %}
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
 <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
     <div class="col-4" style="text-align: center;">
         {% with mensajes= get_flashed_messages(category_filter=["error"])%}
@@ -26,61 +28,66 @@
         <div style="text-align: center;" class="panel-heading">
             <h1 class="panel-title"> PERFIL </h1>
         </div>
-        <div class="panel-heading" style="text-align: center;">
-            <h3 class="panel-title"> Datos personales </h3>
-        </div>
-        <table class="table" style="background-color: #FFFFFF80; width: 40%;margin: 0 auto; border-collapse: collapse;">
-            <thead>
-
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Nombre: {{usuario.nombre}}</td>
-                </tr>
-                <tr>
-                    <td>Apellido: {{usuario.apellido}}</td>
-                </tr>
-                <tr>
-                    <td>Email: {{usuario.email}}</td>
-                </tr>
-                <tr>
-                    <td>fecha Nacimiento: {{usuario.fechaNacimiento}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div style="text-align: center; margin-top: 1%; margin-bottom: 2%;">
-            <a style="margin-right: 1%;" href= "{{url_for('render_editar_cliente', id = usuario.id)}}" class="btn btn-primary">Editar</a>
-        </div>
-        <div class="panel-heading" style="text-align: center;">
-            <h3 class="panel-title"> Tarjetas asociadas </h3>
-        </div>
-        <div>
-            <table class="table" style="background-color: #FFFFFF80; width: 40%; margin: 0 auto; border-collapse: collapse; ">
+        <table style=" margin: auto;">
+            <td style="">   
+            <div class="panel-heading" style="text-align: center;">
+                <h3 class="panel-title"> Datos Personales </h3>
+            </div> 
+            <table class="table" style="background-color: #FFFFFF80; width: 500px ;margin: 3px 10px 20px 3px; border-collapse: collapse;">
                 <thead>
-    
+
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Nombre: {{tarjeta.nombre}}</td>
+                        <td>Nombre: {{usuario.nombre}}</td>
                     </tr>
                     <tr>
-                        <td>Numero: {{tarjeta.numero}}</td>
+                        <td>Apellido: {{usuario.apellido}}</td>
                     </tr>
                     <tr>
-                        <td>Fecha vencimiento: {{tarjeta.fechaVencimiento}}</td>
+                        <td>Email: {{usuario.email}}</td>
                     </tr>
                     <tr>
-                        <td>Codigo de seguridad: {{tarjeta.codigo}}</td>
+                        <td>fecha Nacimiento: {{usuario.fechaNacimiento}}</td>
                     </tr>
                 </tbody>
             </table>
-                <div style="text-align: center; margin-top: 1%;">
-                    <a style="margin-right: 1%;" href= "{{url_for('render_editar_tarjeta', id = tarjeta.id)}}" class="btn btn-warning">Editar</a>
-                    <a href= "{{url_for('eliminar_tarjeta', id = tarjeta.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
+            <div style="text-align: center; margin-top: 1%; margin-bottom: 2%;">
+                <a style="margin-right: 1%;" href= "{{url_for('render_editar_cliente', id = usuario.id)}}" class="btn va_btn">Editar</a>
+            </div>
+            </td>
+            <td style="width: 50%;">
+            <div class="panel-heading" style="text-align: center;">
+                <h3 class="panel-title"> Tarjetas asociadas </h3>
+            </div>
+            <div>
+                <table class="table" style="background-color: #FFFFFF80; width: 500%; margin: 3px 10px 20px 3px; border-collapse: collapse; ">
+                    <thead>
+    
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nombre: {{tarjeta.nombre}}</td>
+                        </tr>
+                        <tr>
+                            <td>Numero: {{tarjeta.numero}}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha vencimiento: {{tarjeta.fechaVencimiento}}</td>
+                        </tr>
+                        <tr>
+                            <td>Codigo de seguridad: {{tarjeta.codigo}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: center; margin-top: 1%;  margin-bottom: 2%;">
+                    <a style="margin-right: 1%;" href= "{{url_for('render_editar_tarjeta', id = tarjeta.id)}}" class="btn va_btn">Editar</a>  <!-- otro boton  btn btn-primary -->
                 </div>
+            </td>
+        </table>
         </div>
             <div style="text-align: center;">
-                <a href="{{url_for('home_cliente')}}" style="margin-top: 1%;" class="btn btn-primary">Volver Atras </a>
+                <a href="{{url_for('home_cliente')}}" style="margin-top: 1%;" class="btn va_btn">Volver Atras </a>
             </div>
         </div>
     </div>

@@ -36,8 +36,6 @@ app.add_url_rule("/saveEdit_cliente/<id>", "editar_cliente", cliente.editar_clie
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
 app.add_url_rule ("/ver_perfil", "ver_perfil", cliente.ver_perfil)    
     #---acciones comentarios---
-#app.add_url_rule ("/home", "listado_comentarios", comentario.listado_comentarios)
-#app.add_url_rule ("/home", "listado_comentariosPersonal", comentario.listado_comentariosPersonal)
 app.add_url_rule ("/listado_misComentarios", "listado_misComentarios", comentario.listado_misComentarios)
 app.add_url_rule("/save_comentario/<id>", "alta_comentario", comentario.alta_comentario, methods=["POST"])
 app.add_url_rule("/editar_comentario/<id>", "render_editar_comentario", comentario.render_editar_comentario)

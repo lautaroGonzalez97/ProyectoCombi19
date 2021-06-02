@@ -23,8 +23,6 @@ def home():
             'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
             'fecha': each.fecha
         })
-    if (len(comentarios) == 0):
-        flash ("No hay comentarios", "warning")
     return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"])
 
 def login():

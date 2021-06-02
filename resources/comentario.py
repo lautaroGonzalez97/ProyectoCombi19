@@ -8,38 +8,6 @@ from models.cliente import Cliente
 from models.personal import Personal
 from datetime import  datetime,time, timedelta, date
 
-def listado_comentarios():
-    verificarSesion()
-    comentarios = Comentario.all()
-    comentPost=[]
-    for each in comentarios:
-        comentPost.append({
-            'id':each.id,
-            'desc': each.descripcion,
-            'nomCliente': Cliente.buscarPorId(each.idCliente).nombre,
-            'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
-            'fecha': each.fecha
-        })
-    if (len(comentarios) == 0):
-        flash ("No hay comentarios", "warning")
-    return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"])
-
-def listado_comentariosPersonal():
-    verificarSesionPersonal()
-    comentarios = Comentario.all()
-    comentPost=[]
-    for each in comentarios:
-        comentPost.append({
-            'id':each.id,
-            'desc': each.descripcion,
-            'nomCliente': Cliente.buscarPorId(each.idCliente).nombre,
-            'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
-            'fecha': each.fecha
-        })
-    if len(comentarios) == 0 :
-        flash ("No hay comentarios", "warning")
-    return render_template ("personal/home.html", comentarios = comentPost, tipo = session["tipo"])
-
 def listado_misComentarios():
     verificarSesion()
     cliente_comen = (Cliente.buscarPorId(session["id"])).comentarios
@@ -60,7 +28,7 @@ def alta_comentario(id):
     fecha = date.today()
     new_comentario = Comentario(id, desc, fecha)
     Comentario.save(new_comentario)
-    flash ("Comentario agregado. Gracias por ayudarnos contando tu experiencia", "success")
+    flash ("Gracias por ayudarnos contandonos tu experiencia", "success")
     return redirect(url_for ("home_cliente"))
 
 def editar_comentario(id):

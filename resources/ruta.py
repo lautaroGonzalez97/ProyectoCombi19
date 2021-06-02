@@ -64,7 +64,7 @@ def alta_ruta():
             flash("Ruta cargada en el sistema", "error")
             return redirect(url_for("render_alta_ruta"))
     else: 
-        flash ("Error. Origen y destino deben ser distintos","error")     # NUEVO   error, origen destino iguales
+        flash ("Error. Origen y destino deben ser distintos","error") 
         return redirect(url_for("render_alta_ruta"))
 
 def editar_ruta(id):
@@ -104,9 +104,7 @@ def eliminar_ruta(id):
     if not (viajesEnCurso(ruta.viajes)):
         flash ("Baja de ruta exitoso", "success")
         ruta.enabled = 0
-        print("TAMANO DE VIAJES"+ " " + str(len(ruta.viajes)))
         if (viajesPendientes(ruta.viajes)):
-            print("TENIA VIAJES PENDIENTES")
             flash("Los viajes pendientes relacionados a esta Ruta fueron dados de baja, reembolsar dinero a pasajeros", "warning")
         Ruta.actualizar(ruta)
     else:
@@ -127,16 +125,10 @@ def viajesEnCurso (viajes):
     return False     
 
 def viajesPendientes(viajes):
-    print("ENTRO AL METODO DE VIAJES PENDIENTES")
-    print(len(viajes))
     if (len(viajes) != 0):
-        print("VIAJES != 0")
         for viaje in viajes:
-            print(viaje.id)
-            print(viaje.estado)
             if (viaje.estado == 1):
-                print(viaje.id)
-                print(viaje.estado)
-                Viaje.eliminar_viaje(viaje)
+                viaje.enabled = 0
+                Viaje.actualizar(viaje)
         return True
     return False     

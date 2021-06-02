@@ -55,7 +55,6 @@
             <h3 class="panel-title"> Tarjetas asociadas </h3>
         </div>
         <div>
-            {% for tarjeta in tarjetas %}
             <table class="table" style="background-color: #FFFFFF80; width: 40%; margin: 0 auto; border-collapse: collapse; ">
                 <thead>
     
@@ -79,7 +78,6 @@
                     <a style="margin-right: 1%;" href= "{{url_for('render_editar_tarjeta', id = tarjeta.id)}}" class="btn btn-warning">Editar</a>
                     <a href= "{{url_for('eliminar_tarjeta', id = tarjeta.id)}}" onclick= "return confirm('Estas seguro que deseas eliminar?')" class="btn btn-danger">Eliminar</a>
                 </div>
-        {% endfor %}
         </div>
             <div style="text-align: center;">
                 <a href="{{url_for('home_cliente')}}" style="margin-top: 1%;" class="btn btn-primary">Volver Atras </a>

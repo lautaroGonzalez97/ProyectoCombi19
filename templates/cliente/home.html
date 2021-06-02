@@ -5,7 +5,6 @@
 
 <section class="section">
     <div style="text-align: center;">
-        <h1>COMENTARIOS</h1>
         <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
             <div class="col-4" style="text-align: center;">
                 {% with mensajes= get_flashed_messages(category_filter=["error"])%}
@@ -38,7 +37,7 @@
             </div>
         </div>
         <form action="{{url_for('alta_comentario', id = idCliente)}}}" , method="POST">      
-            <p aria-required="true"><textarea cols="80" rows="5" name="descripcion"  wrap="hard" placeholder="COMPARTE TU OPINION ACERCA DE COMBI-19" required></textarea></p>
+            <p aria-required="true"><textarea cols="80" rows="3" name="descripcion"  wrap="hard" placeholder="COMPARTE TU OPINION ACERCA DE COMBI-19" required></textarea></p>
             <button type="submit" name="button" class="btn va_btn">Agregar</button>
         </form>
     </div>
@@ -49,7 +48,7 @@
     <table width="1040" cellspacing="2" cellpadding="3" style="background-color: #FFFFFF80">
         <tr>
             <td>
-                <h4>Otros comentarios</h4> 
+                <h4>Comentarios</h4> 
             </td>
         </tr>
         <tr>

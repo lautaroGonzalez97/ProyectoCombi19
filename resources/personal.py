@@ -2,6 +2,8 @@ from datetime import datetime
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.personal import Personal
+from models.comentario import Comentario
+from models.cliente import Cliente
 
 def verificarSesionChofer():
     if (not (authenticated(session)) or (not (session["tipo"] == "Chofer"))):
@@ -19,12 +21,36 @@ def verificarSesionPersonal():
 
 def home_chofer():
     verificarSesionChofer()
-    return render_template("personal/homeChofer.html")
-
+    comentarios = Comentario.all()
+    comentPost=[]
+    for each in comentarios:
+        comentPost.append({
+            'id':each.id,
+            'desc': each.descripcion,
+            'nomCliente': Cliente.buscarPorId(each.idCliente).nombre,
+            'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
+            'fecha': each.fecha
+        })
+    if len(comentarios) == 0 :
+        flash ("No hay comentarios", "warning")
+    return render_template ("personal/home.html", comentarios = comentPost, tipo = session["tipo"])
+    
 def home_admin():
     verificarSesionAdmin()
-    return render_template("personal/homeAdmin.html")
-
+    comentarios = Comentario.all()
+    comentPost=[]
+    for each in comentarios:
+        comentPost.append({
+            'id':each.id,
+            'desc': each.descripcion,
+            'nomCliente': Cliente.buscarPorId(each.idCliente).nombre,
+            'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
+            'fecha': each.fecha
+        })
+    if len(comentarios) == 0 :
+        flash ("No hay comentarios", "warning")
+    return render_template ("personal/home.html", comentarios = comentPost, tipo = session["tipo"])
+    
 def listado_chofer():
     verificarSesionAdmin()
     personal = Personal.all()

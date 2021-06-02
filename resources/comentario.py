@@ -22,7 +22,7 @@ def listado_comentarios():
         })
     if (len(comentarios) == 0):
         flash ("No hay comentarios", "warning")
-    return render_template ("comentario/listaComentarios.html", comentarios = comentPost, idCliente = session["id"])
+    return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"])
 
 def listado_comentariosPersonal():
     verificarSesionPersonal()
@@ -38,7 +38,7 @@ def listado_comentariosPersonal():
         })
     if len(comentarios) == 0 :
         flash ("No hay comentarios", "warning")
-    return render_template ("comentario/listaComentariosPersonal.html", comentarios = comentPost, tipo = session["tipo"])
+    return render_template ("personal/home.html", comentarios = comentPost, tipo = session["tipo"])
 
 def listado_misComentarios():
     verificarSesion()
@@ -61,7 +61,7 @@ def alta_comentario(id):
     new_comentario = Comentario(id, desc, fecha)
     Comentario.save(new_comentario)
     flash ("Comentario agregado. Gracias por ayudarnos contando tu experiencia", "success")
-    return redirect(url_for('listado_comentarios'))
+    return redirect(url_for ("home_cliente"))
 
 def editar_comentario(id):
     comen = Comentario.buscarComentarioPorId(id)

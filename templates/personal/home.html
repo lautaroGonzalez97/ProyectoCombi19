@@ -8,9 +8,6 @@
 <link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
 
 <section class="section">
-    <div style="text-align: center;">
-        <h1>COMENTARIOS</h1>
-    </div>
     <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
         <div class="col-4" style="text-align: center;">
             {% with mensajes= get_flashed_messages(category_filter=["error"])%}
@@ -45,7 +42,7 @@
     <table width="1040" cellspacing="2" cellpadding="3" style="background-color: #FFFFFF80">
         <tr>
             <td>
-                <h4>Otros comentarios</h4> 
+                <h4>Comentarios</h4> 
             </td>
         </tr>
         <tr>

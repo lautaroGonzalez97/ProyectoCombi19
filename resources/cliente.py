@@ -1,9 +1,11 @@
+from models.comentario import Comentario
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.cliente import Cliente
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datetime import  datetime,time, timedelta, date
+from models.tarjeta import Tarjeta
 
 def verificarSesion():
     if (not authenticated(session) or (not session["tipo"] == "Cliente")):
@@ -11,7 +13,19 @@ def verificarSesion():
 
 def home():
     verificarSesion()
-    return render_template("cliente/homeCliente.html")
+    comentarios = Comentario.all()
+    comentPost=[]
+    for each in comentarios:
+        comentPost.append({
+            'id':each.id,
+            'desc': each.descripcion,
+            'nomCliente': Cliente.buscarPorId(each.idCliente).nombre,
+            'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
+            'fecha': each.fecha
+        })
+    if (len(comentarios) == 0):
+        flash ("No hay comentarios", "warning")
+    return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"])
 
 def login():
     if (authenticated(session)):
@@ -94,15 +108,16 @@ def ver_perfil():
     perfil.fechaNacimiento = datetime.strptime(str(perfil.fechaNacimiento),"%Y-%m-%d").date()
     if (esGold(perfil.id)):
         tarjetasPost=[]
-        for each in perfil.tarjetas:
-            tarjetasPost.append({
-            'id':each.id,
-            'nombre': each.nombre,
-            'numero': each.numero,
-            'codigo': each.codigo,
-            'fechaVencimiento':datetime.strptime(str(each.fechaVencimiento),"%Y-%m-%d").date()
+        aux = perfil.tarjetas
+        tarj = Tarjeta.buscarPorId(aux[0].id)
+        tarjetasPost.append({
+        'id':tarj.id,
+        'nombre': tarj.nombre,
+        'numero': tarj.numero,
+        'codigo': tarj.codigo,
+        'fechaVencimiento':datetime.strptime(str(tarj.fechaVencimiento),"%Y-%m-%d").date()
         })
-        return render_template ("cliente/verPerfilGold.html", usuario= perfil, tarjetas= tarjetasPost)
+        return render_template ("cliente/verPerfilGold.html", usuario= perfil, tarjeta= tarjetasPost[0])
     return render_template ("cliente/verPerfil.html", usuario=perfil)
 
 def esGold (id):

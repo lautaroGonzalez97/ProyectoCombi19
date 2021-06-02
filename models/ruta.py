@@ -11,6 +11,7 @@ class Ruta(db.Model):
     duracion_minutos = db.Column(db.Integer)
     km = db.Column(db.Integer)
     viajes = db.relationship('Viaje', backref = 'viaje')
+    enabled = db.Column(db.Integer) # 1 disponible 0 no disponible
 
     def __init__(self, origen, destino, combi, duracion_minutos, km):
         self.id_origen = origen 
@@ -18,6 +19,7 @@ class Ruta(db.Model):
         self.id_combi = combi
         self.duracion_minutos = duracion_minutos
         self.km = km
+        self.enabled = 1
 
     def all():
         rutas = Ruta.query.all()
@@ -37,10 +39,5 @@ class Ruta(db.Model):
         return ruta
 
     def actualizar(self):
-        db.session.commit()
-        return True
-
-    def eliminar_ruta(ruta):
-        db.session.delete(ruta)
         db.session.commit()
         return True

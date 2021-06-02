@@ -5,6 +5,7 @@ from helpers.auth import authenticated
 from models.ruta import Ruta
 from models.lugar import Lugar
 from models.combi import Combi
+from models.viaje import Viaje
 from resources.viaje import sumarHora
 from resources.personal import verificarSesionAdmin 
 
@@ -13,14 +14,15 @@ def listado_rutas():
     rutas = Ruta.all()
     rutasPost=[]
     for each in rutas:
-        rutasPost.append({
-            'id':each.id,
-            'origen': Lugar.buscarLugarPorId(each.id_origen).localidad,
-            'destino': Lugar.buscarLugarPorId(each.id_destino).localidad,
-            'combi': Combi.buscarCombiPorId(each.id_combi).patente,
-            'duracion':each.duracion_minutos,
-            'km': each.km
-        })
+        if (each.enabled == 1):
+            rutasPost.append({
+                'id':each.id,
+                'origen': Lugar.buscarLugarPorId(each.id_origen).localidad,
+                'destino': Lugar.buscarLugarPorId(each.id_destino).localidad,
+                'combi': Combi.buscarCombiPorId(each.id_combi).patente,
+                'duracion':each.duracion_minutos,
+                'km': each.km
+            })
     if len(rutas) == 0:
         flash ("No hay rutas cargadas", "warning")
     return render_template("ruta/listaRutas.html", rutas = rutasPost)
@@ -40,7 +42,7 @@ def render_editar_ruta(id):
 
 def comprobarDatos(origen, destino, combi):
     ruta = Ruta.buscarRutaPorOrigenYDestinoYCombi(origen, destino, combi)
-    if (ruta is None):
+    if (ruta is None) or (ruta.enabled == 0):
         return True
     else:
         return False
@@ -99,23 +101,42 @@ def editar_ruta(id):
 
 def eliminar_ruta(id):
     ruta = Ruta.buscarRutaPorId(id)
-    if not (viajesPendientes(ruta.viajes)):
+    if not (viajesEnCurso(ruta.viajes)):
         flash ("Baja de ruta exitoso", "success")
-        Ruta.eliminar_ruta(ruta)
+        ruta.enabled = 0
+        print("TAMANO DE VIAJES"+ " " + str(len(ruta.viajes)))
+        if (viajesPendientes(ruta.viajes)):
+            print("TENIA VIAJES PENDIENTES")
+            flash("Los viajes pendientes relacionados a esta Ruta fueron dados de baja, reembolsar dinero a pasajeros", "warning")
+        Ruta.actualizar(ruta)
     else:
-        flash ("La ruta tiene asignada al menos un viaje, por favor realice las operaciones necesarias y vuelve a intentarlo", "error")
+        flash ("La ruta tiene asignada al menos un viaje en curso, por favor realice las operaciones necesarias y vuelve a intentarlo", "error")
     return redirect(url_for('listado_rutas'))
 
-def viajesPendientes (viajes):
+def viajesEnCurso (viajes):
     index= 0
-    print (len(viajes))
     if (len(viajes) != 0):
         ok = True
-        while ((viajes[index].estado != 1) and ok):
+        while ((viajes[index].estado != 2) and ok):
             if index + 1 < len(viajes):
                 index= index + 1
             else:
                 ok = False
-        if (viajes[index].estado == 1):
+        if (viajes[index].estado == 2):
             return True
-    return False        
+    return False     
+
+def viajesPendientes(viajes):
+    print("ENTRO AL METODO DE VIAJES PENDIENTES")
+    print(len(viajes))
+    if (len(viajes) != 0):
+        print("VIAJES != 0")
+        for viaje in viajes:
+            print(viaje.id)
+            print(viaje.estado)
+            if (viaje.estado == 1):
+                print(viaje.id)
+                print(viaje.estado)
+                Viaje.eliminar_viaje(viaje)
+        return True
+    return False     

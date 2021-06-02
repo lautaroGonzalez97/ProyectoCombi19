@@ -10,6 +10,7 @@ class Viaje(db.Model):
     horaLlegada = db.Column (db.Time())
     precio = db.Column(db.Float)
     estado = db.Column(db.Integer)
+    enabled = db.Column(db.Integer)
 
     def __init__(self, id_ruta, asientos_disponibles, fecha, horaSalida, horaLlegada, precio, estado):
         self.id_ruta = id_ruta
@@ -18,7 +19,8 @@ class Viaje(db.Model):
         self.horaSalida= horaSalida
         self.horaLlegada= horaLlegada
         self.precio=precio
-        self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado 
+        self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado
+        self.enabled = 1 
 
     def all():
         viajes = Viaje.query.all()
@@ -29,13 +31,11 @@ class Viaje(db.Model):
         db.session.commit()
         return True
 
-    def buscarViajePorId(id):
-        viaje = Viaje.query.filter_by(id=id).first()
-        return viaje
-
-    def eliminar_viaje(viaje):
-        db.session.delete(viaje)
+    def actualizar(self):
         db.session.commit()
         return True
 
+    def buscarViajePorId(id):
+        viaje = Viaje.query.filter_by(id=id).first()
+        return viaje
         

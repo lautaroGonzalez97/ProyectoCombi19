@@ -214,11 +214,11 @@ def busqueda ():
             if (len(viajes) != 0):
                 return render_template('cliente/resultadoBusqueda.html', viajes = viajes)
             else:
-                flash("No hay viaje para los lugares y fecha buscados", "error")
+                flash("No hay viaje para la fecha buscada", "error")
                 return redirect(url_for('home_cliente'))
         else:
-            flash("No existen viajes con ese Origen y Destino", "error")
+            flash("No existe ruta con ese Origen y Destino buscado", "error")
             return redirect(url_for('home_cliente')) 
     else:
-        flash("Fecha buscada invalida", "error")
+        flash("Fecha de viaje invalida", "error")
         return redirect(url_for('home_cliente'))

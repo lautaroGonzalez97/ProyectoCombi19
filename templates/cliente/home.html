@@ -7,6 +7,7 @@
     <div style="text-align: center;">
         <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
             <div class="col-4" style="text-align: center;">
+                <!-- CAMBIE DE LUGAR LOS MENSAJES PARA QUE LOS DE ERROR DE LA BUSQUEDA QUEDEN ARRIBA DEL BUSCADOR -->
                 {% with mensajes= get_flashed_messages(category_filter=["error"])%}
                     {% if mensajes %}
                         {% for messages in mensajes%}
@@ -16,6 +17,18 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
+            </div>
+        </div>
+        <form class="form-inline" style="margin-bottom: 10%;justify-content: center;" action="{{url_for('busqueda')}}" , method="POST">
+            <input class="form-control mb-2 mr-sm-2" type="search" placeholder="Origen" name="origen" required>
+            <input class="form-control mb-2 mr-sm-2" type="search" placeholder="Destino" name="destino" required>
+            <input class="form-control mb-2 mr-sm-2" type="date" placeholder="Fecha" name="fecha" required>
+            <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Buscar</button>
+        </form>
+        <!-- ACA IRIA EL RECORDATORIO DEL PROXIMO VIAJE DEL CLIENTE-->
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+            <div class="col-4" style="text-align: center;">
+                <!-- CAMBIE DE LUGAR LOS MENSAJES PARA QUE LOS DE EXITO DE LOS COMENTARIOS QUEDEN ARRIBA DEL TEXT AREA -->
                 {% with mensajes= get_flashed_messages(category_filter=["success"])%}
                     {% if mensajes %}
                         {% for messages in mensajes%}
@@ -24,15 +37,6 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                {% endwith %}
-                {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
-                {% if mensajes %}
-                    {% for messages in mensajes%}
-                        <div class="alert alert-info" role="alert">
-                            {{ messages }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
                 {% endwith %}
             </div>
         </div>

@@ -1,5 +1,5 @@
 from db import db
-from models.tarjeta import Tarjeta
+from models.viaje import Viaje
 metadata = db.MetaData()
 
 class Cliente(db.Model):
@@ -10,9 +10,15 @@ class Cliente(db.Model):
     email = db.Column(db.String(255))
     fechaNacimiento = db.Column(db.Date())
     password = db.Column(db.String(255))
-    #disponible = db.Column(db.Integer)
     tarjetas = db.relationship('Tarjeta', backref='tarjeta')
     comentarios = db.relationship('Comentario', backref='comentario')
+
+    association_table = db.Table('cliente_compra_viaje', metadata, 
+                                db.Column('cliente_id',  db.Integer, db.ForeignKey(id)), 
+                                db.Column('viaje_id', db.Integer, db.ForeignKey(Viaje.id)),
+                                db.Column('estado', db.Integer))
+
+    viajes = db.relationship("Viaje", secondary=association_table,)
 
     def __init__(self, nombre, apellido, email, fechaNacimiento, password):
         self.nombre = nombre
@@ -20,10 +26,6 @@ class Cliente(db.Model):
         self.email = email
         self.fechaNacimiento = fechaNacimiento
         self.password = password
-        #disponible = 1
-
-    #aca van las asociaciones entre las tablas, averiguar
-
 
     def idUsuario(self):
         client = self.query.filter_by(email=self.email)

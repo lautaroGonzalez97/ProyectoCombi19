@@ -2,9 +2,10 @@ from models.comentario import Comentario
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.cliente import Cliente
+from models.ruta import Ruta
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from datetime import  datetime,time, timedelta, date
+from datetime import  datetime, date
 from models.tarjeta import Tarjeta
 
 def verificarSesion():
@@ -100,6 +101,12 @@ def autenticar():
     flash ("Email o contraseña incorrecta", "error")
     return redirect(url_for("login_cliente"))
 
+def esGold (id):
+        usuario = Cliente.buscarPorId(id)
+        if ( len(usuario.tarjetas) != 0 ):
+            return True
+        return False
+
 def ver_perfil():
     verificarSesion()
     perfil= Cliente.buscarPorId(session["id"])
@@ -117,12 +124,6 @@ def ver_perfil():
         })
         return render_template ("cliente/verPerfilGold.html", usuario= perfil, tarjeta= tarjetasPost[0])
     return render_template ("cliente/verPerfil.html", usuario=perfil)
-
-def esGold (id):
-        usuario = Cliente.buscarPorId(id)
-        if ( len(usuario.tarjetas) != 0 ):
-            return True
-        return False
 
 def render_editar_cliente (id):
     verificarSesion()
@@ -178,3 +179,46 @@ def editar_cliente(id):
         else:
             flash ("Contraseña corta", "error")
             return redirect (url_for("render_editar_cliente", id = id))
+
+def buscarViaje(origen, destino, fecha):
+    ruta = Ruta.buscarRutaPorOrigenYDestino(origen, destino)
+    if (ruta is not None):
+        viajes = []
+        for viaje in ruta.viajes:
+            if (viaje.fecha == fecha) and (viaje.enabled == 1):
+                viajes.append({
+                    'id': viaje.id,
+                    'origen': origen,
+                    'destino': destino,
+                    'fecha': viaje.fecha,
+                    'salida': viaje.horaSalida,
+                    'llegada': viaje.horaLlegada,
+                    'asientos': viaje.asientos_disponibles,
+                    'precio': viaje.precio
+                })
+        return viajes
+    else:
+        return None
+
+def busqueda ():
+    verificarSesion()
+    datos = request.form
+    origen = datos['origen']
+    destino = datos['destino']
+    fecha = datos['fecha']
+    fecha_viaje = datetime.strptime(fecha, "%Y-%m-%d").date()
+    hoy = date.today() 
+    if (fecha_viaje >= hoy):
+        viajes = buscarViaje(origen, destino, fecha_viaje)
+        if (viajes is not None):
+            if (len(viajes) != 0):
+                return render_template('cliente/resultadoBusqueda.html', viajes = viajes)
+            else:
+                flash("No hay viaje para los lugares y fecha buscados", "error")
+                return redirect(url_for('home_cliente'))
+        else:
+            flash("No existen viajes con ese Origen y Destino", "error")
+            return redirect(url_for('home_cliente')) 
+    else:
+        flash("Fecha buscada invalida", "error")
+        return redirect(url_for('home_cliente'))

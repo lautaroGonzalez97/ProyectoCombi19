@@ -1,4 +1,5 @@
 from db import db
+from models.lugar import Lugar
 
 class Ruta(db.Model):
     __tablename__ = 'ruta'
@@ -33,6 +34,14 @@ class Ruta(db.Model):
     def buscarRutaPorOrigenYDestinoYCombi(origen, destino, combi):
         ruta = Ruta.query.filter_by(id_origen=origen, id_destino=destino, id_combi=combi).first()
         return ruta
+
+    def buscarRutaPorOrigenYDestino(origen, destino):
+        origen = Lugar.buscarPorLocalidad(origen)
+        destino = Lugar.buscarPorLocalidad(destino)
+        if (origen is not None) and (destino is not None):
+            ruta = Ruta.query.filter_by(id_origen=origen.id, id_destino=destino.id, enabled=1).first()
+            return ruta
+        return None
 
     def buscarRutaPorId(id):
         ruta = Ruta.query.filter_by(id=id).first()

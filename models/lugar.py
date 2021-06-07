@@ -30,6 +30,10 @@ class Lugar(db.Model):
         lugar = Lugar.query.filter_by(localidad=loc, provincia=prov).first()
         return lugar
 
+    def buscarPorLocalidad(loc):
+        lugar = Lugar.query.filter_by(localidad=loc).first()
+        return lugar
+
     def buscarLugarPorId(id):
         lugar = Lugar.query.filter_by(id=id).first()
         return lugar

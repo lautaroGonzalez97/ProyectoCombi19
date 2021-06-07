@@ -1,3 +1,4 @@
+from sqlalchemy.orm import query
 from db import db
 
 class Viaje(db.Model):
@@ -38,4 +39,3 @@ class Viaje(db.Model):
     def buscarViajePorId(id):
         viaje = Viaje.query.filter_by(id=id).first()
         return viaje
-        

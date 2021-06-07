@@ -113,7 +113,13 @@ def sumarHora(salida, id_ruta):
 
 def eliminar_viaje(id):
     viaje = Viaje.buscarViajePorId(id)
-    if (viaje.estado == 1) or (viaje.estado == 3):                        
+    if (viaje.estado == 1):                        
+        viaje.enabled = 0
+        Viaje.actualizar(viaje)
+        flash("Baja de viaje exitoso", "success")
+        flash("Verificar si el viaje eliminado tiene boletos vendidos para generar reembolso", "warning")
+        return redirect (url_for('listado_viajes'))
+    if (viaje.estado == 3):
         viaje.enabled = 0
         Viaje.actualizar(viaje)
         flash ("Baja de viaje exitoso", "success")

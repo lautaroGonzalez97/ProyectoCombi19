@@ -7,7 +7,7 @@
 
 <div class="container">
     <div style="text-align: center; font-family:Times New Roman;">
-        <h1>ALTA VIAJE</h1>
+        <h1>EDITAR VIAJE</h1>
     </div>
     <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
 		<div class="col-4" style="text-align: center;">
@@ -20,6 +20,15 @@
 					{% endfor %}
 				{% endif %}
 			{% endwith %}
+            {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-info" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 			{% with mensajes= get_flashed_messages(category_filter=["success"])%}
 				{% if mensajes %}
 					{% for messages in mensajes%}
@@ -33,14 +42,18 @@
 	</div>
     <div class="main">
         <div class="main-center">
-            <form class="" action="{{url_for('alta_viaje')}}" method= "POST">
+            <form class="" action="{{url_for('editar_viaje', id = viaje.id)}}" method= "POST">
                 <div class="form-group">
                     <div class="form-group">
                         <label for="ruta">Elegir Ruta:</label>
                             <select id="ruta" name="ruta" required>
-                            {% for ruta in rutas%}
-                                <option value="{{ruta.id}}"> de {{ruta.origen}} a {{ruta.destino}} con {{ruta.combi}}</option>
-                            {% endfor %}
+                                {% for ruta in rutas %}
+                                    {% if viaje.id_ruta==ruta.id %}
+                                        <option value="{{ruta.id}}" selected>de {{ruta.origen}} {{ruta.destino}} con {{ruta.combi}}</option>
+                                    {% else %}
+                                        <option value="{{ruta.id}}">de {{ruta.origen}} {{ruta.destino}} con {{ruta.combi}}</option>
+                                    {% endif %}
+                                {% endfor %}
                             </select>
                     </div>
                 </div>
@@ -48,32 +61,32 @@
                     <label for="asientos">Asientos disponibles</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="number" class="form-control" name="asientos" placeholder="Ingrese la cantidad de asientos disponibles" required/>
+                            <input type="number" class="form-control" name="asientos" placeholder="Ingrese la cantidad de asientos disponibles" value="{{viaje.asientos_disponibles}}" required/>
                         </div>
                 </div>
                 <div class="form-group">
                     <label for="fecha">Fecha</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="date" class="form-control" name="fecha" placeholder="Ingrese la fecha" required/>
+                            <input type="date" class="form-control" name="fecha" placeholder="Ingrese la fecha" value="{{viaje.fecha}}" required/>
                         </div>
                 </div>
                 <div class="form-group">
                     <label for="horaSalida">Hora de Salida</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="time" class="form-control" name="horaSalida" placeholder="Ingrese la hora de salida" required/>
+                            <input type="datetime" class="form-control" name="horaSalida" placeholder="Ingrese la hora de salida" value="{{viaje.horaSalida}}"required/>
                         </div>
                 </div>
                 <div class="form-group">
                     <label for="precio">Precio</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="number" class="form-control" name="precio" placeholder="Ingrese el precio" required/>
+                            <input type="number" class="form-control" name="precio" placeholder="Ingrese el precio" value="{{viaje.precio}}"required/>
                         </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3 login_container">
-                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Agregar</button>
+                    <button style="margin-right: 1%;" type="submit" name="button" class="btn va_btn">Actualizar</button>
                     <a href= "{{url_for('listado_viajes')}}" class="btn va_btn">Volver Atras</a>
                 </div>
             </form>

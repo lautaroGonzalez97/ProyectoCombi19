@@ -13,12 +13,12 @@ class Cliente(db.Model):
     tarjetas = db.relationship('Tarjeta', backref='tarjeta')
     comentarios = db.relationship('Comentario', backref='comentario')
 
-    association_table = db.Table('cliente_compra_viaje', metadata, 
+    '''association_table = db.Table('cliente_compra_viaje', metadata, 
                                 db.Column('cliente_id',  db.Integer, db.ForeignKey(id)), 
                                 db.Column('viaje_id', db.Integer, db.ForeignKey(Viaje.id)),
                                 db.Column('estado', db.Integer))
 
-    viajes = db.relationship("Viaje", secondary=association_table,)
+    viajes = db.relationship("Viaje", secondary=association_table,)'''
 
     def __init__(self, nombre, apellido, email, fechaNacimiento, password):
         self.nombre = nombre

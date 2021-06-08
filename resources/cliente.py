@@ -26,6 +26,11 @@ def home():
         })
     return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"])
 
+def render_editar_cliente (id):
+    verificarSesion()
+    cliente = Cliente.buscarPorId(id)
+    return render_template("cliente/editClient.html", cliente = cliente)
+
 def login():
     if (authenticated(session)):
         return redirect(url_for("home_cliente"))
@@ -124,11 +129,6 @@ def ver_perfil():
         })
         return render_template ("cliente/verPerfilGold.html", usuario= perfil, tarjeta= tarjetasPost[0])
     return render_template ("cliente/verPerfil.html", usuario=perfil)
-
-def render_editar_cliente (id):
-    verificarSesion()
-    cliente = Cliente.buscarPorId(id)
-    return render_template("cliente/editClient.html", cliente = cliente)
 
 def editar_cliente(id):
     verificarSesion()

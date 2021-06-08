@@ -96,8 +96,8 @@ app.add_url_rule("/eliminar_ruta/<id>", "eliminar_ruta", ruta.eliminar_ruta)
 app.add_url_rule("/listado_viajes", "listado_viajes", viaje.listado_viajes) 
 app.add_url_rule("/alta_viaje", "render_alta_viaje", viaje.render_alta_viaje)
 app.add_url_rule("/save_viaje", "alta_viaje", viaje.alta_viaje, methods=["POST"])
-#app.add_url_rule("/editar_viaje/<id>", "render_editar_viaje", viaje.render_editar_viaje)
-#app.add_url_rule("/saveEdit_viaje/<id>", "editar_viaje", viaje.editar_viaje, methods=["POST"])
+app.add_url_rule("/editar_viaje/<id>", "render_editar_viaje", viaje.render_editar_viaje)
+app.add_url_rule("/saveEdit_viaje/<id>", "editar_viaje", viaje.editar_viaje, methods=["POST"])
 app.add_url_rule("/eliminar_viaje/<id>", "eliminar_viaje", viaje.eliminar_viaje)
 
 def home ():

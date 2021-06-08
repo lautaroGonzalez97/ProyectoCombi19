@@ -25,6 +25,9 @@ class Comentario(db.Model):
     def all():
         comentarios = Comentario.query.all()
         return comentarios
+    
+    def devolverpaginado(page):
+        return Comentario.query.paginate(page, 5, False)
 
     def buscarComentarioPorId(id):
         comentario = Comentario.query.filter_by(id=id).first()

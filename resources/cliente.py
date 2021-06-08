@@ -208,17 +208,21 @@ def busqueda ():
     fecha = datos['fecha']
     fecha_viaje = datetime.strptime(fecha, "%Y-%m-%d").date()
     hoy = date.today() 
-    if (fecha_viaje >= hoy):
-        viajes = buscarViaje(origen, destino, fecha_viaje)
-        if (viajes is not None):
-            if (len(viajes) != 0):
-                return render_template('cliente/resultadoBusqueda.html', viajes = viajes)
+    if (origen != destino):
+        if (fecha_viaje >= hoy):
+            viajes = buscarViaje(origen, destino, fecha_viaje)
+            if (viajes is not None):
+                if (len(viajes) != 0):
+                    return render_template('cliente/resultadoBusqueda.html', viajes = viajes)
+                else:
+                    flash("¡Ups! No hay viaje para la fecha buscada", "warning")
+                    return redirect(url_for('home_cliente'))
             else:
-                flash("No hay viaje para la fecha buscada", "error")
-                return redirect(url_for('home_cliente'))
+                flash("¡Error! Por el momento no  hay viajes para ese origen y destino", "error")
+                return redirect(url_for('home_cliente')) 
         else:
-            flash("No existe ruta con ese Origen y Destino buscado", "error")
-            return redirect(url_for('home_cliente')) 
+            flash("¡Error! Fecha de viaje invalida", "error")
+            return redirect(url_for('home_cliente'))
     else:
-        flash("Fecha de viaje invalida", "error")
+        flash("¡Error! Ingrese un origen y destino distintos", "error")
         return redirect(url_for('home_cliente'))

@@ -6,11 +6,13 @@ class  Boleto (db.Model):
     id_cliente = db.Column(db.Integer, db.ForeignKey('cliente.id'))
     id_viaje = db.Column(db.Integer, db.ForeignKey('viaje.id'))
     estado = db.Column(db.Integer) # 1=pendiente 2=en curso 3=finalizado 4=cancelado 5=rechazado
+    cantidad_boletos = db.Column (db.Integer)
 
-    def __init__(self, cliente, viaje):
+    def __init__(self, cliente, viaje, cantidad_boletos):
         self.id_cliente = cliente
         self.id_viaje = viaje
         self.estado = 1
+        self.cantidad_boletos = cantidad_boletos
 
     def save(self):
         db.session.add(self)

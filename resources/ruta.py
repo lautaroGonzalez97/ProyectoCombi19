@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from resources.lugar import comprobarDatos
-from flask import render_template, session, redirect, url_for, flash, request, abort
+from flask import render_template, session, redirect, url_for, flash, request
 from helpers.auth import authenticated
 from models.ruta import Ruta
 from models.lugar import Lugar

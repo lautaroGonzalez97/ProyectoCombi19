@@ -12,7 +12,6 @@ class Viaje(db.Model):
     precio = db.Column(db.Float)
     estado = db.Column(db.Integer)
     enabled = db.Column(db.Integer)
-    #boletos = boletos = db.relationship('Boleto', backref='cliente_compra_viaje')
 
     def __init__(self, id_ruta, asientos_disponibles, fecha, horaSalida, horaLlegada, precio, estado):
         self.id_ruta = id_ruta

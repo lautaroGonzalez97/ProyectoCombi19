@@ -68,7 +68,7 @@
                     <td style="text-align: center">${{viaje.precio}}</td>
                     <td>
                         <div style="text-align: center;">
-                            <a style="margin-right: 1%;" href= "# " class="btn btn-success">Comprar</a>
+                            <a style="margin-right: 1%;" href= "{{url_for('render_comprar_viaje', id = viaje.id)}}" class="btn btn-success">Comprar</a>
                         </div>
                     </td>
                 </tr>

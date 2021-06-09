@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta #pip install python-dateutil
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
-from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta, viaje, comentario
+from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta, viaje, comentario, boleto
 from helpers.auth import authenticated 
 
 app = Flask (__name__)
@@ -35,7 +35,11 @@ app.add_url_rule("/editar_cliente/<id>", "render_editar_cliente", cliente.render
 app.add_url_rule("/saveEdit_cliente/<id>", "editar_cliente", cliente.editar_cliente, methods=["POST"])
 app.add_url_rule("/home_cliente", "home_cliente", cliente.home)
 app.add_url_rule ("/ver_perfil", "ver_perfil", cliente.ver_perfil)  
-app.add_url_rule("/busqueda", "busqueda", cliente.busqueda, methods=["POST"])  
+app.add_url_rule("/busqueda", "busqueda", cliente.busqueda, methods=["POST"]) 
+    #---acciones comprar viaje---
+app.add_url_rule("/detalle_viaje/<id>", "render_comprar_viaje", boleto.render_comprar_viaje) 
+app.add_url_rule("/compra_viaje/<id>", "comprar_viaje", boleto.comprar_viaje) 
+app.add_url_rule("/cancelar_viaje/<id>", "cancelar_viaje", boleto.cancelar_viaje) 
     #---acciones comentarios---
 app.add_url_rule ("/listado_misComentarios", "listado_misComentarios", comentario.listado_misComentarios)
 app.add_url_rule("/save_comentario/<id>", "alta_comentario", comentario.alta_comentario, methods=["POST"])

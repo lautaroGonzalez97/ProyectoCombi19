@@ -26,3 +26,11 @@ class  Boleto (db.Model):
     def buscarBoletoPorId(id):
         boleto = Boleto.query.filter_by(id=id).first()
         return boleto
+
+    def buscarBoleto():
+        boletos = Boleto.query.all()
+        return boletos
+    
+    def buscarBoletoPorCliente(id):
+        boletos = Boleto.query.filter_by(id_cliente=id).first()
+        return boletos

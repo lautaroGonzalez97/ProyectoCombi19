@@ -1,8 +1,11 @@
+from models.viaje import Viaje
+from models.lugar import Lugar
 from models.comentario import Comentario
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.cliente import Cliente
 from models.ruta import Ruta
+from models.boleto import Boleto
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datetime import  datetime, date
@@ -226,3 +229,28 @@ def busqueda ():
     else:
         flash("¡Error! Ingrese un origen y destino distintos", "error")
         return redirect(url_for('home_cliente'))
+
+def ver_mis_viajes():
+    verificarSesion()
+    mis_viajes = Boleto.buscarBoleto()
+    boletoPost = []
+    estados=["PENDIENTE","EN CURSO","FINALIZADO","CANCELADO","RECHAZADO"]
+    for each in mis_viajes:
+        if (each.id_cliente == session["id"]):
+            boletoPost.append({
+                'id': each.id,
+                "origen": Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(Viaje.buscarViajePorId(each.id_viaje).id_ruta).id_origen).localidad,
+                "destino": Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(Viaje.buscarViajePorId(each.id_viaje).id_ruta).id_destino).localidad,
+                "fecha": Viaje.buscarViajePorId(each.id_viaje).fecha,
+                "salida":Viaje.buscarViajePorId(each.id_viaje).horaSalida,
+                'llegada': Viaje.buscarViajePorId(each.id_viaje).horaLlegada,
+                'asientos': Viaje.buscarViajePorId(each.id_viaje).asientos_disponibles,
+                'precio': Viaje.buscarViajePorId(each.id_viaje).precio,
+                'estado': estados[each.estado -1],
+                'asientos': each.cantidad_boletos
+            })
+    print (len(mis_viajes))
+    if (len(mis_viajes) == 0):
+        flash ("No haz realizado compras hasta el momento", "warning")
+    return render_template("viaje/verMisViajes.html", viajes = boletoPost)
+

@@ -53,10 +53,10 @@ def devolverDisponibles(id):
     print (viaje.asientos_disponibles)
     return viaje.asientos_disponibles
 
-def cancelar_viaje(id_boleto):
+def cancelar_viaje(id):
     verificarSesion()
-    boleto = Boleto.buscarBoletoPorId(id_boleto)
+    boleto = Boleto.buscarBoletoPorId(id)
     boleto.estado = 4
     Boleto.actualizar(boleto)
     flash("Cancelacion exitosa", "success")
-    return redirect(url_for('home_cliente'))
+    return redirect(url_for('ver_mis_viajes'))

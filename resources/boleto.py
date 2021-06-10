@@ -32,7 +32,7 @@ def comprar_viaje(id):
         new_boleto = Boleto(session["id"], id, int(datos["cantidadBoletos"]))
         new_boleto.save()
         flash("Compra exitosa", "success")
-        return redirect(url_for('home_cliente')) #tendria que redireccionar al listado de proximos viajes
+        return redirect(url_for('ver_mis_viajes'))
     else:
         viaje = Viaje.buscarViajePorId(id)
         detalleViaje = []
@@ -56,7 +56,14 @@ def devolverDisponibles(id):
 def cancelar_viaje(id):
     verificarSesion()
     boleto = Boleto.buscarBoletoPorId(id)
-    boleto.estado = 4
-    Boleto.actualizar(boleto)
-    flash("Cancelacion exitosa", "success")
-    return redirect(url_for('ver_mis_viajes'))
+    if (boleto.estado == 1):
+        boleto.estado = 4
+        viaje = Viaje.buscarViajePorId(boleto.id_viaje)
+        viaje.asientos_disponibles += boleto.cantidad_boletos
+        Viaje.actualizar(viaje) 
+        Boleto.actualizar(boleto)
+        flash("Cancelacion exitosa", "success")
+        return redirect(url_for('ver_mis_viajes'))
+    else:
+        flash("No puede cancelar el boleto", "error")
+        return redirect(url_for('ver_mis_viajes'))

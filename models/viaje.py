@@ -11,6 +11,7 @@ class Viaje(db.Model):
     horaLlegada = db.Column (db.Time())
     precio = db.Column(db.Float)
     estado = db.Column(db.Integer)
+    asientos = db.Column(db.Integer)
     enabled = db.Column(db.Integer)
 
     def __init__(self, id_ruta, asientos_disponibles, fecha, horaSalida, horaLlegada, precio, estado):
@@ -21,6 +22,7 @@ class Viaje(db.Model):
         self.horaLlegada= horaLlegada
         self.precio=precio
         self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado
+        self.asientos = self.asientos_disponibles
         self.enabled = 1 
 
     def all():

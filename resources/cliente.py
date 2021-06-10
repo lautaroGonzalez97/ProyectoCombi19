@@ -10,6 +10,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datetime import  datetime, date
 from models.tarjeta import Tarjeta
+from models.viaje import Viaje
 
 def verificarSesion():
     if (not authenticated(session) or (not session["tipo"] == "Cliente")):
@@ -44,7 +45,7 @@ def devolverProximo():
     viaje_prox = None
     fecha_prox = datetime.strptime((str("8000-01-01")), "%Y-%m-%d")
     for each in boletos:
-        if (each.id_cliente == session["id"]) and (each.estado == 1):
+        if (each.id_cliente == session["id"]) and (each.estado == 1) and (Viaje.buscarViajePorId(each.id_viaje).enabled == 1):
             fecha = datetime.strptime(str(str(Viaje.buscarViajePorId(each.id_viaje).fecha)), "%Y-%m-%d")
             if (fecha <= fecha_prox):
                 viaje_prox = Viaje.buscarViajePorId(each.id_viaje)

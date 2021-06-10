@@ -5,7 +5,7 @@
 
 <section class="section">
     <div style="text-align: center;">
-        <h1>MIS PROXIMOS VIAJES VIAJES</h1>
+        <h1>MIS PROXIMOS VIAJES</h1>
     </div>
     <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
         <div class="col-4" style="text-align: center;">
@@ -65,7 +65,11 @@
                         <td style="text-align: center" >{{viaje.asientos}}</td>
                         <td style="text-align: center">
                             <div style="text-align: center;">
-                                <a href= "{{url_for('cancelar_viaje', id = viaje.id)}}" onclick= "return confirm('Estas seguro que deseas cancelar el viaje?')" class="btn btn-danger">Cancelar</a>
+                                {% if viaje.estado == "PENDIENTE": %}
+                                    <a href= "{{url_for('cancelar_viaje', id = viaje.id)}}" onclick= "return confirm('Estas seguro que deseas cancelar el viaje?')" class="btn btn-danger">Cancelar</a>
+                                {% else %}
+                                    <button class= "btn btn-danger" disabled>Cancelar</button>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

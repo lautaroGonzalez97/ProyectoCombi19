@@ -17,6 +17,16 @@ def verificarSesion():
 
 def home():
     verificarSesion()
+    prox_viaje = devolverProximo()
+    proximoPost = []
+    proximoPost.append({
+        'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_origen).localidad,
+        'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_destino).localidad,
+        'fecha': prox_viaje.fecha,
+        'salida': prox_viaje.horaSalida,
+        'llegada': prox_viaje.horaLlegada
+    })
+    print (proximoPost)
     comentarios = Comentario.all()
     comentPost=[]
     for each in comentarios:
@@ -27,7 +37,19 @@ def home():
             'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
             'fecha': each.fecha
         })
-    return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"])
+    return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost[0])
+
+def devolverProximo():
+    boletos = Boleto.buscarBoleto() #DEVUELVE TODOS LOS BOLETOS
+    viaje_prox = None
+    fecha_prox = datetime.strptime((str("8000-01-01")), "%Y-%m-%d")
+    for each in boletos:
+        if (each.id_cliente == session["id"]) and (each.estado == 1):
+            fecha = datetime.strptime(str(str(Viaje.buscarViajePorId(each.id_viaje).fecha)), "%Y-%m-%d")
+            if (fecha <= fecha_prox):
+                viaje_prox = Viaje.buscarViajePorId(each.id_viaje)
+                fecha_prox = fecha
+    return viaje_prox
 
 def render_editar_cliente (id):
     verificarSesion()

@@ -35,6 +35,32 @@
             <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Buscar</button>
         </form>
         <!-- ACA IRIA EL RECORDATORIO DEL PROXIMO VIAJE DEL CLIENTE-->
+        <h4>Proximo viaje</h4>
+        <div class="columns">
+            <div class="column">
+                <table class="table" style="background-color: #FFFFFF80;">
+                    <thead>
+                        
+                        <tr>
+                            <th style="text-align: center">Origen</th>
+                            <th style="text-align: center">Destino</th>
+                            <th style="text-align: center">Fecha</th>
+                            <th style="text-align: center">Salida</th>
+                            <th style="text-align: center">Llegada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center">{{prox.origen}}</td>
+                            <td style="text-align: center">{{prox.destino}}</td>
+                            <td style="text-align: center">{{prox.fecha}}</td>
+                            <td style="text-align: center">{{prox.salida}}</td>
+                            <td style="text-align: center">{{prox.llegada}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
             <div class="col-4" style="text-align: center;">
                 <!-- CAMBIE DE LUGAR LOS MENSAJES PARA QUE LOS DE EXITO DE LOS COMENTARIOS QUEDEN ARRIBA DEL TEXT AREA -->

@@ -5,6 +5,7 @@ from models.ruta import Ruta
 from models.combi import Combi
 from models.viaje import Viaje
 from models.lugar import Lugar
+from models.boleto import Boleto
 from models.personal import Personal
 from resources.personal import verificarSesionAdmin 
 from datetime import  datetime,time, timedelta, date
@@ -239,13 +240,15 @@ def editar_viaje(id):
 
 def eliminar_viaje(id):
     viaje = Viaje.buscarViajePorId(id)
-    if (viaje.estado == 1):                        
+    if (viaje.estado == 1): 
+        cancelarBoletos(viaje.id)                      
         viaje.enabled = 0
         Viaje.actualizar(viaje)
         flash("Baja de viaje exitoso", "success")
         flash("Verificar si el viaje eliminado tiene boletos vendidos para generar reembolso", "warning")
         return redirect (url_for('listado_viajes'))
     if (viaje.estado == 3):
+        cancelarBoletos(viaje.id)
         viaje.enabled = 0
         Viaje.actualizar(viaje)
         flash ("Baja de viaje exitoso", "success")
@@ -253,3 +256,10 @@ def eliminar_viaje(id):
     if (viaje.estado == 2):
         flash("El viaje se encuentra en curso","error")
         return redirect (url_for('listado_viajes'))
+
+def cancelarBoletos(idV):
+    boletos = Boleto.buscarBoleto()
+    for each in boletos:
+        if (each.id_viaje == idV):
+            each.estado = 4
+            each.actualizar()

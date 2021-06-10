@@ -64,11 +64,20 @@
                     <td style="text-align: center">{{viaje.fecha}}</td>
                     <td style="text-align: center">{{viaje.salida}}</td>
                     <td style="text-align: center">{{viaje.llegada}}</td>
-                    <td style="text-align: center">{{viaje.asientos}}</td>
+                    <td style="text-align: center">{% if viaje.asientos == 0: %}
+                                                        AGOTADO
+                                                    {% else %}
+                                                        {{viaje.asientos}}
+                                                    {% endif %}
+                    </td>
                     <td style="text-align: center">${{viaje.precio}}</td>
                     <td>
                         <div style="text-align: center;">
-                            <a style="margin-right: 1%;" href= "{{url_for('render_comprar_viaje', id = viaje.id)}}" class="btn btn-success" >Comprar</a>
+                            {% if viaje.asientos != 0: %}
+                                <a style="margin-right: 1%;" href= "{{url_for('render_comprar_viaje', id = viaje.id)}}" class="btn btn-success" >Comprar</a>
+                            {% else %}
+                                <button class="btn btn-success" disabled>Comprar</button>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

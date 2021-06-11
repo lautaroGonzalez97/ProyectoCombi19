@@ -5,6 +5,7 @@ from models.boleto import Boleto
 from models.viaje import Viaje
 from models.ruta import Ruta
 from models.lugar import Lugar
+from models.insumo import Insumo
 
 def render_comprar_viaje(id):
     print("ID DEL VIAJE: ")
@@ -20,7 +21,17 @@ def render_comprar_viaje(id):
         'llegada': viaje.horaLlegada,
         'precio': viaje.precio
     })
-    return render_template('cliente/comprarViaje.html', viaje = detalleViaje[0])
+    insumos = Insumo.all()
+    insumos_post = []
+    for each in insumos:
+        insumos_post.append({
+            'id': each.id,
+            'nombre':each.nombre,
+            'precio':each.precio,
+            'tipo': each.tipo
+        }
+        )
+    return render_template('cliente/comprarViaje.html', viaje = detalleViaje[0], insumos= insumos_post )
 
 def comprar_viaje(id):
     verificarSesion()

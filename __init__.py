@@ -39,7 +39,8 @@ app.add_url_rule("/busqueda", "busqueda", cliente.busqueda, methods=["POST"])
     #---acciones comprar viaje---
 app.add_url_rule("/detalle_viaje/<id>", "render_comprar_viaje", boleto.render_comprar_viaje) 
 app.add_url_rule("/compra_viaje/<id>", "comprar_viaje", boleto.comprar_viaje, methods=["POST"]) 
-app.add_url_rule("/cancelar_viaje/<id>", "cancelar_viaje", boleto.cancelar_viaje) 
+app.add_url_rule("/cancelar_viaje/<id>", "cancelar_viaje", boleto.cancelar_viaje)
+app.add_url_rule("/pago_con_Tarjeta/<id>/<boletos>", "pagar_con_tarjeta", boleto.pagar_con_tarjeta, methods=["POST"]) 
     #---acciones ver viajes proximos---
 app.add_url_rule ("/ver_mis_viajes", "ver_mis_viajes", cliente.ver_mis_viajes)  
     #---acciones comentarios---

@@ -261,5 +261,5 @@ def cancelarBoletos(idV):
     boletos = Boleto.buscarBoleto()
     for each in boletos:
         if (each.id_viaje == idV):
-            each.estado = 4
+            each.estado = 6
             each.actualizar()

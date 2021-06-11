@@ -9,7 +9,7 @@ class Viaje(db.Model):
     fecha = db.Column(db.Date)
     horaSalida = db.Column (db.Time())
     horaLlegada = db.Column (db.Time())
-    precio = db.Column(db.Float)
+    precio = db.Column(db.Integer)
     estado = db.Column(db.Integer)
     asientos = db.Column(db.Integer)
     enabled = db.Column(db.Integer)

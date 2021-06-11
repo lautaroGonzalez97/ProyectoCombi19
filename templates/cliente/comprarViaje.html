@@ -73,8 +73,9 @@
 </form>
 <script>
     function mult(){
-        let total = ((document.getElementById('cantidad').value) * (document.getElementById("precio").innerHTML))
-        document.getElementById('suma').innerHTML = total
+        let precio = document.getElementById("precio").innerHTML
+        let cant = document.form.cantidadBoletos.value
+        document.getElementById('suma').innerHTML = (precio * cant)
     }
 </script>
 {% endblock %}

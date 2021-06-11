@@ -20,14 +20,14 @@ def home():
     verificarSesion()
     prox_viaje = devolverProximo()
     proximoPost = []
-    proximoPost.append({
-        'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_origen).localidad,
-        'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_destino).localidad,
-        'fecha': prox_viaje.fecha,
-        'salida': prox_viaje.horaSalida,
-        'llegada': prox_viaje.horaLlegada
-    })
-    print (proximoPost)
+    if (prox_viaje is not None):
+        proximoPost.append({
+            'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_origen).localidad, #CUANDO NO HAY BOLETOS COMPRADOS TIRA ERROR PORQUE ES NONE --> ARREGLAR
+            'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_destino).localidad,
+            'fecha': prox_viaje.fecha,
+            'salida': prox_viaje.horaSalida,
+            'llegada': prox_viaje.horaLlegada
+        })
     comentarios = Comentario.all()
     comentPost=[]
     for each in comentarios:
@@ -38,7 +38,10 @@ def home():
             'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
             'fecha': each.fecha
         })
-    return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost[0])
+    if (len(proximoPost) != 0):
+        return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost[0], ok= True)
+    else:
+        return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost, ok= False)
 
 def devolverProximo():
     boletos = Boleto.buscarBoleto() #DEVUELVE TODOS LOS BOLETOS

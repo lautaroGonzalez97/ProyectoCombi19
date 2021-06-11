@@ -25,8 +25,8 @@
         {% endwith %}
     </div>
 </div>
-<form name="form" action="{{url_for('comprar_viaje', id = viaje.id)}}" method="POST"></form>
 <div class="container" style="align-content: center;">
+    <form name="form" action="{{url_for('comprar_viaje', id = viaje.id)}}" method="POST">
     <table class="table" style="background-color: #FFFFFF80; width: 40% ;margin: 0 auto; border-collapse: collapse;">
         <thead>
             <h3 style="text-align: center;">Detalle Viaje</h3>
@@ -56,32 +56,6 @@
         </tbody>
     </table>
 </div>
-<br>
-<h3 style="text-align: center;">Insumos</h3>
-<div class="columns">
-    <div class="column">
-        <table class="table" style="background-color: #FFFFFF80;">
-            <thead>
-                <tr>
-                    <th style="text-align: center">Nombre</th>
-                    <th style="text-align: center">Tipo</th>
-                    <th style="text-align: center">Precio</th>
-                    <th style="text-align: center">Cantidad</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in insumos %}
-                <tr>
-                    <td style="text-align: center">{{p.nombre}}</td>
-                    <td style="text-align: center">{{p.tipo}}</td>
-                    <td style="text-align: center"><span id="precioInsumo">{{p.precio}}</span></td>
-                    <td style="text-align: center"><input id="cant" type="number" value="0" name="canti" onkeyup="sumaInsumo()" onkeydown="restaInsumo()"></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
 <div style="text-align: center; margin-top: 1%;">
     <div>
         <strong>
@@ -101,22 +75,7 @@
     function mult(){
         let precio = document.getElementById("precio").innerHTML
         let cant = document.form.cantidadBoletos.value
-        document.getElementById('suma').innerHTML = (precio * cant)   
-
-    }
-
-    function sumaInsumo(){
-        let precio = document.getElementById("precioInsumo").innerHTML
-        console.log(precio)
-        let total = document.getElementById('suma').innerHTML
-        document.getElementById('suma').innerHTML = (parseInt(total) + parseInt(precio))   
-    }
-
-    function restaInsumo(){
-        let precio = document.getElementById("precioInsumo").innerHTML
-        console.log(precio)
-        let total = document.getElementById('suma').innerHTML
-        document.getElementById('suma').innerHTML = (parseInt(total) - parseInt(precio)) 
+        document.getElementById('suma').innerHTML = (precio * cant)
     }
 </script>
 {% endblock %}

@@ -244,8 +244,12 @@ def eliminar_viaje(id):
         cancelarBoletos(viaje.id)                      
         viaje.enabled = 0
         Viaje.actualizar(viaje)
-        flash("Baja de viaje exitoso", "success")
-        flash("Verificar si el viaje eliminado tiene boletos vendidos para generar reembolso", "warning")
+        if (viaje.asientos_disponibles != viaje.asientos):
+            flash("Baja de viaje exitoso", "success")
+            flash("El viaje tenia pasajes vendidos, generar reembolso a clientes", "warning")
+        else:
+            flash("Baja de viaje exitoso", "success")
+            flash("El viaje no tenia pasajes vendidos", "warning")
         return redirect (url_for('listado_viajes'))
     if (viaje.estado == 3):
         cancelarBoletos(viaje.id)

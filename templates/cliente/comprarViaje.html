@@ -51,19 +51,63 @@
                 <td><strong>Precio:</strong> $<span id="precio">{{viaje.precio}}</span></td>
             </tr>
             <tr>
-                <td><strong>Cantidad de boletos:</strong><input id="cantidad" type="number" value="1" name="cantidadBoletos" onclick="mult()"></td>
+                <td><strong>Cantidad de boletos:</strong><input id="cantidad" type="number" value="1" min="1" name="cantidadBoletos" onclick="mult()"></td>
             </tr>
         </tbody>
     </table>
 </div>
 <div style="text-align: center; margin-top: 1%;">
     <div>
-        <strong>
-            <p>Precio Final: $<span id='suma'>{{viaje.precio}}</span></p>
-            
-        </strong> <!-- ACA IRIA LA SUMA DE LA CANTIDAD DE BOLETOS MAS EL PRECIO DE LOS INSUMOS-->
+        <strong style="color: aliceblue;">
+            <p>Precio Boleto/s: $<span id='suma'>{{viaje.precio}}</span></p>
+        </strong>
     </div>  
 </div>
+<div style="text-align: center; margin-top: 1%;">
+    <p>
+        <a class="btn va_btn btn-collapse" data-toggle="collapse" href="#multiCollapseAGREGARINSUMO" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Agregar Insumo</a>
+    </p>
+    <div class="row">
+        <div class="col" >
+            <div class="collapse multi-collapse" id="multiCollapseAGREGARINSUMO">
+                <div class="columns">
+                    <div class="column">
+                        <table class="table" style="background-color: #FFFFFF80;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center">Nombre</th>
+                                    <th style="text-align: center">Tipo</th>
+                                    <th style="text-align: center">Precio</th>
+                                    <th style="text-align: center"> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for insumo in insumos %}
+                                <tr>
+                                    <td style="text-align: center">{{insumo.nombre}}</td>
+                                    <td style="text-align: center">{{insumo.tipo}}</td>
+                                    <td style="text-align: center">$<span id="precio_insumo">{{insumo.precio}}</span></td>
+                                    <td style="text-align: center">
+                                    <div style="text-align: center;">
+                                        <td><strong>Cantidad:</strong><input id="cantidad_insumos" type="number" value="0" min="0" name="cantidadInsumos" onclick="sumar_insumos()"></td>
+                                    </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1%;">
+                    <div>
+                        <strong style="color: aliceblue;">
+                            <p>Precio Insumo/s: $<span id='precio_final'> {{insumos.precio}} </span></p>
+                        </strong>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
 <div style="text-align: center;">
     <button type="submit" name="button" style="margin-top: 1%;" class="btn va_btn">Confirmar Compra</button>
     <!-- <a href="{{url_for('comprar_viaje', id = viaje.id)}}" >Confirmar
@@ -76,5 +120,10 @@
         let total = ((document.getElementById('cantidad').value) * (document.getElementById("precio").innerHTML))
         document.getElementById('suma').innerHTML = total
     }
+    function sumar_insumos(){
+        let tot = ((document.getElementById('cantidad_insumos').value) * (document.getElementById("precio_insumo").innerHTML))
+        document.getElementById('precio_final').innerHTML = tot
+    }
 </script>
+
 {% endblock %}

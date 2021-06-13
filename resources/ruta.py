@@ -23,7 +23,7 @@ def listado_rutas():
                 'duracion':each.duracion_minutos,
                 'km': each.km
             })
-    if len(rutas) == 0:
+    if len(rutasPost) == 0:
         flash ("No hay rutas cargadas", "warning")
     return render_template("ruta/listaRutas.html", rutas = rutasPost)
 

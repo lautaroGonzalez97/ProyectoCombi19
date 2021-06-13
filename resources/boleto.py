@@ -115,9 +115,6 @@ def cancelar_viaje(id):
             flash ("Se le reembolsara el 50 % del pasaje", "warning")
         flash("Cancelacion exitosa", "success")
         return redirect(url_for('ver_mis_viajes'))
-    else:
-        flash("No puede cancelar el boleto", "error") # NUNCA LLEGA PORQUE EN HTML BLOQUEA EL BOTON 
-        return redirect(url_for('ver_mis_viajes'))
 
 def verificarReembolso(id):
     fechaViaje = datetime.strptime(str(Viaje.buscarViajePorId(id).fecha), "%Y-%m-%d")

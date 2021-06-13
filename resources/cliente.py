@@ -276,7 +276,7 @@ def ver_mis_viajes():
                 'asientos': each.cantidad_boletos
             })
     print (len(mis_viajes))
-    if (len(mis_viajes) == 0):
+    if (len(boletoPost) == 0):
         flash ("No haz realizado compras hasta el momento", "warning")
     return render_template("viaje/verMisViajes.html", viajes = boletoPost)
 

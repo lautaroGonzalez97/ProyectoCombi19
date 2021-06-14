@@ -32,7 +32,7 @@ class Ruta(db.Model):
         return True
 
     def buscarRutaPorOrigenYDestinoYCombi(origen, destino, combi):
-        ruta = Ruta.query.filter_by(id_origen=origen, id_destino=destino, id_combi=combi).first()
+        ruta = Ruta.query.filter_by(id_origen=origen, id_destino=destino, id_combi=combi, enabled = 1).first()
         return ruta
 
     def buscarRutaPorOrigenYDestino(origen, destino):

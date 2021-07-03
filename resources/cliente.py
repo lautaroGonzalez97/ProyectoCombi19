@@ -1,3 +1,4 @@
+import smtplib
 from models.viaje import Viaje
 from models.lugar import Lugar
 from models.comentario import Comentario
@@ -109,6 +110,15 @@ def crear():
                 new_cliente = Cliente(nombre, apellido, email, fechaNac, password)  
                 new_cliente.save()
                 flash ("Registro exitoso", "success")
+                #probando el envio de emails
+                message = "Usuario registrado en el sistema!"
+                subject = "Registro COMBI-19"
+                message = 'Subject: {}\n\n{}'.format(subject, message)
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.starttls()
+                server.login('contacto.combi19@gmail.com', 'somoscombi19')
+                server.sendmail('contacto.combi19@gmail.com', email, message)
+                server.quit()
                 return redirect(url_for("login_cliente"))
             else:
                 flash ("Edad invalida", "error")

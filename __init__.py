@@ -1,13 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, session, request, flash
-#para trabajar fechas
-from datetime import datetime
-from dateutil.relativedelta import relativedelta #pip install python-dateutil
+from flask import Flask, redirect, url_for, session
 #base de datos
 from flask_mysqldb import MySQL
 import db
 #funcionalidades
 from resources import cliente, personal, insumo, combi, tarjeta, lugar, ruta, viaje, comentario, boleto
-from helpers.auth import authenticated 
 
 app = Flask (__name__)
 app.config["DB_HOST"] = "localhost"

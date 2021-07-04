@@ -79,11 +79,11 @@
                             {% else %}
                                 <button class="btn btn-success" disabled>Finalizar</button>
                             {% endif %}
-                            <a style="margin-right: 1%;" href= "#" class="btn btn-primary">Ver pasajeros</a>
+                            <a style="margin-right: 1%;" href= "{{url_for('listado_pasajeros', id = viaje.id)}}" class="btn btn-primary">Ver pasajeros</a>
                             {% if viaje.estado == 2 %}
                                 <button class="btn btn-danger" disabled>Cancelar</button>
                             {% else %}
-                                <a href= "#" onclick= "return confirm('Estas seguro que deseas cancelar?')" class="btn btn-danger">Cancelar</a>
+                                <a href= "{{url_for('chofer_cancela_viaje', id = viaje.id)}}" onclick= "return confirm('Estas seguro que deseas cancelar?')" class="btn btn-danger">Cancelar</a>
                             {% endif %}
                         </div>
                     </td>

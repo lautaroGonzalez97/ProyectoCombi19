@@ -251,7 +251,7 @@ def render_viajesPendientes_chofer():
             viajes.append(x)
     viajePost=[]
     for each in viajes:
-        if each.enabled == 1 and each.estado != 3:
+        if each.enabled == 1 and (each.estado == 1 or each.estado == 2):
             viajePost.append({
                 'id':each.id,
                 'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_origen).localidad,

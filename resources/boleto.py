@@ -7,6 +7,7 @@ from models.viaje import Viaje
 from models.ruta import Ruta
 from models.lugar import Lugar
 from models.insumo import Insumo
+from models.cliente import Cliente
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -123,3 +124,19 @@ def verificarReembolso(id):
         return False
     else:
         return True
+
+def marcarAusente(id_viaje, id_pasajero):
+    boleto = Boleto.buscarBoletoPorIdViajeIdCliente(id_viaje, id_pasajero)
+    boleto.estado = 6
+    Boleto.actualizar(boleto)
+    vendidos = Boleto.buscarBoletoPorIdViaje(id_viaje)
+    pasajeroPost = []
+    print(vendidos)
+    for vendido in vendidos:
+        pasajeroPost.append({
+            "id": vendido.id_cliente,
+            "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
+            "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
+            "email": Cliente.buscarPorId(vendido.id_cliente).email   
+        })
+    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id_viaje)

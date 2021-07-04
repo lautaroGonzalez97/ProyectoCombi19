@@ -5,7 +5,7 @@ class  Boleto (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_cliente = db.Column(db.Integer, db.ForeignKey('cliente.id'))
     id_viaje = db.Column(db.Integer, db.ForeignKey('viaje.id'))
-    estado = db.Column(db.Integer) # 1=pendiente 2=en curso 3=finalizado 4=cancelado 5=rechazado 6=viaje eliminado
+    estado = db.Column(db.Integer) # 1=pendiente 2=en curso 3=finalizado 4=cancelado 5=rechazado 6=ausente 7=viaje eliminado
     cantidad_boletos = db.Column (db.Integer)
 
     def __init__(self, cliente, viaje, cantidad_boletos):
@@ -42,3 +42,7 @@ class  Boleto (db.Model):
     def buscarBoletoPorIdViaje(id):
         boletos = Boleto.query.filter_by(id_viaje=id)
         return boletos
+    
+    def buscarBoletoPorIdViajeIdCliente(idv, idp):
+        boleto = Boleto.query.filter_by(id_viaje=idv, id_cliente=idp).first()
+        return boleto

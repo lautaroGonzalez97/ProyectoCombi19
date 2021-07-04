@@ -270,7 +270,7 @@ def ver_mis_viajes():
     verificarSesion()
     mis_viajes = Boleto.buscarBoleto()
     boletoPost = []
-    estados=["PENDIENTE","EN CURSO","FINALIZADO","CANCELADO","RECHAZADO", "VIAJE ELIMINADO"]
+    estados=["PENDIENTE","EN CURSO","FINALIZADO","CANCELADO","RECHAZADO", "AUSENTE" ,"VIAJE ELIMINADO"]
     for each in mis_viajes:
         if (each.id_cliente == session["id"]):
             boletoPost.append({

@@ -263,7 +263,7 @@ def cancelarBoletos(idV):
     boletos = Boleto.buscarBoleto()
     for each in boletos:
         if (each.id_viaje == idV):
-            each.estado = 6
+            each.estado = 7
             each.actualizar()
 
 def cancelarViaje(id):
@@ -292,9 +292,11 @@ def verListadoPasajeros(id):
     pasajeroPost = []
     for vendido in vendidos:
         pasajeroPost.append({
+            "id": vendido.id_cliente,
             "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
             "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
-            "email": Cliente.buscarPorId(vendido.id_cliente).email   
+            "email": Cliente.buscarPorId(vendido.id_cliente).email,
+            "estado": vendido.estado   
         })
-    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost)
+    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id)
     

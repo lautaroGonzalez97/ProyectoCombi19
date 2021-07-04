@@ -102,8 +102,9 @@ app.add_url_rule("/editar_viaje/<id>", "render_editar_viaje", viaje.render_edita
 app.add_url_rule("/saveEdit_viaje/<id>", "editar_viaje", viaje.editar_viaje, methods=["POST"])
 app.add_url_rule("/eliminar_viaje/<id>", "eliminar_viaje", viaje.eliminar_viaje)
 #Rutas Chofer
-app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros)
-app.add_url_rule("/cancelar_viaje/<id>", "chofer_cancela_viaje", viaje.cancelarViaje)
+app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros) #PARA VER EL LISTADO DE PASAJEROS
+app.add_url_rule("/pasajero_ausente/<id_viaje>/<id_pasajero>", "marcar_ausente", boleto.marcarAusente)#MARCAR COMO AUSENTE A UN PASAJERO
+app.add_url_rule("/cancelar_viaje/<id>", "chofer_cancela_viaje", viaje.cancelarViaje) #CUANDO CHOFER CANCELA UN VIAJE
 
 def home ():
     if ("id" not in session):

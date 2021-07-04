@@ -1,9 +1,12 @@
-from datetime import datetime
+from models.viaje import Viaje
+from models.boleto import Boleto
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.personal import Personal
 from models.comentario import Comentario
 from models.cliente import Cliente
+from models.ruta import Ruta
+from models.combi import Combi
 
 def verificarSesionChofer():
     if (not (authenticated(session)) or (not (session["tipo"] == "Chofer"))):
@@ -206,9 +209,7 @@ def editar_chofer(id):
                 return render_template("personal/editChofer.html", chofer = chofer)
 
 def devolvelEmail():
-    """ 
-    Devuelve los email de todos los choferes 
-    """
+    #Devuelve los email de todos los choferes 
     aux = listaChoferes()
     listaEmails =[]
     print (type(aux))
@@ -217,9 +218,7 @@ def devolvelEmail():
     return listaEmails    
 
 def validarEmail(email):
-    """ 
-    Valida que no exista en la tabla chofer el email que llego por parametro 
-    """
+    #Valida que no exista en la tabla chofer el email que llego por parametro 
     aux = devolvelEmail()
     if email in aux:
         return False

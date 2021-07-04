@@ -1,0 +1,104 @@
+{% extends "personal/homeChofer.html" %}
+{% block panel %}
+
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<section class="section">
+    <div style="text-align: center;">
+        <h1>PASAJEROS</h1>
+    </div>
+    <div class="columns">
+        <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+            <div class="col-4" style="text-align: center;">
+                {% with mensajes= get_flashed_messages(category_filter=["error"])%}
+                    {% if mensajes %}
+                        {% for messages in mensajes%}
+                            <div class="alert alert-danger" role="alert">
+                                {{ messages }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% with mensajes= get_flashed_messages(category_filter=["success"])%}
+                    {% if mensajes %}
+                        {% for messages in mensajes%}
+                            <div class="alert alert-success" role="alert">
+                                {{ messages }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-info" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <p>
+                <a class="btn va_btn btn-collapse" data-toggle="collapse" href="#multiCollapseVENDERPASAJE" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Vender Pasaje</a>
+            </p>
+            <div class="row">
+                <div class="col" >
+                    <div class="collapse multi-collapse" id="multiCollapseVENDERPASAJE">
+                        <div class="columns">
+                            <div class="column">
+                                <form action="#">
+                                    <div style="background-color: #FFFFFF80; width: 40%;margin: 0 auto; border-collapse: collapse;">
+                                        <div style="margin-left: 10%; margin-right: 10%;">
+                                            <input type="email" name="email" class="form-control input_user"
+                                                placeholder="Email" required>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+                                        <button type="submit" name="button" class="btn btn-success">Confirmar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+            <table class="table" style="background-color: #FFFFFF80">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">Nombre</th>
+                        <th style="text-align: center">Apellido</th>
+                        <th style="text-align: center">Email</th>
+                        <th style="text-align: center">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pasajero in pasajeros %}
+                    <tr>
+                        <td style="text-align: center">{{pasajero.nombre}}</td>
+                        <td style="text-align: center">{{pasajero.apellido}}</td>
+                        <td style="text-align: center">{{pasajero.email}}</td>
+                        <td>
+                            <div style="text-align: center;">
+                                <a style="margin-right: 1%;" href= "#" class="btn btn-warning">Planilla</a>
+                                <a href= "#" onclick= "return confirm('Estas seguro que deseas marcar este pasajero como ausente?')" class="btn btn-danger">Ausente</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+            <a href= "#" class="btn va_btn">Volver Atras</a>
+        </div>
+</section>
+
+{% endblock %}

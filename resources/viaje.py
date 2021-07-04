@@ -1,19 +1,19 @@
-from resources.lugar import comprobarDatos
-from flask import render_template, session, redirect, url_for, flash, request, abort
-from helpers.auth import authenticated
+from resources.cliente import buscarViaje
+from flask import render_template, redirect, url_for, flash, request
 from models.ruta import Ruta
 from models.combi import Combi
 from models.viaje import Viaje
 from models.lugar import Lugar
 from models.boleto import Boleto
-from models.personal import Personal
-from resources.personal import verificarSesionAdmin 
-from datetime import  datetime,time, timedelta, date
+from models.cliente import Cliente
+from resources.personal import verificarSesionAdmin, verificarSesionChofer 
+from datetime import  datetime, timedelta
+import smtplib
 
 def listado_viajes():
     verificarSesionAdmin()
     viajes = Viaje.all()
-    estados=["PENDIENTE","EN CURSO","FINALIZADO"]
+    estados=["PENDIENTE","EN CURSO","FINALIZADO", "CANCELADO"]
     viajePost=[]
     for each in viajes:
         if (each.enabled == 1):
@@ -264,3 +264,36 @@ def cancelarBoletos(idV):
         if (each.id_viaje == idV):
             each.estado = 6
             each.actualizar()
+
+def cancelarViaje(id):
+    viaje = Viaje.buscarViajePorId(id)
+    viaje.estado = 4
+    boletos = Boleto.buscarBoletoPorIdViaje(id) 
+    for boleto in boletos:
+        boleto.estado = 4
+        Boleto.actualizar(boleto)
+        origen = Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_origen).localidad
+        destino = Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_destino).localidad
+        cliente = Cliente.buscarPorId(boleto.id_cliente)
+        message = "Por motivos personales del chofer el viaje con origen {} y destino {} para la fecha {} ha sido cancelado. Comunicarse con nosotros para reembolso del dinero".format(origen, destino, viaje.fecha)
+        subject = "Cancelacion Viaje"
+        message = 'Subject: {}\n\n{}'.format(subject, message)
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login('contacto.combi19@gmail.com', 'somoscombi19')
+        server.sendmail('contacto.combi19@gmail.com', cliente.email, message)
+        server.quit()
+    #ACA TENDRIA QUE REDIRECCIONAR NUEVAMENTE AL LISTADO DE VIAJES PARA EL CHOFER
+
+def verListadoPasajeros(id):
+    verificarSesionChofer()
+    vendidos = Boleto.buscarBoletoPorIdViaje(id)
+    pasajeroPost = []
+    for vendido in vendidos:
+        pasajeroPost.append({
+            "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
+            "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
+            "email": Cliente.buscarPorId(vendido.id_cliente).email   
+        })
+    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost)
+    

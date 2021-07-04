@@ -55,7 +55,6 @@ app.add_url_rule("/login_personal", "autenticar_personal", personal.autenticar, 
 app.add_url_rule("/login_personal", "login_personal", personal.login)
 app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
 app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
-
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
     #---acciones chofer---
@@ -102,6 +101,9 @@ app.add_url_rule("/save_viaje", "alta_viaje", viaje.alta_viaje, methods=["POST"]
 app.add_url_rule("/editar_viaje/<id>", "render_editar_viaje", viaje.render_editar_viaje)
 app.add_url_rule("/saveEdit_viaje/<id>", "editar_viaje", viaje.editar_viaje, methods=["POST"])
 app.add_url_rule("/eliminar_viaje/<id>", "eliminar_viaje", viaje.eliminar_viaje)
+#Rutas Chofer
+app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros)
+app.add_url_rule("/cancelar_viaje/<id>", "chofer_cancela_viaje", viaje.cancelarViaje)
 
 def home ():
     if ("id" not in session):

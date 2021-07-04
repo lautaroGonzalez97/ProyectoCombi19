@@ -21,7 +21,7 @@ class Viaje(db.Model):
         self.horaSalida= horaSalida
         self.horaLlegada= horaLlegada
         self.precio=precio
-        self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado
+        self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado     4=cancelado
         self.asientos = self.asientos_disponibles
         self.enabled = 1 
 

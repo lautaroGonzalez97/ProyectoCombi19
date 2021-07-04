@@ -14,6 +14,10 @@ class  Boleto (db.Model):
         self.estado = 1
         self.cantidad_boletos = cantidad_boletos
 
+    def all():
+        boletos = Boleto.query.all()
+        return boletos
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -33,4 +37,8 @@ class  Boleto (db.Model):
     
     def buscarBoletoPorCliente(id):
         boletos = Boleto.query.filter_by(id_cliente=id).first()
+        return boletos
+
+    def buscarBoletoPorIdViaje(id):
+        boletos = Boleto.query.filter_by(id_viaje=id)
         return boletos

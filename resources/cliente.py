@@ -111,14 +111,14 @@ def crear():
                 new_cliente.save()
                 flash ("Registro exitoso", "success")
                 #probando el envio de emails
-                message = "Usuario registrado en el sistema!"
+                '''message = "Usuario registrado en el sistema!"
                 subject = "Registro COMBI-19"
                 message = 'Subject: {}\n\n{}'.format(subject, message)
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.starttls()
                 server.login('contacto.combi19@gmail.com', 'somoscombi19')
                 server.sendmail('contacto.combi19@gmail.com', email, message)
-                server.quit()
+                server.quit()'''
                 return redirect(url_for("login_cliente"))
             else:
                 flash ("Edad invalida", "error")

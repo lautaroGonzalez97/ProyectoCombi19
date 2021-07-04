@@ -1,0 +1,96 @@
+{% extends "personal/homeChofer.html" %}
+{% block panel %}
+
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+    <div class="col-4" style="text-align: center;">
+        {% with mensajes= get_flashed_messages(category_filter=["error"])%}
+            {% if mensajes %}
+                {% for messages in mensajes%}
+                    <div class="alert alert-danger" role="alert">
+                        {{ messages }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% with mensajes= get_flashed_messages(category_filter=["success"])%}
+            {% if mensajes %}
+                {% for messages in mensajes%}
+                    <div class="alert alert-success" role="alert">
+                        {{ messages }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+        {% if mensajes %}
+            {% for messages in mensajes%}
+                <div class="alert alert-info" role="alert">
+                    {{ messages }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+</div>
+<div class="container" style="align-content: center;">
+    <div style="text-align: center;" class="panel-heading">
+        <h1 class="panel-title"> VIAJES </h1>
+    </div>
+    {% if viene == 1 %}
+        <a href= "{{url_for('render_viajesFinalizados_chofer')}}" class="btn va_btn">Ir a Finalizados</a>
+    {% else %}
+        <a href= "{{url_for('render_viajesPendientes_chofer')}}" class="btn va_btn">Ir a Pendientes</a>
+    {% endif %}
+    <table class="table" style="background-color: #FFFFFF80;">
+        <thead>
+            <tr>
+                <th style="text-align: center">Origen</th>
+                <th style="text-align: center">Destino</th>
+                <th style="text-align: center">Asientos</th>
+                <th style="text-align: center">Fecha</th>
+                <th style="text-align: center">Salida</th>
+                <th style="text-align: center">Llegada</th>
+                {% if viene == 1 %}
+                    <th style="text-align: center">Operaciones</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for viaje in viajes %}
+                <tr>
+                    <td style="text-align: center">{{viaje.origen}}</td>
+                    <td style="text-align: center">{{viaje.destino}}</td>
+                    <td style="text-align: center">{{viaje.asientos}}</td>
+                    <td style="text-align: center">{{viaje.fecha}}</td>
+                    <td style="text-align: center">{{viaje.horaSalida}}</td>
+                    <td style="text-align: center">{{viaje.horaLlegada}}</td>
+                    {% if viene == 1 %}
+                    <td style="text-align: center">
+                        <div style="text-align: center;">
+                            {% if contador == viaje.asientos or viaje.estado == 2 %}
+                                <a style="margin-right: 1%;" href= "#" class="btn btn-success">Comenzar</a>
+                            {% else %}
+                                <button class="btn btn-success" disabled>Comenzar</button>
+                            {% endif %}
+                            {% if viaje.estado == 2 %}
+                                <a style="margin-right: 1%;" href= "#" class="btn btn-success">Finalizar</a>
+                            {% else %}
+                                <button class="btn btn-success" disabled>Finalizar</button>
+                            {% endif %}
+                            <a style="margin-right: 1%;" href= "#" class="btn btn-primary">Ver pasajeros</a>
+                            {% if viaje.estado == 2 %}
+                                <button class="btn btn-danger" disabled>Cancelar</button>
+                            {% else %}
+                                <a href= "#" onclick= "return confirm('Estas seguro que deseas cancelar?')" class="btn btn-danger">Cancelar</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

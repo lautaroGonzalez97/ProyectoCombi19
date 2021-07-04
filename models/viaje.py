@@ -41,3 +41,7 @@ class Viaje(db.Model):
     def buscarViajePorId(id):
         viaje = Viaje.query.filter_by(id=id).first()
         return viaje
+    
+    def buscarPorRuta(id_r):
+        viajes = Viaje.query.filter_by(id_ruta=id_r).all()
+        return viajes

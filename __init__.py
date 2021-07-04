@@ -55,6 +55,8 @@ app.add_url_rule("/login_personal", "autenticar_personal", personal.autenticar, 
 app.add_url_rule("/login_personal", "login_personal", personal.login)
 app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
 app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
+app.add_url_rule("/render_viajesPendientes_chofer", "render_viajesPendientes_chofer", personal.render_viajesPendientes_chofer)
+app.add_url_rule("/render_viajesFinalizados_chofer", "render_viajesFinalizados_chofer", personal.render_viajesFinalizados_chofer)
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
     #---acciones chofer---

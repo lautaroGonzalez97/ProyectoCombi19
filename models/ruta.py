@@ -50,3 +50,7 @@ class Ruta(db.Model):
     def actualizar(self):
         db.session.commit()
         return True
+
+    def buscarPorCombi(id_c):
+        rutas = Ruta.query.filter_by(id_combi=id_c).all()
+        return rutas

@@ -4,6 +4,9 @@ from helpers.auth import authenticated
 from models.personal import Personal
 from models.comentario import Comentario
 from models.cliente import Cliente
+from models.ruta import Ruta
+from models.viaje import Viaje
+from models.lugar import Lugar
 
 def verificarSesionChofer():
     if (not (authenticated(session)) or (not (session["tipo"] == "Chofer"))):
@@ -236,3 +239,67 @@ def eliminar_chofer(id):
 
 def nombreCompleto():
     return Personal.nombre()
+
+def render_viajesPendientes_chofer():
+    verificarSesionChofer()
+    chofer = Personal.buscarChoferPorId(session['id'])
+    combis = chofer.combis
+    rutas = []
+    for each in combis:
+        aux = Ruta.buscarPorCombi(each.id)   
+        for x in aux:
+            rutas.append(x)
+    viajes = []
+    for each in rutas:
+        aux = Viaje.buscarPorRuta(each.id)   
+        for x in aux:
+            viajes.append(x)
+    viajePost=[]
+    for each in viajes:
+        if each.enabled == 1 and each.estado != 3:
+            viajePost.append({
+                'id':each.id,
+                'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_origen).localidad,
+                'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_destino).localidad,
+                'asientos': each.asientos_disponibles,
+                'fecha': each.fecha,
+                'horaSalida': each.horaSalida,
+                'horaLlegada': each.horaLlegada,
+                'asientosVendidos': each.asientos - each.asientos_disponibles,
+                'estado': each.estado
+            })
+    if len(viajePost) == 0:
+        flash("No tienes proximos viajes", "warning")
+    return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 1)
+
+def render_viajesFinalizados_chofer():
+    verificarSesionChofer()
+    chofer = Personal.buscarChoferPorId(session['id'])
+    combis = chofer.combis
+    rutas = []
+    for each in combis:
+        aux = Ruta.buscarPorCombi(each.id)   
+        for x in aux:
+            rutas.append(x)
+    viajes = []
+    for each in rutas:
+        aux = Viaje.buscarPorRuta(each.id)   
+        for x in aux:
+            viajes.append(x)
+    viajePost=[]
+    for each in viajes:
+        if each.enabled == 1 and each.estado == 3:
+            viajePost.append({
+                'id':each.id,
+                'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_origen).localidad,
+                'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_destino).localidad,
+                'asientos': each.asientos_disponibles,
+                'fecha': each.fecha,
+                'horaSalida': each.horaSalida,
+                'horaLlegada': each.horaLlegada,
+                'estado': each.estado
+            })
+    
+    if len(viajePost) == 0:
+        flash("No hemos registrado viajes finalizados para usted", "warning")
+    return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 2)

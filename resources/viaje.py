@@ -66,38 +66,12 @@ def render_editar_viaje(id):
             })
     return render_template("viaje/editViaje.html", rutas = rutasPost, viaje = viaje)
 
-'''def comprobarViaje(fec, horaLlegada, horaSalida, combi):
+def comprobarViaje(fec, horaLlegada, horaSalida, combi):
     viajes = Viaje.all()
     for viaje in viajes:
         if (viaje.enabled == 1):
             if (datetime.strptime(str(viaje.fecha),"%Y-%m-%d") == fec):
                 print("ES MISMA FECHA")
-                if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
-                    if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
-                        # flash("HORA DE SALIDA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
-                        return False
-                    if (horaSalida.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaSalida.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                        # flash("HORA DE SALIDA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
-                        return False
-                    if (horaSalida.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                        # flash("HORA DE SALIDA IGUAL A HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
-                        return False
-                    if (horaLlegada.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
-                        # flash("HORA DE LLEGADA IGUAL A HORA DE SALIDA DE OTRO VIAJE PARA ESE CHOFER", "error")
-                        return False
-                    if (horaLlegada.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaLlegada.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
-                        # flash("HORA DE LLEGADA ENTRE HORA DE SALIDA Y HORA DE LLEGADA DE OTRO VIAJE PARA ESE CHOFER", "error")
-                        return False
-                    if (horaLlegada.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):    
-                        # flash("HORA DE LLEGADA IGUAL A HORA DE LLEGADA DE OTRO VIAJE", "error")                 
-                        return False
-    return True'''
-
-def comprobarViajeEDICION(fec, horaLlegada, horaSalida, combi):
-    viajes = Viaje.all()
-    for viaje in viajes:
-        if (viaje.enabled == 1):
-            if (datetime.strptime(str(viaje.fecha),"%Y-%m-%d") == fec):
                 if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
                     if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
                         flash("No se encuentra disponible el horario de salida ingresado para el viaje", "error")
@@ -116,7 +90,34 @@ def comprobarViajeEDICION(fec, horaLlegada, horaSalida, combi):
                         return False
                     if (horaLlegada.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):    
                         flash("No se encuentra disponible el horario de llegada ingresado para el viaje", "error")                 
-                        return False
+                        return False       
+    return True
+
+def comprobarViajeEDICION(fec, horaLlegada, horaSalida, combi,id):
+    viajes = Viaje.all()
+    for viaje in viajes:
+        if ( int(viaje.id) != int(id)):
+            if (viaje.enabled == 1):
+                if (datetime.strptime(str(viaje.fecha),"%Y-%m-%d") == fec):
+                    if (combi.id == Ruta.buscarRutaPorId(viaje.id_ruta).id_combi) or Combi.buscarCombiPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_combi).id_chofer == combi.id_chofer:
+                        if (horaSalida.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
+                            flash("No se encuentra disponible el horario de salida ingresado para el viaje", "error")
+                            return False
+                        if (horaSalida.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaSalida.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
+                            flash("No se encuentra disponible el horario de salida ingresado para el viaje", "error")
+                            return False
+                        if (horaSalida.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
+                            flash("No se encuentra disponible el horario de salida ingresado para el viaje", "error")
+                            return False
+                        if (horaLlegada.time() == datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time()):
+                            flash("No se encuentra disponible el horario de llegada ingresado para el viaje", "error")
+                            return False
+                        if (horaLlegada.time() > datetime.strptime((str(viaje.horaSalida)), "%H:%M:%S").time() and horaLlegada.time() < datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):
+                            flash("No se encuentra disponible el horario de llegada ingresado para el viaje", "error")
+                            return False
+                        if (horaLlegada.time() == datetime.strptime((str(viaje.horaLlegada)), "%H:%M:%S").time()):    
+                            flash("No se encuentra disponible el horario de llegada ingresado para el viaje", "error")                 
+                            return False                    
     return True
 
 def sumarHora(salida, id_ruta):
@@ -148,7 +149,7 @@ def alta_viaje():
     fec = datetime.strptime(fecha, "%Y-%m-%d")
     if (fec > diaActual):
         if (comprobar_asientos(id_ruta,asientos)):
-            if (comprobarViajeEDICION(fec, horaLlegada, salida,(Combi.buscarCombiPorId(Ruta.buscarRutaPorId(id_ruta).id_combi)))):
+            if (comprobarViaje(fec, horaLlegada, salida,(Combi.buscarCombiPorId(Ruta.buscarRutaPorId(id_ruta).id_combi)))):
                 new_viaje= Viaje(id_ruta,asientos,fecha,salida,horaLlegada,precio,estado)
                 new_viaje.save()
                 flash("Alta de viaje exitoso", "success")
@@ -177,7 +178,7 @@ def editar_viaje(id):
         if (fecha > hoy):
             if (comprobar_asientos(datos["ruta"], datos["asientos"])):
                 llegada = sumarHora(salida, datos["ruta"])
-                if (comprobarViajeEDICION(fecha, llegada, salida, (Combi.buscarCombiPorId(Ruta.buscarRutaPorId(datos["ruta"]).id_combi)))):
+                if (comprobarViajeEDICION(fecha, llegada, salida, (Combi.buscarCombiPorId(Ruta.buscarRutaPorId(datos["ruta"]).id_combi)),id)):
                     viaje.id_ruta = datos["ruta"]
                     viaje.asientos_disponibles = datos["asientos"]
                     viaje.fecha = fecha

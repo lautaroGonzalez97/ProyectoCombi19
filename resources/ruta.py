@@ -42,8 +42,9 @@ def render_editar_ruta(id):
 
 def comprobarDatos(origen, destino, combi):
     ruta = Ruta.buscarRutaPorOrigenYDestinoYCombi(origen, destino, combi)
+    print (ruta)
     if (ruta is None) or (ruta.enabled == 0):
-        return True
+        return True  
     else:
         return False
 
@@ -55,6 +56,7 @@ def alta_ruta():
     duracion = datos['duracion']
     km = datos['kilometros']
     if (origen != destino):
+        print (comprobarDatos(origen, destino, combi))
         if (comprobarDatos(origen, destino, combi)):
             new_ruta = Ruta(origen, destino, combi, duracion, km)
             new_ruta.save()
@@ -72,6 +74,7 @@ def editar_ruta(id):
     ruta = Ruta.buscarRutaPorId(id)
     datos = request.form
     if ((int(datos["origen"]) != ruta.id_origen) or (int(datos["destino"]) != ruta.id_destino) or (int(datos["combi"]) != ruta.id_combi)):
+        if (datos["origen"] != datos["destino"]) :   
             if (comprobarDatos(datos["origen"], datos["destino"], int(datos["combi"]))):
                 ruta.id_origen = datos['origen']
                 ruta.id_destino = datos['destino']
@@ -87,6 +90,12 @@ def editar_ruta(id):
                 lugares = Lugar.all()
                 ruta = Ruta.buscarRutaPorId(id)
                 return render_template("ruta/editRuta.html", ruta = ruta, combis = combis, lugares = lugares)
+        else:
+            flash ("Error. Origen y destino deben ser distintos","error") 
+            combis = Combi.all()
+            lugares = Lugar.all()
+            ruta = Ruta.buscarRutaPorId(id)
+            return  render_template("ruta/editRuta.html", ruta = ruta, combis = combis, lugares = lugares)    
     else:
         ruta.duracion_minutos = datos['duracion']
         if(int(datos['duracion']) != ruta.duracion_minutos):

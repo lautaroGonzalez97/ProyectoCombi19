@@ -270,7 +270,7 @@ def ver_mis_viajes():
     verificarSesion()
     mis_viajes = Boleto.buscarBoleto()
     boletoPost = []
-    estados=["PENDIENTE","EN CURSO","FINALIZADO","CANCELADO","RECHAZADO", "AUSENTE" ,"VIAJE ELIMINADO"]
+    estados=["PENDIENTE","EN CURSO","FINALIZADO","CANCELADO","RECHAZADO", "AUSENTE" ,"VIAJE ELIMINADO", "CANCELADO POR CHOFER"]
     for each in mis_viajes:
         if (each.id_cliente == session["id"]):
             boletoPost.append({
@@ -285,7 +285,6 @@ def ver_mis_viajes():
                 'estado': estados[each.estado -1],
                 'asientos': each.cantidad_boletos
             })
-    print (len(mis_viajes))
     if (len(boletoPost) == 0):
         flash ("No haz realizado compras hasta el momento", "warning")
     return render_template("viaje/verMisViajes.html", viajes = boletoPost)

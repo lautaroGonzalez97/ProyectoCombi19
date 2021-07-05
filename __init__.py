@@ -57,6 +57,9 @@ app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
 app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
 app.add_url_rule("/render_viajesPendientes_chofer", "render_viajesPendientes_chofer", personal.render_viajesPendientes_chofer)
 app.add_url_rule("/render_viajesFinalizados_chofer", "render_viajesFinalizados_chofer", personal.render_viajesFinalizados_chofer)
+app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros) #PARA VER EL LISTADO DE PASAJEROS
+app.add_url_rule("/pasajero_ausente/<id_viaje>/<id_pasajero>", "marcar_ausente", boleto.marcarAusente)#MARCAR COMO AUSENTE A UN PASAJERO
+app.add_url_rule("/chofer_cancela_viaje/<id>", "chofer_cancela_viaje", viaje.chofer_cancelaViaje) #CUANDO CHOFER CANCELA UN VIAJE
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
     #---acciones chofer---
@@ -103,10 +106,6 @@ app.add_url_rule("/save_viaje", "alta_viaje", viaje.alta_viaje, methods=["POST"]
 app.add_url_rule("/editar_viaje/<id>", "render_editar_viaje", viaje.render_editar_viaje)
 app.add_url_rule("/saveEdit_viaje/<id>", "editar_viaje", viaje.editar_viaje, methods=["POST"])
 app.add_url_rule("/eliminar_viaje/<id>", "eliminar_viaje", viaje.eliminar_viaje)
-#Rutas Chofer
-app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros) #PARA VER EL LISTADO DE PASAJEROS
-app.add_url_rule("/pasajero_ausente/<id_viaje>/<id_pasajero>", "marcar_ausente", boleto.marcarAusente)#MARCAR COMO AUSENTE A UN PASAJERO
-app.add_url_rule("/chofer_cancelar_viaje/<id>", "chofer_cancela_viaje", viaje.cancelarViaje) #CUANDO CHOFER CANCELA UN VIAJE
 
 def home ():
     if ("id" not in session):

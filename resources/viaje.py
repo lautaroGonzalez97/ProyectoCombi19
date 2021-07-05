@@ -266,39 +266,42 @@ def cancelarBoletos(idV):
             each.estado = 7
             each.actualizar()
 
-def cancelarViaje(id):
+def chofer_cancelaViaje(id):
     verificarSesionChofer()
     viaje = Viaje.buscarViajePorId(id)
+    viaje.estado = 4
+    Viaje.actualizar(viaje)
     boletos = Boleto.buscarBoletoPorIdViaje(id) 
     for boleto in boletos:
-        boleto.estado = 4
-        Boleto.actualizar(boleto)
-        origen = Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_origen).localidad
-        destino = Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_destino).localidad
-        cliente = Cliente.buscarPorId(boleto.id_cliente)
-        message = "Por motivos personales del chofer el viaje con origen {} y destino {} para la fecha {} ha sido cancelado. Comunicarse con nosotros para reembolso del dinero. Muchas Gracias por su tiempo".format(origen, destino, viaje.fecha)
-        subject = "Cancelacion Viaje"
-        message = 'Subject: {}\n\n{}'.format(subject, message)
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login('contacto.combi19@gmail.com', 'somoscombi19')
-        server.sendmail('contacto.combi19@gmail.com', cliente.email, message)
-        server.quit()
-    viaje.estado = 4
-    viaje.actualizar()
-    return redirect("render_viajesPendientes_chofer")
+        if (boleto.estado == 1):
+            boleto.estado = 8
+            Boleto.actualizar(boleto)
+            origen = Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_origen).localidad
+            destino = Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(viaje.id_ruta).id_destino).localidad
+            cliente = Cliente.buscarPorId(boleto.id_cliente)
+            message = "Por motivos personales del chofer el viaje con origen {} y destino {} para la fecha {} ha sido cancelado. Comunicarse con nosotros para reembolso del dinero. Muchas Gracias por su tiempo".format(origen, destino, viaje.fecha)
+            subject = "Cancelacion Viaje"
+            message = 'Subject: {}\n\n{}'.format(subject, message)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login('contacto.combi19@gmail.com', 'somoscombi19')
+            server.sendmail('contacto.combi19@gmail.com', cliente.email, message)
+            server.quit()
+    flash("Cancelacion exitosa", "success")
+    return redirect(url_for("render_viajesPendientes_chofer"))
 
 def verListadoPasajeros(id):
     verificarSesionChofer()
     vendidos = Boleto.buscarBoletoPorIdViaje(id)
     pasajeroPost = []
     for vendido in vendidos:
-        pasajeroPost.append({
-            "id": vendido.id_cliente,
-            "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
-            "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
-            "email": Cliente.buscarPorId(vendido.id_cliente).email,
-            "estado": vendido.estado   
-        })
+        if (vendido.estado != 4):
+            pasajeroPost.append({
+                "id": vendido.id_cliente,
+                "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
+                "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
+                "email": Cliente.buscarPorId(vendido.id_cliente).email,
+                "estado": vendido.estado   
+            })
     return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id)
     

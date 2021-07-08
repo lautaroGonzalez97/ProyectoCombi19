@@ -304,4 +304,28 @@ def verListadoPasajeros(id):
                 "estado": vendido.estado   
             })
     return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id)
+
+def comenzarViaje(id):
+    verificarSesionChofer()
+    viaje = Viaje.buscarViajePorId(id)
+    boletos = Boleto.buscarBoletoPorIdViaje(id)
+    for each in boletos:
+        if each.estado == 1:
+            each.estado = 2
+            each.actualizar()
+    viaje.estado = 2
+    viaje.actualizar()
+    return redirect(url_for('render_viajesPendientes_chofer'))
+
+def finalizarViaje(id):
+    verificarSesionChofer()
+    viaje = Viaje.buscarViajePorId(id)
+    boletos = Boleto.buscarBoletoPorIdViaje(id)
+    for each in boletos:
+        if each.estado == 2:
+            each.estado = 3
+            each.actualizar()
+    viaje.estado = 3
+    viaje.actualizar()
+    return redirect(url_for('render_viajesPendientes_chofer'))
     

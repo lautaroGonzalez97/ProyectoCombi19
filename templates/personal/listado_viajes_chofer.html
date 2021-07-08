@@ -69,13 +69,13 @@
                     {% if viene == 1 %}
                     <td style="text-align: center">
                         <div style="text-align: center;">
-                            {% if contador == viaje.asientos or viaje.estado == 2 %}
-                                <a style="margin-right: 1%;" href= "#" class="btn btn-success">Comenzar</a>
+                            {% if contador == viaje.asientos or viaje.estado != 2 %}
+                                <a style="margin-right: 1%;" href= "{{ url_for('comenzarViaje', id=viaje.id)}}" class="btn btn-success">Comenzar</a>
                             {% else %}
                                 <button class="btn btn-success" disabled>Comenzar</button>
                             {% endif %}
                             {% if viaje.estado == 2 %}
-                                <a style="margin-right: 1%;" href= "#" class="btn btn-success">Finalizar</a>
+                                <a style="margin-right: 1%;" href= "{{ url_for('finalizarViaje', id=viaje.id)}}" class="btn btn-success">Finalizar</a>
                             {% else %}
                                 <button class="btn btn-success" disabled>Finalizar</button>
                             {% endif %}

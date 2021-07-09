@@ -75,6 +75,9 @@ def render_editar_chofer(id):
     else:
         return render_template("personal/editPerfilPersonal.html", chofer = chofer)
 
+def render_datosCovid(idP, idV):
+    return render_template("personal/cargaDatosCOVID.html", idP = idP, idV = idV)
+
 def login():
     if (authenticated(session)):
         return redirect(url_for("home_personal"))
@@ -286,7 +289,7 @@ def render_viajesPendientes_chofer():
                     'tienePasajeros': boletos.count(),
                     'paso': each.paso
                 })
-    if len(viajePost) == 0:
+    if (len(viajePost) == 0) and (len(proxPost) == 0):
         flash("No tienes proximos viajes", "warning")
     if len(proxPost) > 0:
         return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 1, prox = proxPost[0], ok = True)
@@ -334,3 +337,61 @@ def render_viajesFinalizados_chofer():
     if len(viajePost) == 0:
         flash("No hemos registrado viajes finalizados para usted", "warning")
     return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 2)
+
+def confirmar_datos_covid(idP, idV):
+    datos = request.form
+    temperatura = datos["temperatura"]
+    sintomas = 0
+    pasajeroPost = []
+    if(38 <= int(temperatura)):
+        boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
+        boleto.estado = 5
+        Boleto.actualizar(boleto)
+        vendidos = Boleto.buscarBoletoPorIdViaje(idV)
+        for vendido in vendidos:
+            if (vendido.estado != 4):
+                pasajeroPost.append({
+                    "id": vendido.id_cliente,
+                    "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
+                    "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
+                    "email": Cliente.buscarPorId(vendido.id_cliente).email,
+                    "estado": vendido.estado   
+                })
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
+    if(request.form.get('fiebre') == 'isTrue'):
+        sintomas += 1
+    if(request.form.get('perdida_gusto_olfato') == 'isTrue'):
+        sintomas += 1
+    if(request.form.get('dolor_garganta') == 'isTrue'):
+        sintomas += 1
+    if(request.form.get('problemas_respiratorios') == 'isTrue'):
+        sintomas += 1
+    if(request.form.get('dolor_cabeza') == 'isTrue'):
+        sintomas += 1
+    if(sintomas >= 2):
+        boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
+        boleto.estado = 5
+        Boleto.actualizar(boleto)
+        vendidos = Boleto.buscarBoletoPorIdViaje(idV)
+        for vendido in vendidos:
+            if (vendido.estado != 4):
+                pasajeroPost.append({
+                    "id": vendido.id_cliente,
+                    "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
+                    "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
+                    "email": Cliente.buscarPorId(vendido.id_cliente).email,
+                    "estado": vendido.estado   
+                })
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 0)
+    else:
+        vendidos = Boleto.buscarBoletoPorIdViaje(idV)
+        for vendido in vendidos:
+            if (vendido.estado != 4):
+                pasajeroPost.append({
+                    "id": vendido.id_cliente,
+                    "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
+                    "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
+                    "email": Cliente.buscarPorId(vendido.id_cliente).email,
+                    "estado": vendido.estado   
+                })
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 1)

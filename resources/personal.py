@@ -334,3 +334,21 @@ def render_viajesFinalizados_chofer():
     if len(viajePost) == 0:
         flash("No hemos registrado viajes finalizados para usted", "warning")
     return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 2)
+
+def reporteCOVID():
+    verificarSesionAdmin()
+    boletos = Boleto.all()
+    reportePost = []
+    for each in boletos:
+        if each.estado == 5:
+            reportePost.append({
+                'nombre': Cliente.buscarPorId(each.id_cliente).nombre,
+                'apellido': Cliente.buscarPorId(each.id_cliente).apellido,
+                'email': Cliente.buscarPorId(each.id_cliente).email,
+                'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(Viaje.buscarViajePorId(each.id_viaje).id_ruta).id_origen).localidad,
+                'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(Viaje.buscarViajePorId(each.id_viaje).id_ruta).id_destino).localidad,
+                'fecha': Viaje.buscarViajePorId(each.id_viaje).fecha
+            })
+    if len(reportePost) == 0:
+        flash("No hay pasajeros rechazados por sintomas", "warning")    
+    return render_template("personal/reporte.html", reportes=reportePost)

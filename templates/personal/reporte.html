@@ -1,0 +1,69 @@
+{% extends "personal/homeAdmin.html" %}
+{%  block panel %}
+
+<link rel="stylesheet" href="{{ url_for ('static', filename='style_login.css') }}" />
+
+<section class="section">
+    <div style="text-align: center;">
+        <h1>REPORTE COVID</h1>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 2%;">
+        <div class="col-4" style="text-align: center;">
+            {% with mensajes= get_flashed_messages(category_filter=["error"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% with mensajes= get_flashed_messages(category_filter=["success"])%}
+                {% if mensajes %}
+                    {% for messages in mensajes%}
+                        <div class="alert alert-success" role="alert">
+                            {{ messages }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% with mensajes= get_flashed_messages(category_filter=["warning"])%}
+            {% if mensajes %}
+                {% for messages in mensajes%}
+                    <div class="alert alert-info" role="alert">
+                        {{ messages }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <table class="table" style="background-color: #FFFFFF80;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">Nombre y Apellido</th>
+                        <th style="text-align: center">Usuario</th>
+                        <th style="text-align: center">Viaje</th>
+                        <th style="text-align: center">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reportes %}
+                    <tr>
+                        <td style="text-align: center">{{reporte.nombre}} {{reporte.apellido}}</td>
+                        <td style="text-align: center">{{reporte.email}}</td>
+                        <td style="text-align: center">de {{reporte.origen}} a {{reporte.destino}}</td>
+                        <td style="text-align: center">{{reporte.fecha}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
+        <a href= "{{url_for('home_admin')}}" class="btn va_btn">Volver Atras</a>
+    </div>
+</section>
+{% endblock %}

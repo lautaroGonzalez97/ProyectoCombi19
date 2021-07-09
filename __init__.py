@@ -62,6 +62,7 @@ app.add_url_rule("/pasajero_ausente/<id_viaje>/<id_pasajero>", "marcar_ausente",
 app.add_url_rule("/chofer_cancela_viaje/<id>", "chofer_cancela_viaje", viaje.chofer_cancelaViaje) #CUANDO CHOFER CANCELA UN VIAJE
 app.add_url_rule("/comenzarViaje/<id>", "comenzarViaje", viaje.comenzarViaje)
 app.add_url_rule("/finalizarViaje/<id>", "finalizarViaje", viaje.finalizarViaje)
+app.add_url_rule("/reporte", "reporte", personal.reporteCOVID)
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
     #---acciones chofer---

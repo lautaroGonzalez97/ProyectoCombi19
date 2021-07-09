@@ -395,3 +395,20 @@ def confirmar_datos_covid(idP, idV):
                     "estado": vendido.estado   
                 })
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 1)
+def reporteCOVID():
+    verificarSesionAdmin()
+    boletos = Boleto.all()
+    reportePost = []
+    for each in boletos:
+        if each.estado == 5:
+            reportePost.append({
+                'nombre': Cliente.buscarPorId(each.id_cliente).nombre,
+                'apellido': Cliente.buscarPorId(each.id_cliente).apellido,
+                'email': Cliente.buscarPorId(each.id_cliente).email,
+                'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(Viaje.buscarViajePorId(each.id_viaje).id_ruta).id_origen).localidad,
+                'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(Viaje.buscarViajePorId(each.id_viaje).id_ruta).id_destino).localidad,
+                'fecha': Viaje.buscarViajePorId(each.id_viaje).fecha
+            })
+    if len(reportePost) == 0:
+        flash("No hay pasajeros rechazados por sintomas", "warning")    
+    return render_template("personal/reporte.html", reportes=reportePost)

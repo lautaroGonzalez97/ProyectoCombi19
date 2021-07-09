@@ -76,10 +76,10 @@
                                         {% else %}
                                             <button style="margin-right: 1%;" class="btn btn-success" disabled>Finalizar</button>
                                         {% endif %}
-                                        {% if prox.tienePasajeros != 0 %}
+                                        {% if prox.asientos > 0 %}
                                             <a style="margin-right: 1%;" href= "{{url_for('listado_pasajeros', id = prox.id)}}" class="btn btn-primary">Ver pasajeros</a>
                                         {% else %}
-                                            <button style="margin-right: 1%;" class="btn btn-primary" disabled>Sin pasajeros</button>
+                                            <button style="margin-right: 1%;" class="btn btn-primary" disabled>Sin disponibilidad</button>
                                         {% endif %}
                                         {% if prox.estado == 2 %}
                                             <button style="margin-right: 1%;" class="btn btn-danger" disabled>Cancelar</button>

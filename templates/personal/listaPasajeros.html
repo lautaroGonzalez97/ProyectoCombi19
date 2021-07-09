@@ -86,19 +86,18 @@
                         <td style="text-align: center">{{pasajero.email}}</td>
                         <td>
                             <div style="text-align: center;">
+                                {% if pasajero.estado == 9: %}
+                                    <button class= "btn btn-success" disabled>ACEPTADO</button>
+                                {% endif %}   
                                 {% if pasajero.estado == 1: %}
-                                    {% if aceptado == 1: %}
-                                        <button class= "btn btn-success" disabled>ACEPTADO</button>
-                                    {% else %}
-                                        <a style="margin-right: 1%;" href= "{{url_for('render_datos_covid', idP=pasajero.id, idV=idv)}}" class="btn btn-warning">Sintomas COVID</a>
-                                        <a href= "{{url_for('marcar_ausente', id_viaje = idv , id_pasajero = pasajero.id)}}" onclick= "return confirm('Estas seguro que deseas marcar este pasajero como ausente?')" class="btn btn-danger">Ausente</a>
-                                    {% endif %}                            
-                                {% else %}
-                                    {% if pasajero.estado == 6: %}
-                                        <button class= "btn btn-danger" disabled>AUSENTE</button>    
-                                    {% else %}
-                                        <button class= "btn btn-danger" disabled>RECHAZADO</button>                        
-                                    {% endif %}
+                                    <a style="margin-right: 1%;" href= "{{url_for('render_datos_covid', idP=pasajero.id, idV=idv)}}" class="btn btn-warning">Sintomas COVID</a>
+                                    <a href= "{{url_for('marcar_ausente', id_viaje = idv , id_pasajero = pasajero.id)}}" onclick= "return confirm('Estas seguro que deseas marcar este pasajero como ausente?')" class="btn btn-danger">Ausente</a>
+                                {% endif %}                            
+                                {% if pasajero.estado == 6: %}
+                                    <button class= "btn btn-danger" disabled>AUSENTE</button>    
+                                {% endif %} 
+                                {% if pasajero.estado == 5%}
+                                    <button class= "btn btn-danger" disabled>RECHAZADO</button>                        
                                 {% endif %}
                             </div>
                         </td>

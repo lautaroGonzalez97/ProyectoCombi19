@@ -310,7 +310,7 @@ def comenzarViaje(id):
     viaje = Viaje.buscarViajePorId(id)
     boletos = Boleto.buscarBoletoPorIdViaje(id)
     for each in boletos:
-        if each.estado == 1:
+        if each.estado == 9:
             each.estado = 2
             each.actualizar()
     viaje.estado = 2

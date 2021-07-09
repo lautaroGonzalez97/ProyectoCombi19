@@ -1,4 +1,3 @@
-from resources.cliente import buscarViaje
 from flask import render_template, redirect, url_for, flash, request
 from models.ruta import Ruta
 from models.combi import Combi
@@ -304,7 +303,7 @@ def verListadoPasajeros(id):
                 "email": Cliente.buscarPorId(vendido.id_cliente).email,
                 "estado": vendido.estado   
             })
-    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id)
+    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id, aceptado = 0)
 
 def comenzarViaje(id):
     verificarSesionChofer()

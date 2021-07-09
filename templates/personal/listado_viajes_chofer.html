@@ -39,9 +39,64 @@
         <h1 class="panel-title"> VIAJES </h1>
     </div>
     {% if viene == 1 %}
-        <a href= "{{url_for('render_viajesFinalizados_chofer')}}" class="btn va_btn">Ir a Finalizados</a>
+        <a href= "{{url_for('render_viajesFinalizados_chofer')}}" class="btn va_btn">Ver Finalizados</a>
+        {% if ok %}
+        <h4>Proximo viaje</h4>
+            <div class="columns">
+                <div class="column">
+                    <table class="table" style="background-color: #FFFFFF80;">
+                        <thead>  
+                            <tr>
+                                <th style="text-align: center">Origen</th>
+                                <th style="text-align: center">Destino</th>
+                                <th style="text-align: center">Asientos</th>
+                                <th style="text-align: center">Fecha</th>
+                                <th style="text-align: center">Salida</th>
+                                <th style="text-align: center">Llegada</th>
+                                <th style="text-align: center">Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center">{{prox.origen}}</td>
+                                <td style="text-align: center">{{prox.destino}}</td>
+                                <td style="text-align: center">{{prox.asientos}}</td>
+                                <td style="text-align: center">{{prox.fecha}}</td>
+                                <td style="text-align: center">{{prox.horaSalida}}</td>
+                                <td style="text-align: center">{{prox.horaLlegada}}</td>
+                                <td style="text-align: center">
+                                    <div style="text-align: center;">
+                                        {% if (prox.paso == prox.tienePasajeros) and (prox.estado == 1) %}
+                                            <a style="margin-right: 1%;" href= "{{ url_for('comenzarViaje', id=prox.id)}}" class="btn btn-success">Comenzar</a>
+                                        {% else %}
+                                            <button style="margin-right: 1%;" class="btn btn-success" disabled>Comenzar</button>
+                                        {% endif %}
+                                        {% if prox.estado == 2 %}
+                                            <a style="margin-right: 1%;" href= "{{ url_for('finalizarViaje', id=prox.id)}}" class="btn btn-success">Finalizar</a>
+                                        {% else %}
+                                            <button style="margin-right: 1%;" class="btn btn-success" disabled>Finalizar</button>
+                                        {% endif %}
+                                        {% if prox.tienePasajeros != 0 %}
+                                            <a style="margin-right: 1%;" href= "{{url_for('listado_pasajeros', id = prox.id)}}" class="btn btn-primary">Ver pasajeros</a>
+                                        {% else %}
+                                            <button style="margin-right: 1%;" class="btn btn-primary" disabled>Sin pasajeros</button>
+                                        {% endif %}
+                                        {% if prox.estado == 2 %}
+                                            <button style="margin-right: 1%;" class="btn btn-danger" disabled>Cancelar</button>
+                                        {% else %}
+                                            <a style="margin-right: 1%;" href= "{{url_for('chofer_cancela_viaje', id = prox.id)}}" onclick= "return confirm('Estas seguro que deseas cancelar?')" class="btn btn-danger">Cancelar</a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <h4>Otros viajes ...</h4>
+        {% endif %}
     {% else %}
-        <a href= "{{url_for('render_viajesPendientes_chofer')}}" class="btn va_btn">Ir a Pendientes</a>
+        <a href= "{{url_for('render_viajesPendientes_chofer')}}" class="btn va_btn">Ver Pendientes</a>
     {% endif %}
     <table class="table" style="background-color: #FFFFFF80;">
         <thead>
@@ -69,21 +124,10 @@
                     {% if viene == 1 %}
                     <td style="text-align: center">
                         <div style="text-align: center;">
-                            {% if contador == viaje.asientos or viaje.estado == 2 %}
-                                <a style="margin-right: 1%;" href= "#" class="btn btn-success">Comenzar</a>
-                            {% else %}
-                                <button class="btn btn-success" disabled>Comenzar</button>
-                            {% endif %}
                             {% if viaje.estado == 2 %}
-                                <a style="margin-right: 1%;" href= "#" class="btn btn-success">Finalizar</a>
+                                <button style="margin-right: 1%;" class="btn btn-danger" disabled>Cancelar</button>
                             {% else %}
-                                <button class="btn btn-success" disabled>Finalizar</button>
-                            {% endif %}
-                            <a style="margin-right: 1%;" href= "{{url_for('listado_pasajeros', id = viaje.id)}}" class="btn btn-primary">Ver pasajeros</a>
-                            {% if viaje.estado == 2 %}
-                                <button class="btn btn-danger" disabled>Cancelar</button>
-                            {% else %}
-                                <a href= "{{url_for('chofer_cancela_viaje', id = viaje.id)}}" onclick= "return confirm('Estas seguro que deseas cancelar?')" class="btn btn-danger">Cancelar</a>
+                                <a style="margin-right: 1%;" href= "{{url_for('chofer_cancela_viaje', id = viaje.id)}}" onclick= "return confirm('Estas seguro que deseas cancelar?')" class="btn btn-danger">Cancelar</a>
                             {% endif %}
                         </div>
                     </td>

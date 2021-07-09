@@ -13,6 +13,7 @@ class Viaje(db.Model):
     estado = db.Column(db.Integer)
     asientos = db.Column(db.Integer)
     enabled = db.Column(db.Integer)
+    paso = db.Column(db.Integer)
 
     def __init__(self, id_ruta, asientos_disponibles, fecha, horaSalida, horaLlegada, precio, estado):
         self.id_ruta = id_ruta
@@ -23,7 +24,8 @@ class Viaje(db.Model):
         self.precio=precio
         self.estado=estado    # 1 = pendiente     2= en curso     3= finalizado     4=canceladoXchofer
         self.asientos = self.asientos_disponibles
-        self.enabled = 1 
+        self.enabled = 1
+        self.paso = 0 
 
     def all():
         viajes = Viaje.query.all()

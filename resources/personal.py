@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.personal import Personal
@@ -6,6 +7,7 @@ from models.cliente import Cliente
 from models.ruta import Ruta
 from models.viaje import Viaje
 from models.lugar import Lugar
+from models.boleto import Boleto
 
 def verificarSesionChofer():
     if (not (authenticated(session)) or (not (session["tipo"] == "Chofer"))):
@@ -246,26 +248,61 @@ def render_viajesPendientes_chofer():
             rutas.append(x)
     viajes = []
     for each in rutas:
-        aux = Viaje.buscarPorRuta(each.id)   
+        aux = Viaje.buscarPorRuta(each.id)
         for x in aux:
             viajes.append(x)
+    proxPost=[]
+    prox_viaje = devolverUltimoViaje(viajes)
+    if (devolverUltimoViaje(viajes) != None):
+        boletos = Boleto.buscarBoletoPorIdViajeYPendiente(prox_viaje.id)
+        proxPost.append({
+            'id':prox_viaje.id,
+            'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_origen).localidad,
+            'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_destino).localidad,
+            'asientos': prox_viaje.asientos_disponibles,
+            'fecha': prox_viaje.fecha,
+            'horaSalida': prox_viaje.horaSalida,
+            'horaLlegada': prox_viaje.horaLlegada,
+            'asientosVendidos': prox_viaje.asientos - prox_viaje.asientos_disponibles,
+            'estado': prox_viaje.estado,
+            'tienePasajeros': boletos.count(),
+            'paso': prox_viaje.paso
+        })
     viajePost=[]
     for each in viajes:
         if each.enabled == 1 and (each.estado == 1 or each.estado == 2):
-            viajePost.append({
-                'id':each.id,
-                'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_origen).localidad,
-                'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_destino).localidad,
-                'asientos': each.asientos_disponibles,
-                'fecha': each.fecha,
-                'horaSalida': each.horaSalida,
-                'horaLlegada': each.horaLlegada,
-                'asientosVendidos': each.asientos - each.asientos_disponibles,
-                'estado': each.estado
-            })
+            boletos = Boleto.buscarBoletoPorIdViajeYPendiente(each.id)
+            if (each.id != prox_viaje.id):
+                viajePost.append({
+                    'id':each.id,
+                    'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_origen).localidad,
+                    'destino': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(each.id_ruta).id_destino).localidad,
+                    'asientos': each.asientos_disponibles,
+                    'fecha': each.fecha,
+                    'horaSalida': each.horaSalida,
+                    'horaLlegada': each.horaLlegada,
+                    'asientosVendidos': each.asientos - each.asientos_disponibles,
+                    'estado': each.estado,
+                    'tienePasajeros': boletos.count(),
+                    'paso': each.paso
+                })
     if len(viajePost) == 0:
         flash("No tienes proximos viajes", "warning")
-    return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 1)
+    if len(proxPost) > 0:
+        return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 1, prox = proxPost[0], ok = True)
+    else:
+        return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 1, prox = proxPost, ok = False)
+
+def devolverUltimoViaje(viajes):
+    viaje_prox = None
+    fecha_prox = datetime.strptime("8000-01-01", "%Y-%m-%d")
+    for each in viajes:
+        if (each.estado == 1 or each.estado == 2) and (each.enabled == 1):
+            fecha = datetime.strptime(str(str(each.fecha)), "%Y-%m-%d")
+            if (fecha <= fecha_prox):
+                viaje_prox = each
+                fecha_prox = fecha
+    return viaje_prox
 
 def render_viajesFinalizados_chofer():
     verificarSesionChofer()
@@ -294,7 +331,6 @@ def render_viajesFinalizados_chofer():
                 'horaLlegada': each.horaLlegada,
                 'estado': each.estado
             })
-    
     if len(viajePost) == 0:
         flash("No hemos registrado viajes finalizados para usted", "warning")
     return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 2)

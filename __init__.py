@@ -57,9 +57,9 @@ app.add_url_rule("/logout_personal", "logOut_personal", personal.logOut)
 app.add_url_rule("/home_chofer", "home_chofer", personal.home_chofer)
 app.add_url_rule("/render_viajesPendientes_chofer", "render_viajesPendientes_chofer", personal.render_viajesPendientes_chofer)
 app.add_url_rule("/render_viajesFinalizados_chofer", "render_viajesFinalizados_chofer", personal.render_viajesFinalizados_chofer)
-app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros) #PARA VER EL LISTADO DE PASAJEROS
-app.add_url_rule("/pasajero_ausente/<id_viaje>/<id_pasajero>", "marcar_ausente", boleto.marcarAusente)#MARCAR COMO AUSENTE A UN PASAJERO
-app.add_url_rule("/chofer_cancela_viaje/<id>", "chofer_cancela_viaje", viaje.chofer_cancelaViaje) #CUANDO CHOFER CANCELA UN VIAJE
+app.add_url_rule("/listado_pasajeros/<id>", "listado_pasajeros", viaje.verListadoPasajeros)
+app.add_url_rule("/pasajero_ausente/<id_viaje>/<id_pasajero>", "marcar_ausente", boleto.marcarAusente)
+app.add_url_rule("/chofer_cancela_viaje/<id>", "chofer_cancela_viaje", viaje.chofer_cancelaViaje)
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
     #---acciones chofer---

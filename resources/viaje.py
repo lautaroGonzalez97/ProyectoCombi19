@@ -1,4 +1,3 @@
-from resources.cliente import buscarViaje
 from flask import render_template, redirect, url_for, flash, request
 from models.ruta import Ruta
 from models.combi import Combi

@@ -39,6 +39,10 @@ class  Boleto (db.Model):
         boletos = Boleto.query.filter_by(id_cliente=id).first()
         return boletos
 
+    def buscarBoletoPorIdViajeYPendiente(id):
+        boletos = Boleto.query.filter_by(id_viaje=id, estado=1)
+        return boletos
+
     def buscarBoletoPorIdViaje(id):
         boletos = Boleto.query.filter_by(id_viaje=id)
         return boletos

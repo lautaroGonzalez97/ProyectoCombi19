@@ -87,7 +87,7 @@
                         <td>
                             <div style="text-align: center;">
                                 {% if pasajero.estado == 1: %}
-                                    <a style="margin-right: 1%;" href= "#" class="btn btn-warning">Planilla</a>
+                                    <a style="margin-right: 1%;" href= "#" class="btn btn-warning">Sintomas COVID</a>
                                     <a href= "{{url_for('marcar_ausente', id_viaje = idv , id_pasajero = pasajero.id)}}" onclick= "return confirm('Estas seguro que deseas marcar este pasajero como ausente?')" class="btn btn-danger">Ausente</a>
                                 {% else %}
                                     <button class= "btn btn-danger" disabled>Ausente</button>

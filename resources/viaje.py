@@ -327,5 +327,5 @@ def finalizarViaje(id):
             each.actualizar()
     viaje.estado = 3
     viaje.actualizar()
-    return redirect(url_for('render_viajesPendientes_chofer'))
+    return redirect(url_for('render_viajesFinalizados_chofer'))
     

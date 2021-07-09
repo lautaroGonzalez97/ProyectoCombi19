@@ -63,6 +63,7 @@ app.add_url_rule("/chofer_cancela_viaje/<id>", "chofer_cancela_viaje", viaje.cho
 app.add_url_rule("/comenzarViaje/<id>", "comenzarViaje", viaje.comenzarViaje)
 app.add_url_rule("/finalizarViaje/<id>", "finalizarViaje", viaje.finalizarViaje)
 app.add_url_rule("/reporte", "reporte", personal.reporteCOVID)
+app.add_url_rule("/comprar_boleto_fisico/<id>", "comprarBoletoFisico", viaje.comprarBoletoFisico, methods= ["POST"])
 #Rutas Admin
 app.add_url_rule("/home_admin", "home_admin", personal.home_admin)
     #---acciones chofer---

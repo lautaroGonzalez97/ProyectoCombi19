@@ -6,6 +6,7 @@ from models.viaje import Viaje
 from models.lugar import Lugar
 from models.boleto import Boleto
 from models.cliente import Cliente
+from resources.boleto import comprar_viaje_fisico as comprarBoleto
 from resources.personal import verificarSesionAdmin, verificarSesionChofer 
 from datetime import  datetime, timedelta
 import smtplib
@@ -329,3 +330,33 @@ def finalizarViaje(id):
     viaje.actualizar()
     return redirect(url_for('render_viajesFinalizados_chofer'))
     
+def comprarBoletoFisico(id):
+    verificarSesionChofer()
+    datos = request.form 
+    print(datos["email"])
+    email = datos["email"]
+    cliente = Cliente.buscarPorEmail(email)
+    print(cliente)
+    if cliente != None:
+        comprarBoleto(cliente.id,id) 
+        print("compro cliente existente") 
+        flash("Compra exitosa", "success") 
+    else: 
+        hoy = datetime.today()
+        cliente_new = Cliente("nombre", "apellido", email , hoy , "1234567")
+        cliente_new.save()
+        message = "Ya que no se encuentra registrado en nuestro sistema, le hemos creado una cuenta.Recuerde actualizar sus datos personales. Para ingresar utilice el mail {}, contraseña 1234567. ".format(email)
+        subject = "Usuario nuevo COMBI19"
+        message = 'Subject: {}\n\n{}'.format(subject, message)
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login('contacto.combi19@gmail.com', 'somoscombi19')
+        server.sendmail('contacto.combi19@gmail.com', email, message.encode('utf-8'))
+        server.quit()
+        cliente=Cliente.buscarPorEmail(email)
+        comprarBoleto(cliente.id,id)
+        print("compro cliente nuevo")
+        flash("Compra exitosa. Creacion de usuario", "success")
+    return redirect(url_for('listado_pasajeros', id = id))  #redirecciona a la carga de datos covid 
+
+

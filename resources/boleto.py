@@ -142,4 +142,10 @@ def marcarAusente(id_viaje, id_pasajero):
         })
     return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id_viaje)
 
-    
+def comprar_viaje_fisico(idCliente,id):
+    viaje= Viaje.buscarViajePorId(id)
+    viaje.asientos_disponibles = viaje.asientos_disponibles - 1
+    viaje.actualizar()
+    new_boleto = Boleto(idCliente, id, 1)
+    new_boleto.save()
+    return redirect(url_for('listado_pasajeros', id=id))

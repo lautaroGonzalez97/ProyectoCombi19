@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil import relativedelta
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.personal import Personal
@@ -360,6 +361,17 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
+        boletos = Boleto.buscarBoletosParaPersonaPendiente(idP)
+        print(boletos)
+        for boleto in boletos:
+            fecha = datetime.today() + relativedelta(days=+14)
+            if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
+                print(boleto.estado)
+                boleto.estado = 5
+                print(boleto.estado)
+                Boleto.actualizar(boleto)
+        cliente = Cliente.buscarPorId(idP)
+        # cliente.fechaBloqueo = datetime.today() + relativedelta(days=+14)
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
     if(request.form.get('fiebre') == 'isTrue'):
         sintomas += 1
@@ -385,6 +397,12 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
+        boletos = Boleto.buscarBoletosParaPersona(idP)
+        for boleto in boletos:
+            fecha = datetime.today() + relativedelta(days=+14)
+            if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
+                boleto.estado == 5
+                boleto.actualizar
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 0)
     else:
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)

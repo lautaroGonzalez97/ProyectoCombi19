@@ -31,6 +31,10 @@ class  Boleto (db.Model):
         boleto = Boleto.query.filter_by(id=id).first()
         return boleto
 
+    def buscarBoletosParaPersonaPendiente(id):
+        boletos = Boleto.query.filter_by(id=id, estado =1)
+        return boletos
+
     def buscarBoleto():
         boletos = Boleto.query.all()
         return boletos

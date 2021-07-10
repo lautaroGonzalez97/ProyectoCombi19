@@ -336,7 +336,7 @@ def render_viajesFinalizados_chofer():
                 'estado': each.estado
             })
     if len(viajePost) == 0:
-        flash("No hemos registrado viajes finalizados para usted", "warning")
+        flash("No hemos registrado viajes finalizados", "warning")
     return render_template('personal/listado_viajes_chofer.html', viajes = viajePost, viene = 2)
 
 def confirmar_datos_covid(idP, idV):
@@ -347,30 +347,6 @@ def confirmar_datos_covid(idP, idV):
     v = Viaje.buscarViajePorId(idV)
     v.paso = v.paso + 1 
     Viaje.actualizar(v)
-    if(38 <= int(temperatura)):
-        boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
-        boleto.estado = 5
-        Boleto.actualizar(boleto)
-        vendidos = Boleto.buscarBoletoPorIdViaje(idV)
-        for vendido in vendidos:
-            if (vendido.estado != 4):
-                pasajeroPost.append({
-                    "id": vendido.id_cliente,
-                    "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
-                    "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
-                    "email": Cliente.buscarPorId(vendido.id_cliente).email,
-                    "estado": vendido.estado   
-                })
-        boletos = Boleto.buscarBoletosParaPersonaPendiente(idP)
-        for boleto in boletos:
-            fecha = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
-            if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
-                boleto.estado = 5
-                Boleto.actualizar(boleto)
-        cliente = Cliente.buscarPorId(idP)
-        cliente.fechaBloqueo = fecha
-        Cliente.actualizar(cliente)
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
     if(request.form.get('fiebre') == 'isTrue'):
         sintomas += 1
     if(request.form.get('perdida_gusto_olfato') == 'isTrue'):
@@ -381,7 +357,7 @@ def confirmar_datos_covid(idP, idV):
         sintomas += 1
     if(request.form.get('dolor_cabeza') == 'isTrue'):
         sintomas += 1
-    if(sintomas >= 2):
+    if(38 <= int(temperatura) or (sintomas >= 2) ):
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
         boleto.estado = 5
         Boleto.actualizar(boleto)
@@ -402,9 +378,9 @@ def confirmar_datos_covid(idP, idV):
                 boleto.estado = 5
                 Boleto.actualizar(boleto)
         cliente = Cliente.buscarPorId(idP)
-        cliente.fechaBloqueo = fecha
+        cliente.fechaBloqueo = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
         Cliente.actualizar(cliente)
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 0)
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
     else:
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
         boleto.estado = 9
@@ -419,7 +395,7 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 1)
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
 
 def reporteCOVID():
     verificarSesionAdmin()

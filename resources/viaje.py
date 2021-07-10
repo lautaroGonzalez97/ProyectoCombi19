@@ -305,6 +305,8 @@ def verListadoPasajeros(id):
                 "email": Cliente.buscarPorId(vendido.id_cliente).email,
                 "estado": vendido.estado   
             })
+    if(len(pasajeroPost) == 0):
+        flash("No hay pasajeros para el viaje", "warning")
     return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id, aceptado = 0, boletosDisponibles = boletosDisponibles)
 
 def comenzarViaje(id):
@@ -334,18 +336,15 @@ def finalizarViaje(id):
 def comprarBoletoFisico(id):
     verificarSesionChofer()
     datos = request.form 
-    print(datos["email"])
     email = datos["email"]
     cliente = Cliente.buscarPorEmail(email)
-    print(cliente)
     if cliente != None:
         comprarBoleto(cliente.id,id) 
-        flash("Compra exitosa", "success") 
     else: 
         hoy = datetime.today()
         cliente_new = Cliente("nombre", "apellido", email , hoy , "1234567")
         cliente_new.save()
-        message = "Ya que no se encuentra registrado en nuestro sistema, le hemos creado una cuenta.Recuerde actualizar sus datos personales. Para ingresar utilice el mail {}, contraseña 1234567. ".format(email)
+        message = "Ya que no se encuentra registrado en nuestro sistema, le hemos creado una cuenta. Recuerde actualizar sus datos personales. Para ingresar utilice el mail {}, contraseña 1234567. ".format(email)
         subject = "Usuario nuevo COMBI19"
         message = 'Subject: {}\n\n{}'.format(subject, message)
         server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -355,7 +354,6 @@ def comprarBoletoFisico(id):
         server.quit()
         cliente=Cliente.buscarPorEmail(email)
         comprarBoleto(cliente.id,id)
-        flash("Compra exitosa. Creacion de usuario", "success")
-    return redirect(url_for('listado_pasajeros', id = id))  #redirecciona a la carga de datos covid 
+    return render_template('personal/cargaDatosCOVID.html', idP = cliente.id, idV = id)
 
 

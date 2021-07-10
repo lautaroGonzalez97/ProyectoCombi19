@@ -28,13 +28,16 @@
                 {% endwith %}
             </div>
         </div>
-        <form class="form-inline" style="margin-bottom: 10%;justify-content: center;" action="{{url_for('busqueda')}}" , method="POST">
-            <input class="form-control mb-2 mr-sm-2" type="search" placeholder="Origen" name="origen" required>
-            <input class="form-control mb-2 mr-sm-2" type="search" placeholder="Destino" name="destino" required>
-            <input class="form-control mb-2 mr-sm-2" type="date" placeholder="Fecha" name="fecha" required>
-            <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Buscar</button>
-        </form>
-        <!-- ACA IRIA EL RECORDATORIO DEL PROXIMO VIAJE DEL CLIENTE-->
+        {% if bloqueado == 0%}
+            <form class="form-inline" style="margin-bottom: 10%;justify-content: center;" action="{{url_for('busqueda')}}" , method="POST">
+                <input class="form-control mb-2 mr-sm-2" type="search" placeholder="Origen" name="origen" required>
+                <input class="form-control mb-2 mr-sm-2" type="search" placeholder="Destino" name="destino" required>
+                <input class="form-control mb-2 mr-sm-2" type="date" placeholder="Fecha" name="fecha" required>
+                <button type="submit" class="btn btn-primary mb-2 mr-sm-2">Buscar</button>
+            </form>
+        {% else %}
+            <p style="text-align: center;"> LA BUSQUEDA Y COMPRA DE UN PASAJE QUEDA BLOQUEADA POR 14 DIAS, DEBIDO A CASO SOSPECHOSO DE COVID</p>
+        {%endif%}
         {%if ok:%}
             <h4>Proximo viaje</h4>
             <div class="columns">

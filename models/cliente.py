@@ -12,6 +12,7 @@ class Cliente(db.Model):
     password = db.Column(db.String(255))
     tarjetas = db.relationship('Tarjeta', backref='tarjeta')
     comentarios = db.relationship('Comentario', backref='comentario')
+    fechaBloqueo = db.Column(db.Date())
 
     def __init__(self, nombre, apellido, email, fechaNacimiento, password):
         self.nombre = nombre

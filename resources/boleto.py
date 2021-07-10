@@ -129,17 +129,18 @@ def marcarAusente(id_viaje, id_pasajero):
     boleto = Boleto.buscarBoletoPorIdViajeIdCliente(id_viaje, id_pasajero)
     boleto.estado = 6
     Boleto.actualizar(boleto)
-    vendidos = Boleto.buscarBoletoPorIdViaje(id_viaje)
     viaje = Viaje.buscarViajePorId(id_viaje)
-    viaje.paso =+ 1 
+    viaje.paso = viaje.paso + 1 
     Viaje.actualizar(viaje)
     pasajeroPost = []
+    vendidos = Boleto.buscarBoletoPorIdViaje(id_viaje)
     for vendido in vendidos:
         pasajeroPost.append({
             "id": vendido.id_cliente,
             "nombre": Cliente.buscarPorId(vendido.id_cliente).nombre,
             "apellido": Cliente.buscarPorId(vendido.id_cliente).apellido,
-            "email": Cliente.buscarPorId(vendido.id_cliente).email   
+            "email": Cliente.buscarPorId(vendido.id_cliente).email,   
+            "estado": vendido.estado
         })
     return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id_viaje)
 

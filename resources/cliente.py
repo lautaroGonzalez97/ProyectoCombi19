@@ -39,10 +39,18 @@ def home():
             'apeCliente': Cliente.buscarPorId(each.idCliente).apellido,
             'fecha': each.fecha
         })
+    fecha_bloqueo = Cliente.buscarPorId(session["id"]).fechaBloqueo
+    if (fecha_bloqueo is not None):
+        if (fecha_bloqueo >= date.today()):
+            bloqueado = 1
+        else:
+            bloqueado = 0
+    else: 
+        bloqueado = 0
     if (len(proximoPost) != 0):
-        return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost[0], ok= True)
+        return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost[0], ok= True, bloqueado = bloqueado)
     else:
-        return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost, ok= False)
+        return render_template ("cliente/home.html", comentarios = comentPost, idCliente = session["id"], prox = proximoPost, ok= False, bloqueado = bloqueado)
 
 def devolverProximo():
     boletos = Boleto.buscarBoleto() #DEVUELVE TODOS LOS BOLETOS

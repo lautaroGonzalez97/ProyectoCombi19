@@ -1,5 +1,5 @@
-from datetime import datetime
-from dateutil import relativedelta
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 from flask import render_template, session, redirect, url_for, flash, request, abort
 from helpers.auth import authenticated
 from models.personal import Personal
@@ -345,7 +345,7 @@ def confirmar_datos_covid(idP, idV):
     sintomas = 0
     pasajeroPost = []
     v = Viaje.buscarViajePorId(idV)
-    v.paso += 1
+    v.paso = v.paso + 1 
     Viaje.actualizar(v)
     if(38 <= int(temperatura)):
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
@@ -362,16 +362,14 @@ def confirmar_datos_covid(idP, idV):
                     "estado": vendido.estado   
                 })
         boletos = Boleto.buscarBoletosParaPersonaPendiente(idP)
-        print(boletos)
         for boleto in boletos:
-            fecha = datetime.today() + relativedelta(days=+14)
+            fecha = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
             if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
-                print(boleto.estado)
                 boleto.estado = 5
-                print(boleto.estado)
                 Boleto.actualizar(boleto)
         cliente = Cliente.buscarPorId(idP)
-        # cliente.fechaBloqueo = datetime.today() + relativedelta(days=+14)
+        cliente.fechaBloqueo = fecha
+        Cliente.actualizar(cliente)
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
     if(request.form.get('fiebre') == 'isTrue'):
         sintomas += 1
@@ -397,12 +395,12 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
-        boletos = Boleto.buscarBoletosParaPersona(idP)
+        boletos = Boleto.buscarBoletosParaPersonaPendiente(idP)
         for boleto in boletos:
-            fecha = datetime.today() + relativedelta(days=+14)
+            fecha = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
             if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
-                boleto.estado == 5
-                boleto.actualizar
+                boleto.estado = 5
+                Boleto.actualizar(boleto)
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 0)
     else:
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)

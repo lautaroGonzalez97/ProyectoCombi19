@@ -32,7 +32,7 @@ class  Boleto (db.Model):
         return boleto
 
     def buscarBoletosParaPersonaPendiente(id):
-        boletos = Boleto.query.filter_by(id=id, estado =1)
+        boletos = Boleto.query.filter_by(id_cliente=id, estado =1)
         return boletos
 
     def buscarBoleto():

@@ -340,7 +340,6 @@ def comprarBoletoFisico(id):
     print(cliente)
     if cliente != None:
         comprarBoleto(cliente.id,id) 
-        print("compro cliente existente") 
         flash("Compra exitosa", "success") 
     else: 
         hoy = datetime.today()
@@ -356,7 +355,6 @@ def comprarBoletoFisico(id):
         server.quit()
         cliente=Cliente.buscarPorEmail(email)
         comprarBoleto(cliente.id,id)
-        print("compro cliente nuevo")
         flash("Compra exitosa. Creacion de usuario", "success")
     return redirect(url_for('listado_pasajeros', id = id))  #redirecciona a la carga de datos covid 
 

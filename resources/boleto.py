@@ -130,8 +130,9 @@ def marcarAusente(id_viaje, id_pasajero):
     boleto.estado = 6
     Boleto.actualizar(boleto)
     vendidos = Boleto.buscarBoletoPorIdViaje(id_viaje)
-    # viaje = Viaje.buscarViajePorId(id_viaje)
-    # viaje.paso =+ 1 
+    viaje = Viaje.buscarViajePorId(id_viaje)
+    viaje.paso =+ 1 
+    Viaje.actualizar(viaje)
     pasajeroPost = []
     for vendido in vendidos:
         pasajeroPost.append({

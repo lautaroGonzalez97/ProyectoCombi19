@@ -257,7 +257,7 @@ def render_viajesPendientes_chofer():
     proxPost=[]
     prox_viaje = devolverUltimoViaje(viajes)
     if (devolverUltimoViaje(viajes) != None):
-        boletos = Boleto.buscarBoletoPorIdViajeYPendiente(prox_viaje.id)
+        boletos = Boleto.buscarBoletoPorIdViaje(prox_viaje.id)
         proxPost.append({
             'id':prox_viaje.id,
             'origen': Lugar.buscarLugarPorId(Ruta.buscarRutaPorId(prox_viaje.id_ruta).id_origen).localidad,
@@ -274,7 +274,7 @@ def render_viajesPendientes_chofer():
     viajePost=[]
     for each in viajes:
         if each.enabled == 1 and (each.estado == 1 or each.estado == 2):
-            boletos = Boleto.buscarBoletoPorIdViajeYPendiente(each.id)
+            boletos = Boleto.buscarBoletoPorIdViaje(each.id)
             if (each.id != prox_viaje.id):
                 viajePost.append({
                     'id':each.id,
@@ -343,6 +343,9 @@ def confirmar_datos_covid(idP, idV):
     temperatura = datos["temperatura"]
     sintomas = 0
     pasajeroPost = []
+    v = Viaje.buscarViajePorId(idV)
+    v.paso += 1
+    Viaje.actualizar(v)
     if(38 <= int(temperatura)):
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
         boleto.estado = 5
@@ -382,12 +385,13 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 0)
     else:
+        boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
+        boleto.estado = 9
+        Boleto.actualizar(boleto)
         vendidos = Boleto.buscarBoletoPorIdViaje(idV)
         for vendido in vendidos:
-            vendido.estado = 9
-            vendido.actualizar()
             if (vendido.estado != 4):
                 pasajeroPost.append({
                     "id": vendido.id_cliente,
@@ -396,7 +400,7 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 1)
 
 def reporteCOVID():
     verificarSesionAdmin()

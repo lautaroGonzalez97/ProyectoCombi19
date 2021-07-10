@@ -39,6 +39,8 @@
                 {% endwith %}
             </div>
         </div>
+    </div>
+    {% if boletosDisponibles != 0 %}
         <div style="text-align: center;">
             <p>
                 <a class="btn va_btn btn-collapse" data-toggle="collapse" href="#multiCollapseVENDERPASAJE" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Vender Pasaje</a>
@@ -66,7 +68,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <p style="text-align: center;">ASIENTOS PARA EL VIAJE AGOTADOS</p>
+    {% endif %}
     <div class="column">
         <div class="d-flex justify-content-center mt-3 login_container" style="margin-bottom: 4%; text-align: center;">
             <table class="table" style="background-color: #FFFFFF80">
@@ -86,7 +90,7 @@
                         <td style="text-align: center">{{pasajero.email}}</td>
                         <td>
                             <div style="text-align: center;">
-                                {% if pasajero.estado == 9: %}
+                                {% if pasajero.estado == 9 or pasajero.estado == 2 %}
                                     <button class= "btn btn-success" disabled>ACEPTADO</button>
                                 {% endif %}   
                                 {% if pasajero.estado == 1: %}

@@ -293,6 +293,8 @@ def chofer_cancelaViaje(id):
 def verListadoPasajeros(id):
     verificarSesionChofer()
     vendidos = Boleto.buscarBoletoPorIdViaje(id)
+    boletosDisponibles = (Viaje.buscarViajePorId(id)).asientos_disponibles
+    print(boletosDisponibles)
     pasajeroPost = []
     for vendido in vendidos:
         if (vendido.estado != 4):
@@ -303,7 +305,7 @@ def verListadoPasajeros(id):
                 "email": Cliente.buscarPorId(vendido.id_cliente).email,
                 "estado": vendido.estado   
             })
-    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id, aceptado = 0)
+    return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = id, aceptado = 0, boletosDisponibles = boletosDisponibles)
 
 def comenzarViaje(id):
     verificarSesionChofer()

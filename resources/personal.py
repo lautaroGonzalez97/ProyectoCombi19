@@ -401,6 +401,9 @@ def confirmar_datos_covid(idP, idV):
             if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
                 boleto.estado = 5
                 Boleto.actualizar(boleto)
+        cliente = Cliente.buscarPorId(idP)
+        cliente.fechaBloqueo = fecha
+        Cliente.actualizar(cliente)
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, aceptado = 0)
     else:
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)

@@ -371,14 +371,14 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
+        fecha = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
         boletos = Boleto.buscarBoletosParaPersonaPendiente(idP)
         for boleto in boletos:
-            fecha = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
             if (Viaje.buscarViajePorId(boleto.id_viaje).fecha <= fecha):
                 boleto.estado = 5
                 Boleto.actualizar(boleto)
         cliente = Cliente.buscarPorId(idP)
-        cliente.fechaBloqueo = Viaje.buscarViajePorId(boleto.id_viaje).fecha + relativedelta(days=+14)
+        cliente.fechaBloqueo = fecha
         Cliente.actualizar(cliente)
         return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
     else:

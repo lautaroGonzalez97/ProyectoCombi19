@@ -294,7 +294,6 @@ def verListadoPasajeros(id):
     verificarSesionChofer()
     vendidos = Boleto.buscarBoletoPorIdViaje(id)
     boletosDisponibles = (Viaje.buscarViajePorId(id)).asientos_disponibles
-    print(boletosDisponibles)
     pasajeroPost = []
     for vendido in vendidos:
         if (vendido.estado != 4):

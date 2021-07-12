@@ -344,6 +344,7 @@ def confirmar_datos_covid(idP, idV):
     temperatura = datos["temperatura"]
     sintomas = 0
     pasajeroPost = []
+    boletosDisponibles = (Viaje.buscarViajePorId(idV)).asientos_disponibles
     v = Viaje.buscarViajePorId(idV)
     v.paso = v.paso + 1 
     Viaje.actualizar(v)
@@ -380,7 +381,7 @@ def confirmar_datos_covid(idP, idV):
         cliente = Cliente.buscarPorId(idP)
         cliente.fechaBloqueo = fecha
         Cliente.actualizar(cliente)
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, boletosDisponibles = boletosDisponibles)
     else:
         boleto = Boleto.buscarBoletoPorIdViajeIdCliente(idV, idP)
         boleto.estado = 9
@@ -395,7 +396,7 @@ def confirmar_datos_covid(idP, idV):
                     "email": Cliente.buscarPorId(vendido.id_cliente).email,
                     "estado": vendido.estado   
                 })
-        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV)
+        return render_template("personal/listaPasajeros.html", pasajeros = pasajeroPost, idv = idV, boletosDisponibles = boletosDisponibles)
 
 def reporteCOVID():
     verificarSesionAdmin()
